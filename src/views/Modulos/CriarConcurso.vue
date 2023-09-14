@@ -109,7 +109,7 @@ export default {
   name: 'CriarConcurso',
   data() {
     return {
-      partners: null,
+      partners: [],
       partnersSelected: [],
       number: null,
       category: null,
