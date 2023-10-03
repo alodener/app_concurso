@@ -1,5 +1,4 @@
 <template>
-  {{ this.data }}
   <div>
     <CRow>
       <CCol :md="7" class="m-auto mt-5">

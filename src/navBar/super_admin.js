@@ -28,7 +28,13 @@ export default [
         component: 'CNavItem',
         name: 'Enviar Resultados',
         icon: 'cil-browser',
-        to: '/modulo2',
+        to: '/EnviarResultado',
+      },
+      {
+        component: 'CNavItem',
+        name: 'Aprovar Premio',
+        icon: 'cil-browser',
+        to: '/AprovarPremio',
       },
       {
         component: 'CNavItem',

@@ -104,11 +104,11 @@ const routes = [
         },
       },
       {
-        path: '/modulo2',
-        name: 'Modulo2',
+        path: '/EnviarResultado',
+        name: 'EnviarResultado',
         component: () =>
           import(
-            /* webpackChunkName: "dashboard" */ '@/views/Modulos/Modulo2.vue'
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/EnviarResultado.vue'
           ),
         beforeEnter(_, __, next) {
           if (
@@ -132,6 +132,24 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ '@/views/Modulos/Modulo3.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            ['super_admin', 'admin', 'marketing'].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
+        path: '/AprovarPremio',
+        name: 'AprovarPremio',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/AprovarPremio.vue'
           ),
         beforeEnter(_, __, next) {
           if (
