@@ -49,7 +49,6 @@
                 <option value="time_mania">Time Mania</option>
                 <option value="dupla_sena_dobrada">Dupla Sena Dobrada</option>
                 <option value="lotinha_corujao">Lotinha Corujão</option>
-                <option value="mais_milionaria">Mais Milionaria</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
@@ -173,7 +172,8 @@ export default {
       if (this.category == null) {
         return false
       }
-      if (this.result == null) {
+      const regex = /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
+      if (this.result == null || regex.test(this.result) == false) {
         return false
       }
       if (this.partnersSelected.length == 0) {
