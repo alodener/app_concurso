@@ -49,6 +49,7 @@
                 <option value="time_mania">Time Mania</option>
                 <option value="dupla_sena_dobrada">Dupla Sena Dobrada</option>
                 <option value="lotinha_corujao">Lotinha Corujão</option>
+                <option value="mais_milionaria">Mais Milionaria</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
