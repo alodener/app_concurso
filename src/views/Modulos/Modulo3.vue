@@ -156,6 +156,14 @@
                 </tr>
               </tbody>
             </table>
+            <CButton
+              v-show="tableVisible"
+              class="copy-button btn btn-primary btn-lg"
+              color="primary"
+              @click="copyToClipboard"
+            >
+              Copiar Lista Ganhadores
+            </CButton>
           </CCardBody>
         </CCard>
       </CCol>
@@ -196,6 +204,18 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
+    // copyToClipboard() {
+    //   const contentToCopy = 'Conteúdo que deseja copiar'
+
+    //   const tempInput = document.createElement('textarea');
+    //   tempInput.value = contentToCopy
+    //   document.body.appendChild(tempInput)
+    //   tempInput.select()
+    //   document.execCommand('copy')
+    //   document.body.removeChild(tempInput)
+
+    //   console.log('Conteúdo copiado para a área de transferência:', contentToCopy)
+    // },
     listWinners() {
       api
         .get(
@@ -262,5 +282,10 @@ export default {
 .pagination_align {
   max-width: 60px;
   margin-left: 8px;
+}
+.copy-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 </style>
