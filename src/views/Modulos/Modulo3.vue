@@ -161,6 +161,7 @@
               class="copy-button btn btn-primary btn-lg"
               color="primary"
               @click="copyToClipboard"
+              id="botaoCopiarListaGanhadores"
             >
               Copiar Lista Ganhadores
             </CButton>
@@ -200,6 +201,28 @@ export default {
           this.partners = response.data
         })
         .catch(() => {})
+    },
+    copyToClipboard() {
+      const tableElement = document.querySelector('.table')
+
+      if (tableElement) {
+        const tableText = tableElement.innerText
+
+        const tempTextArea = document.createElement('textarea')
+        tempTextArea.value = tableText
+
+        document.body.appendChild(tempTextArea)
+
+        tempTextArea.select()
+
+        document.execCommand('copy')
+
+        document.body.removeChild(tempTextArea)
+
+        alert('Conteúdo copiado para a área de transferência!')
+      } else {
+        console.error('Elemento da tabela não encontrado.')
+      }
     },
     openModalGanhadores() {
       this.modalGanhadores = true
