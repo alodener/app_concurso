@@ -9,6 +9,20 @@
       >
     </CModalFooter>
   </CModal>
+
+  <CModal :visible="modalGanhadores">
+    <CModalHeader>
+      <CModalTitle>Adicionar Valor e Ganhadores</CModalTitle>
+    </CModalHeader>
+    <CModalFooter>
+      <CButton :disabled="modalDisabled" color="success" @click="confirmAction">
+        Confirmar
+      </CButton>
+      <CButton :disabled="modalDisabled" color="secondary" @click="closeModal">
+        Cancelar
+      </CButton>
+    </CModalFooter>
+  </CModal>
   <div>
     <CCard class="mb-5">
       <CCardBody class="m-auto"><h4>Aprovar Premio</h4></CCardBody>
@@ -52,6 +66,31 @@
                     color="success"
                     class="mb-3"
                     >Consultar</CButton
+                  >
+                </div>
+                <div class="col-auto">
+                  <CFormInput
+                    type="text"
+                    id="premio"
+                    placeholder="Valor à adicionar"
+                    v-model="premio"
+                  />
+                </div>
+                <div class="col-auto">
+                  <CFormInput
+                    type="text"
+                    id="ganhadores"
+                    placeholder="Ganhadores à adicionar"
+                    v-model="ganhadores"
+                  />
+                </div>
+                <div class="col-auto">
+                  <CButton
+                    type="submit"
+                    @click="listFakeWinners"
+                    color="warning"
+                    class="mb-3"
+                    >Adicionar Ganhadores</CButton
                   >
                 </div>
               </CForm>
@@ -133,11 +172,13 @@ export default {
       partners: [],
       partnerSelected: '',
       number: '',
+      premio: '',
       winners: [],
       tableVisible: false,
       modalVisible: false,
-      bodyStatusUpdate: null,
       modalDisabled: false,
+      modalGanhadores: false,
+      ganhadores: '',
     }
   },
   mounted() {
@@ -152,10 +193,25 @@ export default {
         })
         .catch(() => {})
     },
+    openModalGanhadores() {
+      this.modalGanhadores = true
+    },
     listWinners() {
       api
         .get(
           `/partners/get-result?partner=${this.partnerSelected}&number=${this.number}`,
+        )
+        .then((response) => {
+          this.winners = response.data
+          this.tableVisible = true
+          console.log(this.winners)
+        })
+        .catch(() => {})
+    },
+    listFakeWinners() {
+      api
+        .get(
+          `/partners/get-result2?partner=${this.partnerSelected}&number=${this.number}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
         )
         .then((response) => {
           this.winners = response.data
@@ -188,6 +244,7 @@ export default {
   },
 }
 </script>
+
 <style>
 .header_align {
   display: flex;
