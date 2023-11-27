@@ -202,14 +202,19 @@ export default {
         })
         .catch(() => {})
     },
+    formatTableContent() {
+      let formattedContent = ''
+      this.winners.forEach((item, index) => {
+        formattedContent += `${index + 1}|${item.name}|Sorteio|${item.premio}\n`
+      })
+      return formattedContent
+    },
     copyToClipboard() {
-      const tableElement = document.querySelector('.table')
+      const tableContent = this.formatTableContent()
 
-      if (tableElement) {
-        const tableText = tableElement.innerText
-
+      if (tableContent) {
         const tempTextArea = document.createElement('textarea')
-        tempTextArea.value = tableText
+        tempTextArea.value = tableContent
 
         document.body.appendChild(tempTextArea)
 
@@ -221,7 +226,7 @@ export default {
 
         alert('Conteúdo copiado para a área de transferência!')
       } else {
-        console.error('Elemento da tabela não encontrado.')
+        console.error('Conteúdo da tabela não encontrado.')
       }
     },
     openModalGanhadores() {
