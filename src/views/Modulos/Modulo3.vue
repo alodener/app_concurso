@@ -104,7 +104,6 @@
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Premio</th>
                   <th scope="col" width="20%">Status</th>
-                  <th scope="col" width="20%">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,27 +130,6 @@
                       shape="rounded-pill"
                       >Acordo</CBadge
                     >
-                  </td>
-                  <td class="d-flex">
-                    <CButtonGroup role="group" v-if="item.status == 1">
-                      <CButton
-                        @click="openModal(item.id, 3)"
-                        class="mr-2"
-                        color="info"
-                        >Acordo</CButton
-                      >
-                      <CButton
-                        @click="openModal(item.id, 2)"
-                        class="mr-2"
-                        color="success"
-                        >Aprovar</CButton
-                      >
-                    </CButtonGroup>
-                    <div v-if="item.status != 1">
-                      <CButton disabled color="secondary" variant="outline"
-                        >Sem Ação Disponivel</CButton
-                      >
-                    </div>
                   </td>
                 </tr>
               </tbody>
