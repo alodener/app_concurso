@@ -102,7 +102,7 @@
                 <tr>
                   <th scope="col" width="10%">ID</th>
                   <th scope="col" width="20%">Nome do Usuário</th>
-                  <th scope="col" width="20%">Premio</th>
+                  <th scope="col" width="20%">Prêmio</th>
                   <th scope="col" width="20%">Status</th>
                 </tr>
               </thead>
