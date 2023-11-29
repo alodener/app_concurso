@@ -191,10 +191,22 @@ export default {
         .catch(() => {})
     },
     formatTableContent() {
-      let formattedContent = ''
-      this.winners.forEach((item, index) => {
-        formattedContent += `${index + 1}|${item.name}|Sorteio|${item.premio}\n`
+      // eslint-disable-next-line no-multi-spaces
+      let formattedContent = `🤑SuperLotogiro🤑\n`
+      formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
+      formattedContent += ``
+      let totalPrize = 0
+
+      this.winners.forEach((item) => {
+        formattedContent += `\n🟡 ${item.game_name}\n`
+        formattedContent += `✔️ ${item.name}, ${item.num_tickets} cupons\n`
+        formattedContent += `💰 Prêmio: ${item.premio}\n`
+
+        totalPrize += parseFloat(item.premio)
       })
+
+      formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toFixed(2)} 💰\n`
+
       return formattedContent
     },
     copyToClipboard() {
