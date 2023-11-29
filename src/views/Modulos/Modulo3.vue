@@ -195,10 +195,11 @@ export default {
       let formattedContent = `🤑SuperLotogiro🤑\n`
       formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
       formattedContent += ``
+      formattedContent += `\n🟡 ${this.winners[0].game_name}\n`
+
       let totalPrize = 0
 
       this.winners.forEach((item) => {
-        formattedContent += `\n🟡 ${item.game_name}\n`
         formattedContent += `✔️ ${item.name}, ${item.num_tickets} cupons\n`
         formattedContent += `💰 Prêmio: ${item.premio}\n`
 
