@@ -194,7 +194,7 @@ export default {
       // eslint-disable-next-line no-multi-spaces
       let formattedContent = `🤑SuperLotogiro🤑\n`
       formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
-      formattedContent += ``
+      formattedContent += `\n`
       formattedContent += `\n🟡 ${this.winners[0].game_name}\n`
 
       let totalPrize = 0
@@ -202,7 +202,7 @@ export default {
       this.winners.forEach((item) => {
         formattedContent += `✔️ ${item.name}, ${item.num_tickets} cupons\n`
         formattedContent += `💰 Prêmio: ${item.premio}\n`
-
+        formattedContent += `\n`
         totalPrize += parseFloat(item.premio)
       })
 
