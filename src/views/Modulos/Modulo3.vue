@@ -134,15 +134,25 @@
                 </tr>
               </tbody>
             </table>
-            <CButton
-              v-show="tableVisible"
-              class="copy-button btn btn-primary btn-lg"
-              color="primary"
-              @click="copyToClipboard"
-              id="botaoCopiarListaGanhadores"
-            >
-              Copiar Lista Ganhadores
-            </CButton>
+            <div class="button-container fixed-buttons">
+              <CButton
+                v-show="tableVisible"
+                class="copy-button btn btn-primary btn-lg"
+                color="primary"
+                @click="copyToClipboard"
+                id="botaoCopiarListaGanhadores"
+              >
+                Copiar Lista Ganhadores
+              </CButton>
+              <CButton
+                v-show="tableVisible"
+                class="send-button btn btn-success btn-lg"
+                color="success"
+                id="enviarAoEscritorio"
+              >
+                Enviar ao Escritório
+              </CButton>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>
@@ -290,6 +300,18 @@ export default {
   margin-left: 8px;
 }
 .copy-button {
+  bottom: 20px;
+  right: 20px;
+}
+.send-button {
+  bottom: 20px;
+  right: 40px;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+.fixed-buttons {
   position: fixed;
   bottom: 20px;
   right: 20px;
