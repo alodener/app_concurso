@@ -201,12 +201,13 @@ export default {
 
       this.winners.forEach((item) => {
         formattedContent += `✔️ ${item.name}, ${item.num_tickets} cupons\n`
-        formattedContent += `💰 Prêmio: ${item.premio}\n`
+        formattedContent += `💰 Prêmio: ${item.premio_formatted}\n`
         formattedContent += `\n`
         totalPrize += parseFloat(item.premio)
       })
 
-      formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toFixed(2)} 💰\n`
+      // eslint-disable-next-line
+      formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
 
       return formattedContent
     },
