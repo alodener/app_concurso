@@ -110,7 +110,7 @@
                 <tr v-for="item in winners" v-bind:key="item.id">
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.name }}</td>
-                  <td>{{ item.premio }}</td>
+                  <td>{{ item.premio_formatted }}</td>
                   <td>
                     <CBadge
                       v-if="item.status == 1"
