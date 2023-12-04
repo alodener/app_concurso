@@ -26,6 +26,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Excluir Concusrsos',
+        icon: 'cil-browser',
+        to: '/ExcluirConcurso',
+      },
+      {
+        component: 'CNavItem',
         name: 'Enviar Resultados',
         icon: 'cil-browser',
         to: '/EnviarResultado',

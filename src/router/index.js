@@ -127,6 +127,29 @@ const routes = [
         },
       },
       {
+        path: '/ExcluirConcurso',
+        name: 'ExcluirConcurso',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/ExcluirConcurso.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            [
+              'super_admin',
+              'admin',
+              'gerente_jogo',
+              'gestor_resultado',
+            ].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
         path: '/modulo3',
         name: 'Modulo3',
         component: () =>
