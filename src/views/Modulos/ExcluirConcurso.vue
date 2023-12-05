@@ -60,6 +60,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th scope="col" width="5%">Selecionar</th>
                   <th scope="col" width="20%">ID</th>
                   <th scope="col" width="20%">Data Sorteio</th>
                   <th scope="col" width="20%">Número</th>
@@ -68,7 +69,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in winners" v-bind:key="item.id">
+                <tr v-for="item in winners" :key="item.id">
+                  <td>
+                    <input type="checkbox" id="checkbox" v-model="checked" />
+                    <label for="checkbox">{{ checked }}</label>
+                  </td>
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.sort_date }}</td>
                   <td>{{ item.number }}</td>
@@ -93,6 +98,7 @@
 
 <script>
 import api from '@/plugins/axios'
+
 export default {
   name: 'AprovarPremio',
   data() {
@@ -101,6 +107,7 @@ export default {
       partnerSelected: '',
       selectedPartner: '',
       partnersSelected: [],
+      selectedItems: [],
       number: '',
       premio: '',
       winners: [],
@@ -123,6 +130,13 @@ export default {
           this.partners = response.data
         })
         .catch(() => {})
+    },
+    handleCheckboxChange() {
+      this.selectedItems = this.winners
+        .filter((item) => this.selectedItems.includes(item.id))
+        .map((item) => ({ id: item.id, partner_id: item.partner_id }))
+
+      console.log('Itens selecionados:', this.selectedItems)
     },
     confirmDelete(id, partnerSelected) {
       if (window.confirm('Deseja realmente excluir este item?')) {
