@@ -63,6 +63,7 @@
               <thead>
                 <tr>
                   <th scope="col" width="20%">ID</th>
+                  <th scope="col" width="20%">Data Sorteio</th>
                   <th scope="col" width="20%">Número</th>
                   <th scope="col" width="20%">Jogo</th>
                   <th scope="col" width="10%">Ações</th>
@@ -71,10 +72,14 @@
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
                   <th scope="row">{{ item.id }}</th>
+                  <td>{{ item.sort_date }}</td>
                   <td>{{ item.number }}</td>
                   <td>{{ item.type_game_name }}</td>
                   <td>
-                    <CButton color="danger" @click="confirmDelete(item.id)">
+                    <CButton
+                      color="danger"
+                      @click="confirmDelete(item.id, partnerSelected)"
+                    >
                       Excluir
                     </CButton>
                   </td>
