@@ -21,19 +21,17 @@
             <div class="header_align">
               <CForm class="row mt-5">
                 <div class="col-auto">
-                  <CFormSelect
-                    aria-label="Default select example"
-                    v-model="partnerSelected"
-                  >
-                    <option value="">Selecione uma Banca</option>
-                    <option
-                      v-for="item in partners"
-                      :key="item.id"
-                      :value="item.id"
-                    >
-                      {{ item.name }}
-                    </option>
-                  </CFormSelect>
+                  <v-select
+                    :disabled="readOnly"
+                    v-model="partnersSelected"
+                    :items="partners"
+                    item-title="name"
+                    item-value="id"
+                    chips
+                    label="Bancas"
+                    multiple
+                    class="mt-4"
+                  ></v-select>
                 </div>
                 <div class="col-auto">
                   <CFormLabel for="inputPassword2" class="visually-hidden"
@@ -49,7 +47,7 @@
                 <div class="col-auto">
                   <CButton
                     type="submit"
-                    @click="listWinners()"
+                    @click="listCompetitions()"
                     color="success"
                     class="mb-3"
                     >Consultar</CButton
@@ -78,7 +76,7 @@
                   <td>
                     <CButton
                       color="danger"
-                      @click="confirmDelete(item.id, partnerSelected)"
+                      @click="confirmDelete(item.id, item.partner_id)"
                     >
                       Excluir
                     </CButton>
@@ -102,6 +100,7 @@ export default {
       partners: [],
       partnerSelected: '',
       selectedPartner: '',
+      partnersSelected: [],
       number: '',
       premio: '',
       winners: [],
@@ -110,6 +109,7 @@ export default {
       modalDisabled: false,
       modalGanhadores: false,
       ganhadores: '',
+      readOnly: false,
     }
   },
   mounted() {
@@ -124,119 +124,35 @@ export default {
         })
         .catch(() => {})
     },
-    formatTableContent() {
-      // eslint-disable-next-line no-multi-spaces
-      let formattedContent = `🤑SuperLotogiro🤑\n`
-      formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
-      formattedContent += `\n`
-      formattedContent += `\n🟡 ${this.winners[0].game_name}\n`
-
-      let totalPrize = 0
-
-      this.winners.forEach((item) => {
-        formattedContent += `✔️ ${item.name}, ${item.num_tickets} cupons\n`
-        formattedContent += `💰 Prêmio: ${item.premio}\n`
-        formattedContent += `\n`
-        totalPrize += parseFloat(item.premio)
-      })
-
-      formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toFixed(2)} 💰\n`
-
-      return formattedContent
-    },
     confirmDelete(id, partnerSelected) {
       if (window.confirm('Deseja realmente excluir este item?')) {
         api
           // eslint-disable-next-line
           .delete(`/partners/delete-competition?id=${id}&partner=${partnerSelected}`)
           .then(() => {
-            this.listWinners()
+            this.listCompetitions()
           })
           .catch((error) => {
             console.error('Erro ao excluir item:', error)
           })
       }
     },
-    copyToClipboard() {
-      const tableContent = this.formatTableContent()
+    listCompetitions() {
+      const partnersString = this.partnersSelected.join(',')
 
-      if (tableContent) {
-        const tempTextArea = document.createElement('textarea')
-        tempTextArea.value = tableContent
-
-        document.body.appendChild(tempTextArea)
-
-        tempTextArea.select()
-
-        document.execCommand('copy')
-
-        document.body.removeChild(tempTextArea)
-
-        alert('Conteúdo copiado para a área de transferência!')
-      } else {
-        console.error('Conteúdo da tabela não encontrado.')
-      }
-    },
-    openModalGanhadores() {
-      this.modalGanhadores = true
-    },
-    // copyToClipboard() {
-    //   const contentToCopy = 'Conteúdo que deseja copiar'
-
-    //   const tempInput = document.createElement('textarea');
-    //   tempInput.value = contentToCopy
-    //   document.body.appendChild(tempInput)
-    //   tempInput.select()
-    //   document.execCommand('copy')
-    //   document.body.removeChild(tempInput)
-
-    //   console.log('Conteúdo copiado para a área de transferência:', contentToCopy)
-    // },
-    listWinners() {
-      this.selectedPartner = this.partnerSelected
       api
-        .get(
-          `/partners/list-competitions?partner=${this.partnerSelected}&number=${this.number}`,
-        )
+        .get(`/partners/list-competitions`, {
+          params: {
+            partners: partnersString,
+            number: this.number,
+          },
+        })
         .then((response) => {
           this.winners = response.data
           this.tableVisible = true
           console.log(this.winners)
         })
         .catch(() => {})
-    },
-    listFakeWinners() {
-      api
-        .get(
-          `/partners/get-result2?partner=${this.partnerSelected}&number=${this.number}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
-        )
-        .then((response) => {
-          this.winners = response.data
-          this.tableVisible = true
-          console.log(this.winners)
-        })
-        .catch(() => {})
-    },
-    openModal(id, status) {
-      this.modalVisible = true
-      this.body = {
-        partner: this.partnerSelected,
-        id,
-        status,
-      }
-    },
-    updateStatus() {
-      this.modalDisabled = true
-      api
-        .put(`/partners/update-status`, this.body)
-        .then(() => {
-          this.listWinners()
-          this.modalVisible = false
-          this.modalDisabled = false
-        })
-        .catch(() => {
-          this.modalVisible = false
-        })
     },
   },
 }
