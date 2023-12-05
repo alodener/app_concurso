@@ -53,16 +53,16 @@
                     >Password</CFormLabel
                   >
                   <CFormInput
-                    type="text"
-                    id="inputPassword2"
-                    placeholder="Numero do Concurso"
-                    v-model="number"
+                    :disabled="readOnly"
+                    v-model="date"
+                    type="date"
+                    aria-label="First name"
                   />
                 </div>
                 <div class="col-auto">
                   <CButton
                     type="submit"
-                    @click="listWinners()"
+                    @click="listComeptitions()"
                     color="success"
                     class="mb-3"
                     >Consultar</CButton
@@ -149,10 +149,12 @@ export default {
       number: '',
       premio: '',
       winners: [],
+      date: '',
       tableVisible: false,
       modalVisible: false,
       modalDisabled: false,
       modalGanhadores: false,
+      readOnly: false,
       ganhadores: '',
     }
   },
@@ -171,10 +173,10 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    listWinners() {
+    listComeptitions() {
       api
         .get(
-          `/partners/get-result?partner=${this.partnerSelected}&number=${this.number}`,
+          `/partners/aprove-prize?partner=${this.partnerSelected}&date=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
@@ -208,7 +210,7 @@ export default {
       api
         .put(`/partners/update-status`, this.body)
         .then(() => {
-          this.listWinners()
+          this.listComeptitions()
           this.modalVisible = false
           this.modalDisabled = false
         })
