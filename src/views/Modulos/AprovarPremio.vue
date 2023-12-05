@@ -76,17 +76,20 @@
               <thead>
                 <tr>
                   <th scope="col" width="10%">ID</th>
+                  <th scope="col" width="10%">Data do Sorteio</th>
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Premio</th>
-                  <th scope="col" width="20%">Status</th>
+                  <th scope="col" width="20%">Tipo do Jogo</th>
                   <th scope="col" width="20%">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
                   <th scope="row">{{ item.id }}</th>
+                  <td>{{ item.sort_date }}</td>
                   <td>{{ item.name }}</td>
-                  <td>{{ item.premio }}</td>
+                  <td>{{ item.premio_formatted }}</td>
+                  <td>{{ item.game_name }}</td>
                   <td>
                     <CBadge
                       v-if="item.status == 1"
