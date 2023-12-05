@@ -68,31 +68,6 @@
                     >Consultar</CButton
                   >
                 </div>
-                <div class="col-auto">
-                  <CFormInput
-                    type="text"
-                    id="premio"
-                    placeholder="Valor à adicionar"
-                    v-model="premio"
-                  />
-                </div>
-                <div class="col-auto">
-                  <CFormInput
-                    type="text"
-                    id="ganhadores"
-                    placeholder="Ganhadores à adicionar"
-                    v-model="ganhadores"
-                  />
-                </div>
-                <div class="col-auto">
-                  <CButton
-                    type="submit"
-                    @click="listFakeWinners"
-                    color="warning"
-                    class="mb-3"
-                    >Adicionar Ganhadores</CButton
-                  >
-                </div>
               </CForm>
             </div>
           </CCardHeader>
