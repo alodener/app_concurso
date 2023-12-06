@@ -68,14 +68,14 @@
                     >Consultar</CButton
                   >
                   <CButton
-                    @click="aprovarTodos"
+                    @click="aprovarTodos()"
                     color="info"
                     class="mb-3 text_button"
                   >
                     Aprovar Todos
                   </CButton>
                   <CButton
-                    @click="acordoParaTodos"
+                    @click="acordoParaTodos()"
                     color="warning"
                     class="mb-3 text_button"
                   >
@@ -203,6 +203,53 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
+    aprovarTodos() {
+      console.log('abriu pelo menos a função')
+      const selectedItems = this.winners.filter((item) => item.status === 1)
+
+      if (selectedItems.length === 0) {
+        alert('Nenhum ganhador pendente selecionado para aprovação.')
+        return
+      }
+      // eslint-disable-next-line
+      if (window.confirm('Deseja realmente aprovar todos os ganhadores pendentes?')) {
+        const approvePromises = selectedItems.map((item) =>
+          // eslint-disable-next-line
+          api.put(`/partners/update-status`, { partner: this.partnerSelected, id: item.id, status: 2 })
+        )
+
+        Promise.all(approvePromises)
+          .then(() => {
+            this.listWinners()
+          })
+          .catch((error) => {
+            console.error('Erro ao aprovar ganhadores:', error)
+          })
+      }
+    },
+    acordoParaTodos() {
+      const selectedItems = this.winners.filter((item) => item.status === 1)
+
+      if (selectedItems.length === 0) {
+        alert('Nenhum ganhador pendente selecionado para acordo.')
+        return
+      }
+      // eslint-disable-next-line
+      if (window.confirm('Deseja realmente entrar em acordo para todos os ganhadores pendentes?')) {
+        const agreementPromises = selectedItems.map((item) =>
+          // eslint-disable-next-line
+          api.put(`/partners/update-status`, { partner: this.partnerSelected, id: item.id, status: 3 })
+        )
+
+        Promise.all(agreementPromises)
+          .then(() => {
+            this.listWinners()
+          })
+          .catch((error) => {
+            console.error('Erro ao entrar em acordo com ganhadores:', error)
+          })
+      }
+    },
     listWinners() {
       api
         .get(
@@ -224,6 +271,7 @@ export default {
     // },
     calcularTotais() {
       const pessoasUnicas = {}
+
       this.winners.forEach((item) => {
         const nome = item.name
 
