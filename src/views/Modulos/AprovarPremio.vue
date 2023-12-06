@@ -59,14 +59,28 @@
                     aria-label="First name"
                   />
                 </div>
-                <div class="col-auto">
+                <div class="col-auto d-flex align-items-center">
                   <CButton
                     type="submit"
                     @click="listComeptitions()"
                     color="success"
-                    class="mb-3"
+                    class="mb-3 mr-2"
                     >Consultar</CButton
                   >
+                  <CButton
+                    @click="aprovarTodos"
+                    color="info"
+                    class="mb-3 text_button"
+                  >
+                    Aprovar Todos
+                  </CButton>
+                  <CButton
+                    @click="acordoParaTodos"
+                    color="warning"
+                    class="mb-3 text_button"
+                  >
+                    Acordo p/todos
+                  </CButton>
                 </div>
               </CForm>
             </div>
@@ -75,6 +89,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th scope="col" width="10%">Selecionar</th>
                   <th scope="col" width="10%">ID</th>
                   <th scope="col" width="10%">Data do Sorteio</th>
                   <th scope="col" width="20%">Nome do Usuário</th>
@@ -85,6 +100,10 @@
               </thead>
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
+                  <td>
+                    <input type="checkbox" id="checkbox" v-model="checked" />
+                    <label for="checkbox">{{ checked }}</label>
+                  </td>
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.sort_date }}</td>
                   <td>{{ item.name }}</td>
