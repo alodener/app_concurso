@@ -45,7 +45,7 @@
                     v-model="number"
                   />
                 </div>
-                <div class="col-auto mb-3">
+                <div class="col-auto d-flex align-items-center">
                   <CButton
                     type="submit"
                     @click="listCompetitions()"
@@ -53,6 +53,14 @@
                     class="same-height-button"
                   >
                     Consultar
+                  </CButton>
+                  <CButton
+                    type="submit"
+                    @click="confirmDelete()"
+                    color="danger"
+                    class="same-height-button"
+                  >
+                    Excluir Marcados
                   </CButton>
                 </div>
               </CForm>
@@ -73,8 +81,7 @@
               <tbody>
                 <tr v-for="item in winners" :key="item.id">
                   <td>
-                    <input type="checkbox" id="checkbox" v-model="checked" />
-                    <label for="checkbox">{{ checked }}</label>
+                    <input type="checkbox" v-model="item.checked" />
                   </td>
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.sort_date }}</td>
@@ -133,26 +140,45 @@ export default {
         })
         .catch(() => {})
     },
-    handleCheckboxChange() {
-      this.selectedItems = this.winners
-        .filter((item) => this.selectedItems.includes(item.id))
-        .map((item) => ({ id: item.id, partner_id: item.partner_id }))
-
-      console.log('Itens selecionados:', this.selectedItems)
+    getSelectedItems() {
+      return this.winners.filter((item) => item.checked)
     },
-    confirmDelete(id, partnerSelected) {
-      if (window.confirm('Deseja realmente excluir este item?')) {
-        api
+    confirmDelete() {
+      const selectedItems = this.getSelectedItems()
+
+      if (selectedItems.length === 0) {
+        alert('Nenhum item selecionado para exclusão.')
+        return
+      }
+
+      if (window.confirm('Deseja realmente excluir os itens selecionados?')) {
+        const deletePromises = selectedItems.map((item) =>
           // eslint-disable-next-line
-          .delete(`/partners/delete-competition?id=${id}&partner=${partnerSelected}`)
+          api.delete(`/partners/delete-competition?id=${item.id}&partner=${item.partner_id}`)
+        )
+
+        Promise.all(deletePromises)
           .then(() => {
             this.listCompetitions()
           })
           .catch((error) => {
-            console.error('Erro ao excluir item:', error)
+            console.error('Erro ao excluir itens:', error)
           })
       }
     },
+    // confirmDelete(id, partnerSelected) {
+    //   if (window.confirm('Deseja realmente excluir este item?')) {
+    //     api
+    //       // eslint-disable-next-line
+    //       .delete(`/partners/delete-competition?id=${id}&partner=${partnerSelected}`)
+    //       .then(() => {
+    //         this.listCompetitions()
+    //       })
+    //       .catch((error) => {
+    //         console.error('Erro ao excluir item:', error)
+    //       })
+    //   }
+    // },
     listCompetitions() {
       const partnersString = this.partnersSelected.join(',')
 
