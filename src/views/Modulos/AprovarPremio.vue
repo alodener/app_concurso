@@ -62,7 +62,7 @@
                 <div class="col-auto d-flex align-items-center">
                   <CButton
                     type="submit"
-                    @click="listComeptitions()"
+                    @click="listWinners()"
                     color="success"
                     class="mb-3 mr-2"
                     >Consultar</CButton
@@ -86,6 +86,12 @@
             </div>
           </CCardHeader>
           <CCardBody v-if="tableVisible">
+            <div class="mb-3">
+              <strong>Total de ganhadores:</strong> {{ totalGanhadores }}
+            </div>
+            <div class="mb-3">
+              <strong>Valor Total:</strong> {{ valorTotalFormatado }}
+            </div>
             <table class="table">
               <thead>
                 <tr>
@@ -178,6 +184,8 @@ export default {
       modalGanhadores: false,
       readOnly: false,
       ganhadores: '',
+      totalGanhadores: 0,
+      valorTotal: 0,
     }
   },
   mounted() {
@@ -195,29 +203,45 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    listComeptitions() {
+    listWinners() {
       api
         .get(
           `/partners/aprove-prize?partner=${this.partnerSelected}&date=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
+          this.calcularTotais()
           this.tableVisible = true
-          console.log(this.winners)
         })
         .catch(() => {})
     },
-    listFakeWinners() {
-      api
-        .get(
-          `/partners/get-result2?partner=${this.partnerSelected}&number=${this.number}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
-        )
-        .then((response) => {
-          this.winners = response.data
-          this.tableVisible = true
-          console.log(this.winners)
-        })
-        .catch(() => {})
+    // calcularTotais() {
+    //   this.totalGanhadores = this.winners.length
+    //   this.valorTotal = this.winners.reduce(
+    //     (total, item) => total + parseFloat(item.premio),
+    //     0,
+    //   )
+    // },
+    calcularTotais() {
+      const pessoasUnicas = {}
+      this.winners.forEach((item) => {
+        const nome = item.name
+
+        if (pessoasUnicas[nome]) {
+          pessoasUnicas[nome].valor += parseFloat(item.premio)
+        } else {
+          pessoasUnicas[nome] = {
+            valor: parseFloat(item.premio),
+          }
+        }
+      })
+
+      this.totalGanhadores = Object.keys(pessoasUnicas).length
+
+      this.valorTotal = Object.values(pessoasUnicas).reduce(
+        (total, pessoa) => total + pessoa.valor,
+        0,
+      )
     },
     openModal(id, status) {
       this.modalVisible = true
@@ -232,7 +256,7 @@ export default {
       api
         .put(`/partners/update-status`, this.body)
         .then(() => {
-          this.listComeptitions()
+          this.listWinners()
           this.modalVisible = false
           this.modalDisabled = false
         })
