@@ -4,7 +4,7 @@
       <CModalTitle>Deseja Realmente Enviar os resultados?</CModalTitle>
     </CModalHeader>
     <CModalFooter>
-      <CButton color="success" @click="createContests()">Criar</CButton>
+      <CButton color="success" @click="updateDrawNumbers()">Criar</CButton>
     </CModalFooter>
   </CModal>
   <div>
@@ -17,7 +17,7 @@
           >Resutlados Enviados com Sucesso!</CAlert
         >
         <CAlert v-if="failCreate" class="text-center" color="danger"
-          >Erro ao Criar Concursos!</CAlert
+          >Erro ao atualizar números!</CAlert
         >
         <CCard>
           <CCardHeader class="pt-3 pb-3 text-center"
@@ -32,7 +32,7 @@
                 aria-label="First name"
               />
             </CInputGroup>
-            <CInputGroup class="mt-4">
+            <!-- <CInputGroup class="mt-4">
               <CInputGroupText>Categorias</CInputGroupText>
               <CFormSelect
                 :disabled="readOnly"
@@ -51,7 +51,7 @@
                 <option value="lotinha_corujao">Lotinha Corujão</option>
                 <option value="mais_milionaria">Mais Milionaria</option>
               </CFormSelect>
-            </CInputGroup>
+            </CInputGroup> -->
             <CInputGroup class="mt-4">
               <CInputGroupText>Resultados</CInputGroupText>
               <CFormInput
@@ -127,7 +127,7 @@ export default {
         })
         .catch(() => {})
     },
-    createContests() {
+    updateDrawNumbers() {
       var inputsError = this.inputsFilled()
 
       if (inputsError) {
@@ -140,12 +140,11 @@ export default {
         const body = {
           partners: this.partnersSelected,
           number: this.number,
-          category: this.category,
           result: this.result,
         }
 
         api
-          .post(`/partners/send-result`, body)
+          .post(`/partners/update-draw-numbers`, body)
           .then((response) => {
             console.log(response)
             this.loadingButton = false
@@ -170,9 +169,6 @@ export default {
       if (this.number == null) {
         return false
       }
-      if (this.category == null) {
-        return false
-      }
       const regex = /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
       if (this.result == null || regex.test(this.result) == false) {
         return false
@@ -184,7 +180,6 @@ export default {
     },
     clearInputs() {
       this.number = null
-      this.category = null
       this.result = null
       this.partnersSelected = []
       this.readOnly = false
