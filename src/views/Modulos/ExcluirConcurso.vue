@@ -19,8 +19,11 @@
         <CCard disabled>
           <CCardHeader>
             <div class="header_align">
-              <CForm class="row mt-5">
-                <div class="col-auto">
+              <CForm
+                class="row mt-5 d-flex justify-content-between align-items-center"
+              >
+                <div class="col-auto mb-3">
+                  <p>Selecione a(s) bancas</p>
                   <v-select
                     :disabled="readOnly"
                     v-model="partnersSelected"
@@ -28,12 +31,10 @@
                     item-title="name"
                     item-value="id"
                     chips
-                    label="Bancas"
                     multiple
-                    class="mt-4"
                   ></v-select>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto mb-3">
                   <CFormLabel for="inputPassword2" class="visually-hidden"
                     >Password</CFormLabel
                   >
@@ -44,14 +45,15 @@
                     v-model="number"
                   />
                 </div>
-                <div class="col-auto">
+                <div class="col-auto mb-3">
                   <CButton
                     type="submit"
                     @click="listCompetitions()"
                     color="success"
-                    class="mb-3"
-                    >Consultar</CButton
+                    class="same-height-button"
                   >
+                    Consultar
+                  </CButton>
                 </div>
               </CForm>
             </div>
@@ -206,5 +208,8 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+.same-height-button {
+  height: 50px;
 }
 </style>
