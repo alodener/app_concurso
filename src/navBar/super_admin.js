@@ -44,6 +44,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Sobrepor Resultados',
+        icon: 'cil-browser',
+        to: '/Modulo4',
+      },
+      {
+        component: 'CNavItem',
         name: 'Lista de Ganhadores',
         icon: 'cil-browser',
         to: '/modulo3',

@@ -185,6 +185,24 @@ const routes = [
           next('/login')
         },
       },
+      {
+        path: '/Modulo4',
+        name: 'Modulo4',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/Modulo4.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            ['super_admin', 'admin', 'marketing'].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
     ],
   },
 
