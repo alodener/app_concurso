@@ -90,7 +90,7 @@
               <strong>Total de ganhadores:</strong> {{ totalGanhadores }}
             </div>
             <div class="mb-3">
-              <strong>Valor Total:</strong> {{ valorTotalFormatado }}
+              <strong>Valor Total:</strong> {{ valorTotal }}
             </div>
             <table class="table">
               <thead>
