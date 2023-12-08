@@ -95,7 +95,11 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col" width="10%">Selecionar</th>
+                  <th scope="col" width="10%">
+                    <CButton @click="selectAll()" class="mr-2" color="primary">
+                      Marcar todos
+                    </CButton>
+                  </th>
                   <th scope="col" width="10%">ID</th>
                   <th scope="col" width="10%">Data do Sorteio</th>
                   <th scope="col" width="20%">Nome do Usuário</th>
@@ -107,8 +111,8 @@
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
                   <td>
-                    <input type="checkbox" id="checkbox" v-model="checked" />
-                    <label for="checkbox">{{ checked }}</label>
+                    <input type="checkbox" v-model="item.checked" />
+                    <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
                   </td>
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.sort_date }}</td>
@@ -177,6 +181,7 @@ export default {
       number: '',
       premio: '',
       winners: [],
+      checked: '',
       date: '',
       tableVisible: false,
       modalVisible: false,
@@ -262,13 +267,6 @@ export default {
         })
         .catch(() => {})
     },
-    // calcularTotais() {
-    //   this.totalGanhadores = this.winners.length
-    //   this.valorTotal = this.winners.reduce(
-    //     (total, item) => total + parseFloat(item.premio),
-    //     0,
-    //   )
-    // },
     calcularTotais() {
       const pessoasUnicas = {}
 
@@ -298,6 +296,18 @@ export default {
         id,
         status,
       }
+    },
+    // selectAll() {
+    //   this.checked = !this.checked
+    //   this.winners.forEach((item) => {
+    //     this.$set(item, 'selected', this.checked)
+    //   })
+    // },
+    selectAll() {
+      const allChecked = this.winners.every((item) => item.checked)
+      this.winners.forEach((item) => {
+        item.checked = !allChecked
+      })
     },
     updateStatus() {
       this.modalDisabled = true
