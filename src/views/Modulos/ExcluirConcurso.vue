@@ -70,7 +70,11 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col" width="5%">Selecionar</th>
+                  <th scope="col" width="10%">
+                    <CButton @click="selectAll()" class="mr-2" color="primary">
+                      Marcar todos
+                    </CButton>
+                  </th>
                   <th scope="col" width="20%">ID</th>
                   <th scope="col" width="20%">Data Sorteio</th>
                   <th scope="col" width="20%">Número</th>
@@ -142,6 +146,12 @@ export default {
     },
     getSelectedItems() {
       return this.winners.filter((item) => item.checked)
+    },
+    selectAll() {
+      const allChecked = this.winners.every((item) => item.checked)
+      this.winners.forEach((item) => {
+        item.checked = !allChecked
+      })
     },
     confirmDelete() {
       const selectedItems = this.getSelectedItems()
