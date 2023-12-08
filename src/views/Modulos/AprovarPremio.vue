@@ -209,8 +209,7 @@ export default {
       this.modalGanhadores = true
     },
     aprovarTodos() {
-      console.log('abriu pelo menos a função')
-      const selectedItems = this.winners.filter((item) => item.status === 1)
+      const selectedItems = this.winners.filter((item) => item.checked)
 
       if (selectedItems.length === 0) {
         alert('Nenhum ganhador pendente selecionado para aprovação.')
@@ -233,7 +232,7 @@ export default {
       }
     },
     acordoParaTodos() {
-      const selectedItems = this.winners.filter((item) => item.status === 1)
+      const selectedItems = this.winners.filter((item) => item.checked)
 
       if (selectedItems.length === 0) {
         alert('Nenhum ganhador pendente selecionado para acordo.')
