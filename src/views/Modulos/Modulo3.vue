@@ -53,10 +53,10 @@
                     >Password</CFormLabel
                   >
                   <CFormInput
-                    type="text"
-                    id="inputPassword2"
-                    placeholder="Numero do Concurso"
-                    v-model="number"
+                    :disabled="readOnly"
+                    v-model="date"
+                    type="date"
+                    aria-label="First name"
                   />
                 </div>
                 <div class="col-auto">
@@ -103,6 +103,8 @@
                   <th scope="col" width="10%">ID</th>
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Prêmio</th>
+                  <th scope="col" width="20%">Bilhetes</th>
+                  <th scope="col" width="20%">Modalidade</th>
                   <th scope="col" width="20%">Status</th>
                 </tr>
               </thead>
@@ -111,6 +113,8 @@
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.name }}</td>
                   <td>{{ item.premio_formatted }}</td>
+                  <td>{{ item.num_tickets }}</td>
+                  <td>{{ item.game_name }}</td>
                   <td>
                     <CBadge
                       v-if="item.status == 1"
@@ -170,6 +174,7 @@ export default {
       partnerSelected: '',
       number: '',
       premio: '',
+      date: '',
       winners: [],
       tableVisible: false,
       modalVisible: false,
@@ -249,7 +254,7 @@ export default {
     listWinners() {
       api
         .get(
-          `/partners/get-result?partner=${this.partnerSelected}&number=${this.number}`,
+          `/partners/get-result?partner=${this.partnerSelected}&number=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
@@ -261,7 +266,7 @@ export default {
     listFakeWinners() {
       api
         .get(
-          `/partners/get-result2?partner=${this.partnerSelected}&number=${this.number}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+          `/partners/get-result2?partner=${this.partnerSelected}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
         )
         .then((response) => {
           this.winners = response.data
