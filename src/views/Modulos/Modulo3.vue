@@ -202,19 +202,30 @@ export default {
       let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
       formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
       formattedContent += `\n`
-      formattedContent += `\n🟡 ${this.winners[0].game_name}\n`
-
-      let totalPrize = 0
+      const groupedByGame = {}
 
       this.winners.forEach((item) => {
-        formattedContent += `✔️ ${item.name}, ${item.num_tickets} cupons\n`
-        formattedContent += `💰 Prêmio: ${item.premio_formatted}\n`
-        formattedContent += `\n`
-        totalPrize += parseFloat(item.premio)
+        if (!groupedByGame[item.game_name]) {
+          groupedByGame[item.game_name] = []
+        }
+        groupedByGame[item.game_name].push(item)
       })
 
-      // eslint-disable-next-line
-      formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+      Object.keys(groupedByGame).forEach((gameName) => {
+        formattedContent += `\n🟡 ${gameName}\n`
+
+        let totalPrize = 0
+
+        groupedByGame[gameName].forEach((winner) => {
+          formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
+          formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
+          formattedContent += `\n`
+          totalPrize += parseFloat(winner.premio)
+        })
+
+        // eslint-disable-next-line
+        formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+      })
 
       return formattedContent
     },
