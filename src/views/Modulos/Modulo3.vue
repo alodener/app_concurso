@@ -260,7 +260,7 @@ export default {
     listFakeWinners() {
       api
         .get(
-          `/partners/get-result2?partner=${this.partnerSelected}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+          `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
         )
         .then((response) => {
           this.winners = response.data
