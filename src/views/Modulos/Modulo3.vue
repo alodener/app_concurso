@@ -42,7 +42,7 @@
                     <option
                       v-for="item in partners"
                       :key="item.id"
-                      :value="item.id"
+                      :value="[item.id, item.name]"
                     >
                       {{ item.name }}
                     </option>
@@ -171,7 +171,9 @@ export default {
   data() {
     return {
       partners: [],
-      partnerSelected: '',
+      partnerSelected: [],
+      partnerSelectedId: null,
+      partnerSelectedName: null,
       number: '',
       premio: '',
       date: '',
@@ -197,7 +199,7 @@ export default {
     },
     formatTableContent() {
       // eslint-disable-next-line no-multi-spaces
-      let formattedContent = `🤑SuperLotogiro🤑\n`
+      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
       formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
       formattedContent += `\n`
       formattedContent += `\n🟡 ${this.winners[0].game_name}\n`
@@ -239,27 +241,19 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    // copyToClipboard() {
-    //   const contentToCopy = 'Conteúdo que deseja copiar'
-
-    //   const tempInput = document.createElement('textarea');
-    //   tempInput.value = contentToCopy
-    //   document.body.appendChild(tempInput)
-    //   tempInput.select()
-    //   document.execCommand('copy')
-    //   document.body.removeChild(tempInput)
-
-    //   console.log('Conteúdo copiado para a área de transferência:', contentToCopy)
-    // },
     listWinners() {
+      const parts = this.partnerSelected.split(',')
+
+      this.partnerSelectedId = parts[0]
+      this.partnerSelectedName = parts[1]
       api
         .get(
-          `/partners/get-result?partner=${this.partnerSelected}&number=${this.date}`,
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
           this.tableVisible = true
-          console.log(this.winners)
+          console.log(this.partnerSelected)
         })
         .catch(() => {})
     },
