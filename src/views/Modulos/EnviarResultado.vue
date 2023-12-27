@@ -59,6 +59,7 @@
                 <option value="chao_jefe_loto">Chao Jefe Loto</option>
                 <option value="chispaloto_segundo">Chispaloto Segundo</option>
                 <option value="mega_lotto">Mega Lotto</option>
+                <option value="mega_kino">Mega Kino</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
