@@ -283,6 +283,10 @@ export default {
         .catch(() => {})
     },
     listFakeWinners() {
+      const parts = this.partnerSelected.split(',')
+
+      this.partnerSelectedId = parts[0]
+      this.partnerSelectedName = parts[1]
       api
         .get(
           `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
