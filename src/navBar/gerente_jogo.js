@@ -32,6 +32,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Lista de Ganhadores',
+        icon: 'cil-browser',
+        to: '/modulo3',
+      },
+      {
+        component: 'CNavItem',
         name: 'Excluir Concusrsos',
         icon: 'cil-browser',
         to: '/ExcluirConcurso',
