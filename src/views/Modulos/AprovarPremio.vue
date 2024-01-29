@@ -105,6 +105,8 @@
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Premio</th>
                   <th scope="col" width="20%">Tipo do Jogo</th>
+                  <th scope="col" width="20%">Avulso</th>
+                  <th scope="col" width="20%">Status</th>
                   <th scope="col" width="20%">Ações</th>
                 </tr>
               </thead>
@@ -119,6 +121,7 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.premio_formatted }}</td>
                   <td>{{ item.game_name }}</td>
+                  <td>{{ item.random_game }}</td>
                   <td>
                     <CBadge
                       v-if="item.status == 1"
