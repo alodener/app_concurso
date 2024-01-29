@@ -228,17 +228,14 @@ export default {
       Object.keys(groupedByGame).forEach((gameName) => {
         formattedContent += `\n🟡 ${gameName}\n`
 
-        let totalPrize = 0
-
         groupedByGame[gameName].forEach((winner) => {
           formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
           formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
           formattedContent += `\n`
-          totalPrize += parseFloat(winner.premio)
         })
 
         // eslint-disable-next-line
-        formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+        // formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
       })
 
       return formattedContent
