@@ -198,11 +198,6 @@ export default {
         .catch(() => {})
     },
     formatTableContent() {
-      // Calcular o total geral dos prêmios do dia
-      const totalGeral = this.winners.reduce((total, winner) => {
-        return total + parseFloat(winner.premio)
-      }, 0)
-
       const totalTickets = this.winners.reduce((total, winner) => {
         return total + parseFloat(winner.num_tickets)
       }, 0)
@@ -212,7 +207,7 @@ export default {
       formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
       formattedContent += `\n`
       // eslint-disable-next-line
-      formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+      formattedContent += `PREMIAÇÕES GERAIS: ${this.winners[this.winners.length - 1].total_premios.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
       formattedContent += `\n`
       formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
       formattedContent += `\n`
