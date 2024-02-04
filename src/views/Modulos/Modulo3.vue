@@ -178,7 +178,6 @@ export default {
       premio: '',
       date: '',
       winners: [],
-      totalPremios: 0, // Inicialize como 0
       tableVisible: false,
       modalVisible: false,
       modalDisabled: false,
@@ -199,16 +198,34 @@ export default {
         .catch(() => {})
     },
     formatTableContent() {
+      const totalGeral = this.winners.reduce((total, winner) => {
+        let valorNumerico
+
+        if (typeof winner.premio === 'string') {
+          // eslint-disable-next-line
+          valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
+        } else {
+          valorNumerico = winner.premio
+        }
+
+        return total + valorNumerico
+      }, 0)
+
       const totalTickets = this.winners.reduce((total, winner) => {
         return total + parseFloat(winner.num_tickets)
       }, 0)
 
+      // eslint-disable-next-line no-multi-spaces
       let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
-      formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}\n`
-      formattedContent += `PREMIAÇÕES GERAIS: ${this.totalPremios.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`
-      formattedContent += `TOTAL DE BILHETES: ${totalTickets}\n`
-
+      formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
+      formattedContent += `\n`
+      // eslint-disable-next-line
+      formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+      formattedContent += `\n`
+      formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
+      formattedContent += `\n`
       const groupedByGame = {}
+
       this.winners.forEach((item) => {
         if (!groupedByGame[item.game_name]) {
           groupedByGame[item.game_name] = []
@@ -218,23 +235,34 @@ export default {
 
       Object.keys(groupedByGame).forEach((gameName) => {
         formattedContent += `\n🟡 ${gameName}\n`
+
         groupedByGame[gameName].forEach((winner) => {
           formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
           formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
+          formattedContent += `\n`
         })
+
+        // eslint-disable-next-line
+        // formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
       })
 
       return formattedContent
     },
     copyToClipboard() {
       const tableContent = this.formatTableContent()
+
       if (tableContent) {
         const tempTextArea = document.createElement('textarea')
         tempTextArea.value = tableContent
+
         document.body.appendChild(tempTextArea)
+
         tempTextArea.select()
+
         document.execCommand('copy')
+
         document.body.removeChild(tempTextArea)
+
         alert('Conteúdo copiado para a área de transferência!')
       } else {
         console.error('Conteúdo da tabela não encontrado.')
@@ -245,27 +273,33 @@ export default {
     },
     listWinners() {
       const parts = this.partnerSelected.split(',')
+
       this.partnerSelectedId = parts[0]
       this.partnerSelectedName = parts[1]
-      api.get(`/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`)
+      api
+        .get(
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
+        )
         .then((response) => {
           this.winners = response.data
           this.tableVisible = true
-          this.totalPremios = this.winners.reduce((total, winner) => {
-            const premio = parseFloat(winner.premio.replace(',', ''))
-            return total + premio
-          }, 0)
+          console.log(this.partnerSelected)
         })
         .catch(() => {})
     },
     listFakeWinners() {
       const parts = this.partnerSelected.split(',')
+
       this.partnerSelectedId = parts[0]
       this.partnerSelectedName = parts[1]
-      api.get(`/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`)
+      api
+        .get(
+          `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+        )
         .then((response) => {
           this.winners = response.data
           this.tableVisible = true
+          console.log(this.winners)
         })
         .catch(() => {})
     },
@@ -279,7 +313,8 @@ export default {
     },
     updateStatus() {
       this.modalDisabled = true
-      api.put(`/partners/update-status`, this.body)
+      api
+        .put(`/partners/update-status`, this.body)
         .then(() => {
           this.listWinners()
           this.modalVisible = false
@@ -292,7 +327,6 @@ export default {
   },
 }
 </script>
-
 
 <style>
 .header_align {
