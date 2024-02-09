@@ -17,13 +17,11 @@ export default [
     component: 'CNavGroup',
     name: 'Modulos',
     icon: 'cil-browser',
-    items: [
-      {
-        component: 'CNavItem',
-        name: 'Aprovar Premio',
-        icon: 'cil-browser',
-        to: '/AprovarPremio',
-      },
-    ],
+  },
+  {
+    component: 'CNavItem',
+    name: 'Aprovar Premio',
+    icon: 'cil-browser',
+    to: '/AprovarPremio',
   },
 ]

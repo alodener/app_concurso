@@ -177,7 +177,12 @@ const routes = [
         beforeEnter(_, __, next) {
           if (
             isSignedIn() &&
-            ['super_admin', 'admin', 'marketing'].includes(user.role)
+            [
+              'super_admin',
+              'admin',
+              'gerente_jogo',
+              'gestor_resultado',
+            ].includes(user.role)
           ) {
             next()
             return
