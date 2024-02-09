@@ -116,7 +116,7 @@
                     <input type="checkbox" v-model="item.checked" />
                     <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
                   </td>
-                  <th scope="row">{{ item.id }}</th>
+                  <th scope="row">{{ item.id[0] }}</th>
                   <td>{{ item.sort_date }}</td>
                   <td>{{ item.name }}</td>
                   <td>{{ item.premio_formatted }}</td>
