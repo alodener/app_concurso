@@ -60,6 +60,7 @@
                 <option value="chispaloto_segundo">Chispaloto Segundo</option>
                 <option value="mega_lotto">Mega Lotto</option>
                 <option value="mega_kino">Mega Kino</option>
+                <option value="santa_lucia_double">Santa Lucia Double</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
