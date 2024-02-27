@@ -20,6 +20,12 @@ export default [
     items: [
       {
         component: 'CNavItem',
+        name: 'Apostas Feitas',
+        icon: 'cil-browser',
+        to: '/ApostasFeitas',
+      },
+      {
+        component: 'CNavItem',
         name: 'Criar Concursos',
         icon: 'cil-browser',
         to: '/CriarConcurso',

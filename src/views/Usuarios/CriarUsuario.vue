@@ -29,6 +29,7 @@
                 aria-label="Default select example"
               >
                 <option value="">Selecione uma permissão</option>
+                <option value="socio">Sócio</option>
                 <option value="admin">Admin</option>
                 <option value="gerente_jogo">Gerente de Jogos</option>
                 <option value="gestor_resultado">Gestor de Resultados</option>

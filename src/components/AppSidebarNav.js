@@ -10,6 +10,7 @@ import {
 } from '@coreui/vue'
 
 import superAdmin from '@/navBar/super_admin'
+import socio from '@/navBar/socio'
 import admin from '@/navBar/admin'
 import gerenteJogo from '@/navBar/gerente_jogo'
 import gestorResultado from '@/navBar/gestor_resultado'
@@ -60,6 +61,9 @@ const AppSidebarNav = defineComponent({
     let permissao = []
     const user = JSON.parse(localStorage.getItem('user'))
     switch (user.role) {
+      case 'socio':
+        permissao = socio
+        break
       case 'super_admin':
         permissao = superAdmin
         break
