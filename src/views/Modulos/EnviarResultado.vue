@@ -179,12 +179,10 @@ export default {
     },
     verificarString(string) {
       string = string.replace(', ', ',')
-      console.log(string)
 
       const partes = string.replace(/\s+/g, '').split(',')
 
       for (let parte of partes) {
-        console.log(parte)
         if (!/^0\d*|^[1-9]\d*$/.test(parte.trim())) {
           return false
         }
@@ -199,7 +197,11 @@ export default {
         return false
       }
 
-      if (this.result == null || this.verificarString(this.result) == false) {
+      const veify =
+        this.category == 'loto_mania' && this.result != null
+          ? this.verificarString(this.result)
+
+      if (this.result == null || veify == false) {
         return false
       }
       if (this.partnersSelected.length == 0) {
