@@ -197,11 +197,12 @@ export default {
         return false
       }
 
-      const veify =
+      const verify =
         this.category == 'loto_mania' && this.result != null
           ? this.verificarString(this.result)
+          : /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
 
-      if (this.result == null || veify == false) {
+      if (this.result == null || verify == false) {
         return false
       }
       if (this.partnersSelected.length == 0) {
