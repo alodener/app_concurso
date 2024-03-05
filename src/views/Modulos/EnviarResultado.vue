@@ -180,6 +180,18 @@ export default {
     openModal() {
       this.modalVisible = true
     },
+    verificarString(string) {
+      string = string.replace(', ', ',')
+
+      const partes = string.replace(/\s+/g, '').split(',')
+
+      for (let parte of partes) {
+        if (!/^0\d*|^[1-9]\d*$/.test(parte.trim())) {
+          return false
+        }
+      }
+      return true
+    },
     inputsFilled() {
       if (this.number == null) {
         return false
@@ -187,9 +199,8 @@ export default {
       if (this.category == null) {
         return false
       }
-      const regex = /^(00|[1-9]\d?)(?:,\s*(00|[1-9]\d?))*$/
+      const regex = /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
       if (this.result == null || regex.test(this.result) == false) {
-        alert('kkkkkkkk')
         return false
       }
       if (this.partnersSelected.length == 0) {
