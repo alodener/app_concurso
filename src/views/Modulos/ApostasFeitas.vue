@@ -11,32 +11,28 @@
               <CForm class="row mt-2">
                 <div class="col-auto">
                   <CFormSelect
+                    v-model="banca"
                     aria-label="Default select example"
-                    v-model="partnerSelected"
                   >
                     <option value="">Selecione uma Banca</option>
-                    <option
-                      v-for="item in partners"
-                      :key="item.id"
-                      :value="item.id"
-                    >
-                      {{ item.name }}
-                    </option>
+                    <option value="LOTERIA">Loteria</option>
                   </CFormSelect>
                 </div>
                 <div class="col-auto">
                   <CFormSelect
+                    v-model="modalidade"
                     aria-label="Default select example"
-                    v-model="partnerSelected"
                   >
                     <option value="">Selecione uma modalidade</option>
-                    <option
-                      v-for="item in partners"
-                      :key="item.id"
-                      :value="item.id"
-                    >
-                      {{ item.name }}
-                    </option>
+                    <option value="1">LTB - Lotinha</option>
+                    <option value="2">LTB - Super 5</option>
+                    <option value="3">LTB - Super 6</option>
+                    <option value="4">LTB - Mania De Jogo</option>
+                    <option value="5">LTB - Dia De Alegria</option>
+                    <option value="6">LTB - Mania De Time</option>
+                    <option value="7">LTB - Duplo 6</option>
+                    <option value="8">LTB - O Milionário</option>
+                    <option value="9">LTB - CHISPALOTO</option>
                   </CFormSelect>
                 </div>
                 <div class="col-auto">
@@ -78,6 +74,9 @@
             <div class="mb-3">
               <strong>Total de usuários:</strong> {{ totalUsuarios }}
             </div>
+            <div class="mb-3">
+              <strong>Concursos:</strong> {{ data.concursos }}
+            </div>
 
             <div class="mb-3" v-if="data.length > 0">
               <CButton
@@ -94,18 +93,20 @@
               <thead>
                 <tr>
                   <th scope="col" width="10%">ID</th>
-                  <th scope="col" width="20%">Nome do Usuário</th>
+                  <th scope="col" width="20%">Usuário</th>
                   <th scope="col" width="20%">Bilhete</th>
-                  <th scope="col" width="20%">Valor Aposta</th>
-                  <th scope="col" width="20%">Data da Postagem</th>
+                  <th scope="col" width="20%">Aposta</th>
+                  <th scope="col" width="20%">Prêmio</th>
+                  <th scope="col" width="20%">Data</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in data" :key="item.id">
+                <tr v-for="item in data.info" :key="item.id">
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.nome }}</td>
-                  <td>{{ item.bilhetes }}</td>
+                  <td>{{ item.bilhete }}</td>
                   <td>R$ {{ item.valor }}</td>
+                  <td>R$ {{ item.premio }}</td>
                   <td>{{ item.criacao }}</td>
                 </tr>
               </tbody>
@@ -125,12 +126,10 @@ export default {
   name: 'ApostasFeitas',
   data() {
     return {
-      partners: [],
-      partnerSelected: '',
+      modalidade: '',
+      banca: '',
       data: [],
       tableVisible: false,
-      modalVisible: false,
-      modalDisabled: false,
       readOnly: false,
       totalBilhetes: 0,
       valorTotal: 0,
@@ -138,9 +137,6 @@ export default {
       inicio: null,
       fim: null,
     }
-  },
-  mounted() {
-    this.listPartners()
   },
   methods: {
     generatePDF() {
@@ -151,25 +147,34 @@ export default {
       doc.autoTable({ html: '#pdf-table', startY: 45 })
       doc.save('dados.pdf')
     },
-    listPartners() {
-      api
-        .get(`/partners`)
-        .then((response) => {
-          this.partners = response.data
-        })
-        .catch(() => {})
-    },
     consulta() {
+      if (this.banca == '') {
+        alert('Por favor selecione uma banca')
+        return
+      } else if (this.modalidade == '') {
+        alert('Por favor selecione uma modalide')
+        return
+      } else if (!this.inicio) {
+        alert('Por favor selecione uma data de início')
+        return
+      } else if (!this.fim) {
+        alert('Por favor selecione uma data de fim')
+        return
+      }
+
+      const params = {
+        banca: this.banca,
+        modalidade: this.modalidade,
+        inicio: this.inicio,
+        fim: this.fim,
+      }
       api
-        .get(`/apostas-feitas`)
+        .post(`/apostas-feitas/show`, params)
         .then((response) => {
-          if (response.data.success) {
+          if (response.status == 200 && response.data.success) {
             this.data = response.data.data
             this.tableVisible = true
           }
-          // this.winners = response.data
-          // this.calcularTotais()
-          // this.tableVisible = true
         })
         .catch(() => {})
     },
