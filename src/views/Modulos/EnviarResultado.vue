@@ -139,12 +139,9 @@ export default {
         .catch(() => {})
     },
     createContests() {
-      alert('ok')
       var inputsError = this.inputsFilled()
-      console.log(inputsError)
 
       if (inputsError) {
-        alert('if')
         this.loadingButton = true
         this.modalVisible = false
         this.readOnly = true
@@ -199,8 +196,13 @@ export default {
       if (this.category == null) {
         return false
       }
-      const regex = /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
-      if (this.result == null || regex.test(this.result) == false) {
+
+      const verify =
+        this.category == 'loto_mania' && this.result != null
+          ? this.verificarString(this.result)
+          : /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
+
+      if (this.result == null || verify == false) {
         return false
       }
       if (this.partnersSelected.length == 0) {
