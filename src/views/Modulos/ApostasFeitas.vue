@@ -69,7 +69,7 @@
               <strong>Total de bilhetes:</strong> {{ totalBilhetes }}
             </div>
             <div class="mb-3">
-              <strong>Valor Total:</strong> {{ valorTotal }}
+              <strong>Valor Total:</strong> R$ {{ valorTotal }}
             </div>
             <div class="mb-3">
               <strong>Total de usuários:</strong> {{ totalUsuarios }}
@@ -173,6 +173,9 @@ export default {
         .then((response) => {
           if (response.status == 200 && response.data.success) {
             this.data = response.data.data
+            this.valorTotal = response.data.data.valorTotal
+            this.totalUsuarios = response.data.data.totalUsuarios
+            this.totalBilhetes = response.data.data.totalBilhetes
             this.tableVisible = true
           }
         })
