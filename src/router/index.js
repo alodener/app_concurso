@@ -35,7 +35,10 @@ const routes = [
             /* webpackChunkName: "dashboard" */ '@/views/Usuarios/Usuarios.vue'
           ),
         beforeEnter(_, __, next) {
-          if (isSignedIn() && ['super_admin', 'admin'].includes(user.role)) {
+          if (
+            isSignedIn() &&
+            ['super_admin', 'admin', 'socio'].includes(user.role)
+          ) {
             next()
             return
           }
@@ -50,7 +53,10 @@ const routes = [
             /* webpackChunkName: "dashboard" */ '@/views/Usuarios/CriarUsuario.vue'
           ),
         beforeEnter(_, __, next) {
-          if (isSignedIn() && ['super_admin', 'admin'].includes(user.role)) {
+          if (
+            isSignedIn() &&
+            ['super_admin', 'admin', 'socio'].includes(user.role)
+          ) {
             next()
             return
           }
@@ -65,7 +71,10 @@ const routes = [
             /* webpackChunkName: "dashboard" */ '@/views/Usuarios/EditarUsuario.vue'
           ),
         beforeEnter(_, __, next) {
-          if (isSignedIn() && ['super_admin', 'admin'].includes(user.role)) {
+          if (
+            isSignedIn() &&
+            ['super_admin', 'admin', 'socio'].includes(user.role)
+          ) {
             next()
             return
           }
@@ -79,6 +88,24 @@ const routes = [
           import(/* webpackChunkName: "dashboard" */ '@/views/Logs/Logs.vue'),
         beforeEnter(_, __, next) {
           if (isSignedIn() && ['super_admin'].includes(user.role)) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
+        path: '/ApostasFeitas',
+        name: 'ApostasFeitas',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/ApostasFeitas.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            ['socio', 'super_admin', 'admin'].includes(user.role)
+          ) {
             next()
             return
           }

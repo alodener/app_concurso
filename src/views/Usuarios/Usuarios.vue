@@ -142,6 +142,8 @@ export default {
     },
     tratarRole(role) {
       switch (role) {
+        case 'socioo':
+          return 'Sócio'
         case 'super_admin':
           return 'Super Admin'
         case 'admin':
