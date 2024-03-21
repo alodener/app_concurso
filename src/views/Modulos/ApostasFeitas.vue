@@ -78,7 +78,7 @@
               <strong>Concursos:</strong> {{ data.concursos }}
             </div>
 
-            <div class="mb-3" v-if="data.length > 0">
+            <div class="mb-3" v-if="data.info.length > 0">
               <CButton
                 style="color: #fff"
                 @click="generatePDF()"
@@ -143,7 +143,7 @@ export default {
       const doc = new jsPDF()
       doc.text('Total de bilhetes: ' + this.totalBilhetes, 3, 15)
       doc.text('Total de usuários: ' + this.totalUsuarios, 3, 25)
-      doc.text('Valor total: ' + this.valorTotal, 3, 35)
+      doc.text('Valor total: R$ ' + this.valorTotal, 3, 35)
       doc.autoTable({ html: '#pdf-table', startY: 45 })
       doc.save('dados.pdf')
     },
