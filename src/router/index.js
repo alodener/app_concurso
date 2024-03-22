@@ -241,6 +241,29 @@ const routes = [
         },
       },
       {
+        path: '/GanhadoresBichao',
+        name: 'GanhadoresBichao',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/GanhadoresBichao.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            [
+              'super_admin',
+              'admin',
+              'gerente_jogo',
+              'gestor_resultado',
+            ].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
         path: '/Modulo4',
         name: 'Modulo4',
         component: () =>

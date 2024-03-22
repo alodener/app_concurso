@@ -44,6 +44,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Lista Ganhadores Bichão',
+        icon: 'cil-browser',
+        to: '/GanhadoresBichao',
+      },
+      {
+        component: 'CNavItem',
         name: 'Relatório Financeiro',
         icon: 'cil-browser',
         to: '/RelatorioFinanceiro',
