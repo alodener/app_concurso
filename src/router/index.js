@@ -218,6 +218,29 @@ const routes = [
         },
       },
       {
+        path: '/RelatorioFinanceiro',
+        name: 'RelatorioFinanceiro',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/RelatorioFinanceiro.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            [
+              'super_admin',
+              'admin',
+              'gerente_jogo',
+              'gestor_resultado',
+            ].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
         path: '/Modulo4',
         name: 'Modulo4',
         component: () =>

@@ -42,6 +42,12 @@ export default [
         icon: 'cil-browser',
         to: '/modulo3',
       },
+      {
+        component: 'CNavItem',
+        name: 'Relatório Financeiro',
+        icon: 'cil-browser',
+        to: '/RelatorioFinanceiro',
+      },
     ],
   },
   {

@@ -38,6 +38,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Relatório Financeiro',
+        icon: 'cil-browser',
+        to: '/RelatorioFinanceiro',
+      },
+      {
+        component: 'CNavItem',
         name: 'Excluir Concusrsos',
         icon: 'cil-browser',
         to: '/ExcluirConcurso',
