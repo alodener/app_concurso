@@ -293,7 +293,7 @@ export default {
       this.partnerSelectedName = parts[1]
       api
         .get(
-          `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+          `/partners/get-result2?bichao-results=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
         )
         .then((response) => {
           this.winners = response.data

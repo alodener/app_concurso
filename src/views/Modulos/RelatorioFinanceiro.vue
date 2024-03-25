@@ -33,21 +33,7 @@
           <CCardHeader>
             <div class="header_align">
               <CForm class="row mt-5">
-                <div class="col-auto">
-                  <CFormSelect
-                    aria-label="Default select example"
-                    v-model="partnerSelected"
-                  >
-                    <option value="">Selecione uma Banca</option>
-                    <option
-                      v-for="item in partners"
-                      :key="item.id"
-                      :value="[item.id, item.name]"
-                    >
-                      {{ item.name }}
-                    </option>
-                  </CFormSelect>
-                </div>
+                <div class="col-auto"></div>
                 <div class="col-auto">
                   <CFormLabel for="inputPassword2" class="visually-hidden"
                     >Password</CFormLabel
@@ -85,11 +71,12 @@
               </thead>
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
-                  <td>{{ partnerSelectedName }}</td>
+                  <td>{{ item.banca }}</td>
                   <td>{{ item.dep_pix }}</td>
                   <td>{{ item.recarga_manual }}</td>
                   <td>{{ item.pag_premios }}</td>
                   <td>{{ item.pag_bonus }}</td>
+                  <td>{{ item.valor_liquido }}</td>
                 </tr>
               </tbody>
             </table>
@@ -125,10 +112,6 @@ export default {
   name: 'AprovarPremio',
   data() {
     return {
-      partners: [],
-      partnerSelected: [],
-      partnerSelectedId: null,
-      partnerSelectedName: null,
       number: '',
       premio: '',
       date: '',
@@ -140,30 +123,13 @@ export default {
       ganhadores: '',
     }
   },
-  mounted() {
-    this.listPartners()
-  },
   methods: {
-    listPartners() {
-      api
-        .get(`/partners`)
-        .then((response) => {
-          this.partners = response.data
-        })
-        .catch(() => {})
-    },
     openModalGanhadores() {
       this.modalGanhadores = true
     },
     listWinners() {
-      const parts = this.partnerSelected.split(',')
-
-      this.partnerSelectedId = parts[0]
-      this.partnerSelectedName = parts[1]
       api
-        .get(
-          `/partners/financeiro?partner=${this.partnerSelectedId}&number=${this.date}`,
-        )
+        .get(`/partners/financeiro?number=${this.date}`)
         .then((response) => {
           this.winners = response.data
           this.tableVisible = true

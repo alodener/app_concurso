@@ -24,4 +24,10 @@ export default [
     icon: 'cil-browser',
     to: '/AprovarPremio',
   },
+  {
+    component: 'CNavItem',
+    name: 'Aprovar Premio Bichão',
+    icon: 'cil-browser',
+    to: '/AprovarPremioBichao',
+  },
 ]
