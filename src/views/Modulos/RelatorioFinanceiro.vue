@@ -134,6 +134,7 @@ export default {
       modalVisible: false,
       modalDisabled: false,
       modalGanhadores: false,
+
       ganhadores: '',
     }
   },
@@ -141,15 +142,40 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    listWinners() {
+    listWinners0() {
       api
         .get(`/partners/financeiro?number=${this.date}`)
         .then((response) => {
           this.winners = response.data
           this.tableVisible = true
-          console.log(this.partnerSelected)
         })
         .catch(() => {})
+    },
+    listWinners() {
+      /* eslint-disable */
+      api
+        .get(`/partners/financeiro?number=${this.date}`)
+        .then((response) => {
+            const lastItem = response.data[response.data.length - 1];
+            this.winners = response.data
+            
+            // Armazenar os valores em variáveis
+            const totalPix = lastItem.totalPix;
+            const totalRecargaManual = lastItem.totalRecargaManual;
+            const totalPagPremios = lastItem.totalPagPremios;
+            const totalPagBonus = lastItem.totalPagBonus;
+            const totalValorLiquido = lastItem.totalValorLiquido;
+
+            this.totalPix = totalPix;
+            this.totalRecargaManual = totalRecargaManual;
+            this.totalPagPremios = totalPagPremios;
+            this.totalPagBonus = totalPagBonus;
+            this.totalValorLiquido = totalValorLiquido;
+
+            // Tornar a tabela visível
+            this.tableVisible = true;
+        })
+        .catch(() => {});
     },
     openModal(id, status) {
       this.modalVisible = true
