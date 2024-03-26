@@ -25,7 +25,7 @@
   </CModal>
   <div>
     <CCard class="mb-5">
-      <CCardBody class="m-auto"><h4>Aprovar Premio</h4></CCardBody>
+      <CCardBody class="m-auto"><h4>Aprovar Bichão da Sorte</h4></CCardBody>
     </CCard>
     <CRow>
       <CCol>
@@ -101,27 +101,27 @@
                     </CButton>
                   </th>
                   <th scope="col" width="10%">ID</th>
-                  <th scope="col" width="10%">Data do Sorteio</th>
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Premio</th>
-                  <th scope="col" width="20%">Tipo do Jogo</th>
-                  <th scope="col" width="20%">Avulso</th>
+                  <th scope="col" width="20%">Bilhete</th>
+                  <th scope="col" width="20%">Modalidade</th>
+                  <th scope="col" width="20%">Banca</th>
                   <th scope="col" width="20%">Status</th>
                   <th scope="col" width="20%">Ações</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in winners" v-bind:key="item.id">
+                <tr v-for="item in winners" v-bind:key="item.game_id">
                   <td>
                     <input type="checkbox" v-model="item.checked" />
                     <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
                   </td>
-                  <th scope="row">{{ item.id[0] }}</th>
-                  <td>{{ item.sort_date }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.premio_formatted }}</td>
-                  <td>{{ item.game_name }}</td>
-                  <td>{{ item.random_game }}</td>
+                  <th scope="row">{{ item.game_id }}</th>
+                  <td>{{ item.client_full_name }}</td>
+                  <td>{{ item.valor_premio }}</td>
+                  <td>{{ item.game_1 }}</td>
+                  <td>{{ item.modalidade_name }}</td>
+                  <td>{{ item.banca }}</td>
                   <td>
                     <CBadge
                       v-if="item.status == 1"
@@ -145,13 +145,13 @@
                   <td class="d-flex">
                     <CButtonGroup role="group" v-if="item.status == 1">
                       <CButton
-                        @click="openModal(item.id, 3)"
+                        @click="openModal(item.game_id, 3)"
                         class="mr-2"
                         color="info"
                         >Acordo</CButton
                       >
                       <CButton
-                        @click="openModal(item.id, 2)"
+                        @click="openModal(item.game_id, 2)"
                         class="mr-2"
                         color="success"
                         >Aprovar</CButton
@@ -211,8 +211,9 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    aprovarTodos() {
+    aprovarTodos0() {
       const selectedItems = this.winners.filter((item) => item.checked)
+      console.log(selectedItems)
 
       if (selectedItems.length === 0) {
         alert('Nenhum ganhador pendente selecionado para aprovação.')
@@ -222,7 +223,7 @@ export default {
       if (window.confirm('Deseja realmente aprovar todos os ganhadores pendentes?')) {
         const approvePromises = selectedItems.map((item) =>
           // eslint-disable-next-line
-          api.put(`/partners/update-status`, { partner: this.partnerSelected, id: item.id, status: 2 })
+          api.put(`/partners/update-status-bichao`, { partner: this.partnerSelected, id: item.game_id, status: 2 })
         )
 
         Promise.all(approvePromises)
@@ -232,6 +233,33 @@ export default {
           .catch((error) => {
             console.error('Erro ao aprovar ganhadores:', error)
           })
+      }
+    },
+    aprovarTodos() {
+      const selectedItems = this.winners.filter((item) => item.checked)
+      console.log(selectedItems)
+
+      if (selectedItems.length === 0) {
+        alert('Nenhum ganhador pendente selecionado para aprovação.')
+        return
+      }
+      // eslint-disable-next-line
+      if (window.confirm('Deseja realmente aprovar todos os ganhadores pendentes?')) {
+        // Extrai os game_id para um array
+        const gameIds = selectedItems.map((item) => item.game_id)
+        /* eslint-disable */
+        // eslint-disable-next-line
+        api.put(`/partners/update-status-bichao`, {
+          partner: this.partnerSelected,
+          ids: gameIds,
+          status: 2
+        })
+        .then(() => {
+          this.listWinners()
+        })
+        .catch((error) => {
+          console.error('Erro ao aprovar ganhadores:', error)
+        })
       }
     },
     acordoParaTodos() {
@@ -245,7 +273,7 @@ export default {
       if (window.confirm('Deseja realmente entrar em acordo para todos os ganhadores pendentes?')) {
         const agreementPromises = selectedItems.map((item) =>
           // eslint-disable-next-line
-          api.put(`/partners/update-status`, { partner: this.partnerSelected, id: item.id, status: 3 })
+          api.put(`/partners/update-status-bichao`, { partner: this.partnerSelected, id: item.game_id, status: 3 })
         )
 
         Promise.all(agreementPromises)
@@ -260,7 +288,7 @@ export default {
     listWinners() {
       api
         .get(
-          `/partners/aprove-prize?partner=${this.partnerSelected}&date=${this.date}`,
+          `/partners/bichao-results?partner=${this.partnerSelected}&date=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
@@ -314,7 +342,7 @@ export default {
     updateStatus() {
       this.modalDisabled = true
       api
-        .put(`/partners/update-status`, this.body)
+        .put(`/partners/update-status-bichao`, this.body)
         .then(() => {
           this.listWinners()
           this.modalVisible = false
