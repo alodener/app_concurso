@@ -95,15 +95,7 @@
                 @click="copyToClipboard"
                 id="botaoCopiarListaGanhadores"
               >
-                Copiar Lista Ganhadores
-              </CButton>
-              <CButton
-                v-show="tableVisible"
-                class="send-button btn btn-success btn-lg"
-                color="success"
-                id="enviarAoEscritorio"
-              >
-                Enviar ao Escritório
+                Gerar PDF
               </CButton>
             </div>
           </CCardBody>
