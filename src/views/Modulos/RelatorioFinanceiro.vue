@@ -23,7 +23,7 @@
       </CButton>
     </CModalFooter>
   </CModal>
-  <div>
+  <div class="relatorio-content">
     <CCard class="mb-5">
       <CCardBody class="m-auto"><h4>Relatório Financeiro</h4></CCardBody>
     </CCard>
@@ -107,7 +107,7 @@
                 v-show="tableVisible"
                 class="copy-button btn btn-primary btn-lg"
                 color="primary"
-                @click="copyToClipboard"
+                @click="generatePDF"
                 id="botaoCopiarListaGanhadores"
               >
                 Gerar PDF
@@ -122,6 +122,9 @@
 
 <script>
 import api from '@/plugins/axios'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+
 export default {
   name: 'AprovarPremio',
   data() {
@@ -150,6 +153,41 @@ export default {
           this.tableVisible = true
         })
         .catch(() => {})
+    },
+    generatePDF() {
+      /* eslint-disable */
+
+      // Seletor do conteúdo da página
+      const contentSelector = '.relatorio-content'; // Usando uma classe
+
+      // Opções para o PDF
+      const pdfOptions = {
+        filename: 'relatorio_financeiro.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 5 },
+        jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' }
+      };
+
+      // Obtém o conteúdo da página como elementos HTML
+      const content = document.querySelectorAll(contentSelector);
+
+      // Cria um novo documento PDF
+      const pdf = new jsPDF(pdfOptions.jsPDF);
+
+      // Itera sobre os elementos do conteúdo e adiciona-os ao PDF
+      content.forEach(element => {
+        html2canvas(element, {
+          scale: pdfOptions.html2canvas.scale,
+          useCORS: true
+        }).then(canvas => {
+          const imageData = canvas.toDataURL('image/' + pdfOptions.image.type);
+          pdf.addImage(imageData, 'JPEG', 0, 0);
+          pdf.addPage();
+        });
+      });
+
+      // Salva o PDF
+      pdf.save(pdfOptions.filename);
     },
     listWinners() {
       /* eslint-disable */
