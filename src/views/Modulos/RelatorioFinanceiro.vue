@@ -76,7 +76,14 @@
                   <td>{{ item.recarga_manual }}</td>
                   <td>{{ item.pag_premios }}</td>
                   <td>{{ item.pag_bonus }}</td>
-                  <td>{{ item.valor_liquido }}</td>
+                  <td
+                    v-bind:class="{
+                      'text-success': !item.valor_liquido.includes('-'),
+                      'text-danger': item.valor_liquido.includes('-'),
+                    }"
+                  >
+                    {{ item.valor_liquido }}
+                  </td>
                 </tr>
               </tbody>
             </table>
