@@ -27,9 +27,4 @@ app.component('DocsExample', DocsExample)
 
 
 
-new Vue({
-    router,
-    store,
-    vuetify,
-    render: h => h(App)
-}).$mount('#app');
+app.use(vuetify).mount('#app')
