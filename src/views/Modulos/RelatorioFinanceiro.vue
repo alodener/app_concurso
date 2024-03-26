@@ -57,6 +57,21 @@
               </CForm>
             </div>
           </CCardHeader>
+          <CCardBody class="additional-info-card">
+            <CRow class="mb-3">
+              <CCol>
+                <CCard disabled>
+                  <CCardBody class="d-flex justify-content-between">
+                    <div>Total Pix: {{ totalPix }}</div>
+                    <div>Total Recarga Manual: {{ totalRecargaManual }}</div>
+                    <div>Total Pag Prêmios: {{ totalPagPremios }}</div>
+                    <div>Total Pag. Bonus: {{ totalPagBonus }}</div>
+                    <div>Total Valor Liquido: {{ totalValorLiquido }}</div>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+            </CRow>
+          </CCardBody>
           <CCardBody v-if="tableVisible">
             <table class="table">
               <thead>
