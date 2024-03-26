@@ -26,3 +26,9 @@ app.component('CIcon', CIcon)
 app.component('DocsExample', DocsExample)
 
 app.use(vuetify).mount('#app')
+
+new Vue({
+    router,
+    store,
+    render: h => h(App)
+}).$mount('#app');
