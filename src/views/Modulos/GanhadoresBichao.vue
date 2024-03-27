@@ -1,4 +1,7 @@
 <template>
+  <div v-if="loading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
   <CModal :visible="modalVisible">
     <CModalHeader>
       <CModalTitle>Deseja Realmente alterar o status?</CModalTitle>
@@ -68,7 +71,7 @@
                     >Consultar</CButton
                   >
                 </div>
-                <!-- <div class="col-auto">
+                <div class="col-auto">
                   <CFormInput
                     type="text"
                     id="premio"
@@ -92,7 +95,7 @@
                     class="mb-3"
                     >Adicionar Ganhadores</CButton
                   >
-                </div> -->
+                </div>
               </CForm>
             </div>
           </CCardHeader>
@@ -177,6 +180,7 @@ export default {
       premio: '',
       date: '',
       winners: [],
+      loading: false,
       tableVisible: false,
       modalVisible: false,
       modalDisabled: false,
@@ -271,13 +275,16 @@ export default {
       this.modalGanhadores = true
     },
     listWinners() {
+      /* eslint-disable */
+
+      this.loading = true;
       const parts = this.partnerSelected.split(',')
 
       this.partnerSelectedId = parts[0]
       this.partnerSelectedName = parts[1]
       api
         .get(
-          `/partners/bichao-results?partner=${this.partnerSelectedId}&number=${this.date}`,
+          `/partners/bichao-results?partner=${this.partnerSelectedId}&date=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
@@ -285,6 +292,9 @@ export default {
           console.log(this.partnerSelected)
         })
         .catch(() => {})
+        .finally(() => {
+            this.loading = false;
+        });
     },
     listFakeWinners() {
       const parts = this.partnerSelected.split(',')
@@ -293,7 +303,7 @@ export default {
       this.partnerSelectedName = parts[1]
       api
         .get(
-          `/partners/get-result2?bichao-results=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+          `/partners/get-result2-bichao?partner=${this.partnerSelectedId}&date=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
         )
         .then((response) => {
           this.winners = response.data
@@ -361,5 +371,32 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparência para criar o efeito de fade */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Z-index alto para ficar na frente de outros elementos */
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Cor e espessura da borda do spinner */
+  border-radius: 50%; /* Forma do spinner */
+  border-top: 4px solid #ffffff; /* Cor e espessura da borda superior do spinner */
+  width: 50px; /* Largura do spinner */
+  height: 50px; /* Altura do spinner */
+  animation: spin 1s linear infinite; /* Animação de rotação */
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); } /* Rotação inicial */
+  100% { transform: rotate(360deg); } /* Rotação completa */
 }
 </style>

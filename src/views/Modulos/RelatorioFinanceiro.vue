@@ -117,7 +117,7 @@
                 v-show="tableVisible"
                 class="copy-button btn btn-primary btn-lg"
                 color="primary"
-                @click="generatePDF"
+                @click="exportToPDF"
                 id="botaoCopiarListaGanhadores"
               >
                 Gerar PDF
@@ -132,8 +132,7 @@
 
 <script>
 import api from '@/plugins/axios'
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
+import html2pdf from 'html2pdf.js'
 
 export default {
   name: 'AprovarPremio',
@@ -160,67 +159,46 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    generatePDF() {
-      /* eslint-disable */
+    // generatePDF() {
+    //   // Seletor do conteúdo da página
+    //   const contentSelector = '.relatorio-content'; // Usando uma classe
 
-      // Seletor do conteúdo da página
-      const contentSelector = '.relatorio-content'; // Usando uma classe
+    //   // Opções para o PDF
+    //   const pdfOptions = {
+    //     filename: 'relatorio_financeiro.pdf',
+    //     image: { type: 'jpeg', quality: 1 },
+    //     html2canvas: { scale: 5 },
+    //     jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' }
+    //   };
 
-      // Opções para o PDF
-      const pdfOptions = {
-        filename: 'relatorio_financeiro.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 5 },
-        jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' }
-      };
+    //   // Obtém o conteúdo da página como elementos HTML
+    //   const content = document.querySelectorAll(contentSelector);
 
-      // Obtém o conteúdo da página como elementos HTML
-      const content = document.querySelectorAll(contentSelector);
+    //   // Cria um novo documento PDF
+    //   const pdf = new jsPDF(pdfOptions.jsPDF);
 
-      // Cria um novo documento PDF
-      const pdf = new jsPDF(pdfOptions.jsPDF);
+    //   // Itera sobre os elementos do conteúdo e adiciona-os ao PDF
+    //   content.forEach(element => {
+    //     html2canvas(element, {
+    //       scale: pdfOptions.html2canvas.scale,
+    //       useCORS: true
+    //     }).then(canvas => {
+    //       const imageData = canvas.toDataURL('image/' + pdfOptions.image.type);
+    //       pdf.addImage(imageData, 'JPEG', 0, 0);
+    //       pdf.addPage();
+    //     });
+    //   });
 
-      // Itera sobre os elementos do conteúdo e adiciona-os ao PDF
-      content.forEach(element => {
-        html2canvas(element, {
-          scale: pdfOptions.html2canvas.scale,
-          useCORS: true
-        }).then(canvas => {
-          const imageData = canvas.toDataURL('image/' + pdfOptions.image.type);
-          pdf.addImage(imageData, 'JPEG', 0, 0);
-          pdf.addPage();
-        });
-      });
-
-      // Salva o PDF
-      pdf.save(pdfOptions.filename);
-    },
-    // listWinners() {
-    //   /* eslint-disable */
-    //   api
-    //     .get(`/partners/financeiro?number=${this.date}`)
-    //     .then((response) => {
-    //         const lastItem = response.data[response.data.length - 1];
-    //         this.winners = response.data
-            
-    //         // Armazenar os valores em variáveis
-    //         const totalPix = lastItem.totalPix;
-    //         const totalRecargaManual = lastItem.totalRecargaManual;
-    //         const totalPagPremios = lastItem.totalPagPremios;
-    //         const totalPagBonus = lastItem.totalPagBonus;
-    //         const totalValorLiquido = lastItem.totalValorLiquido;
-
-    //         this.totalPix = totalPix;
-    //         this.totalRecargaManual = totalRecargaManual;
-    //         this.totalPagPremios = totalPagPremios;
-    //         this.totalPagBonus = totalPagBonus;
-    //         this.totalValorLiquido = totalValorLiquido;
-
-    //         // Tornar a tabela visível
-    //         this.tableVisible = true;
-    //     })
-    //     .catch(() => {});
+    //   // Salva o PDF
+    //   pdf.save(pdfOptions.filename);
     // },
+    exportToPDF() {
+      /* eslint-disable */
+      html2pdf(document.getElementsByClassName("relatorio-content"), {
+				margin: 1,
+  			filename: "i-was-html.pdf",
+			});
+    },
     listWinners() {
       /* eslint-disable */
       this.loading = true;
