@@ -1,4 +1,8 @@
 <template>
+  <div v-if="loading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
   <CModal :visible="modalVisible">
     <CModalHeader>
       <CModalTitle>Deseja Realmente alterar o status?</CModalTitle>
@@ -140,6 +144,7 @@ export default {
       date: '',
       winners: [],
       tableVisible: false,
+      loading: false,
       modalVisible: false,
       modalDisabled: false,
       modalGanhadores: false,
@@ -154,15 +159,6 @@ export default {
   methods: {
     openModalGanhadores() {
       this.modalGanhadores = true
-    },
-    listWinners0() {
-      api
-        .get(`/partners/financeiro?number=${this.date}`)
-        .then((response) => {
-          this.winners = response.data
-          this.tableVisible = true
-        })
-        .catch(() => {})
     },
     generatePDF() {
       /* eslint-disable */
@@ -199,8 +195,35 @@ export default {
       // Salva o PDF
       pdf.save(pdfOptions.filename);
     },
+    // listWinners() {
+    //   /* eslint-disable */
+    //   api
+    //     .get(`/partners/financeiro?number=${this.date}`)
+    //     .then((response) => {
+    //         const lastItem = response.data[response.data.length - 1];
+    //         this.winners = response.data
+            
+    //         // Armazenar os valores em variáveis
+    //         const totalPix = lastItem.totalPix;
+    //         const totalRecargaManual = lastItem.totalRecargaManual;
+    //         const totalPagPremios = lastItem.totalPagPremios;
+    //         const totalPagBonus = lastItem.totalPagBonus;
+    //         const totalValorLiquido = lastItem.totalValorLiquido;
+
+    //         this.totalPix = totalPix;
+    //         this.totalRecargaManual = totalRecargaManual;
+    //         this.totalPagPremios = totalPagPremios;
+    //         this.totalPagBonus = totalPagBonus;
+    //         this.totalValorLiquido = totalValorLiquido;
+
+    //         // Tornar a tabela visível
+    //         this.tableVisible = true;
+    //     })
+    //     .catch(() => {});
+    // },
     listWinners() {
       /* eslint-disable */
+      this.loading = true;
       api
         .get(`/partners/financeiro?number=${this.date}`)
         .then((response) => {
@@ -208,22 +231,19 @@ export default {
             this.winners = response.data
             
             // Armazenar os valores em variáveis
-            const totalPix = lastItem.totalPix;
-            const totalRecargaManual = lastItem.totalRecargaManual;
-            const totalPagPremios = lastItem.totalPagPremios;
-            const totalPagBonus = lastItem.totalPagBonus;
-            const totalValorLiquido = lastItem.totalValorLiquido;
-
-            this.totalPix = totalPix;
-            this.totalRecargaManual = totalRecargaManual;
-            this.totalPagPremios = totalPagPremios;
-            this.totalPagBonus = totalPagBonus;
-            this.totalValorLiquido = totalValorLiquido;
+            this.totalPix = lastItem.totalPix;
+            this.totalRecargaManual = lastItem.totalRecargaManual;
+            this.totalPagPremios = lastItem.totalPagPremios;
+            this.totalPagBonus = lastItem.totalPagBonus;
+            this.totalValorLiquido = lastItem.totalValorLiquido;
 
             // Tornar a tabela visível
             this.tableVisible = true;
         })
-        .catch(() => {});
+        .catch(() => {})
+        .finally(() => {
+            this.loading = false;
+        });
     },
     openModal(id, status) {
       this.modalVisible = true
@@ -272,4 +292,32 @@ export default {
   bottom: 20px;
   right: 20px;
 }
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparência para criar o efeito de fade */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Z-index alto para ficar na frente de outros elementos */
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Cor e espessura da borda do spinner */
+  border-radius: 50%; /* Forma do spinner */
+  border-top: 4px solid #ffffff; /* Cor e espessura da borda superior do spinner */
+  width: 50px; /* Largura do spinner */
+  height: 50px; /* Altura do spinner */
+  animation: spin 1s linear infinite; /* Animação de rotação */
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); } /* Rotação inicial */
+  100% { transform: rotate(360deg); } /* Rotação completa */
+}
+
 </style>
