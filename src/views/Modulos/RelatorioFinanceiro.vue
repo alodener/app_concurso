@@ -93,8 +93,14 @@
                   <td>{{ item.pag_bonus }}</td>
                   <td
                     v-bind:class="{
-                      'text-success': !item.valor_liquido.includes('-'),
-                      'text-danger': item.valor_liquido.includes('-'),
+                      'text-success':
+                        !item.valor_liquido.includes('-') &&
+                        item.valor_liquido !== 'R$ 0,00',
+
+                      'text-danger':
+                        item.valor_liquido.includes('-') &&
+                        item.valor_liquido !== 'R$ 0,00',
+                      'text-black': item.valor_liquido === 'R$ 0,00',
                     }"
                   >
                     {{ item.valor_liquido }}
