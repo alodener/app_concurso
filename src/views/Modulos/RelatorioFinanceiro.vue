@@ -143,7 +143,11 @@ export default {
       modalVisible: false,
       modalDisabled: false,
       modalGanhadores: false,
-
+      totalValorLiquido: '',
+      totalPagBonus: '',
+      totalPagPremios: '',
+      totalRecargaManual: '',
+      totalPix: '',
       ganhadores: '',
     }
   },
