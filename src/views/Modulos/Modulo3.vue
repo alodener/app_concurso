@@ -1,4 +1,7 @@
 <template>
+  <div v-if="loading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
   <CModal :visible="modalVisible" size="lg">
     <CModalHeader>
       <CModalTitle>Enviar ao Escritório</CModalTitle>
@@ -224,6 +227,7 @@ export default {
       tableVisible: false,
       modalVisible: false,
       modalDisabled: false,
+      loading: false,
       modalGanhadores: false,
       ganhadores: '',
       checked: '',
@@ -306,6 +310,19 @@ export default {
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
       this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
       console.log('winners2 após remoção:', this.winners2)
+      const requestData = {
+        banca_id: this.partnerSelectedId,
+        fakes: this.ganhadores,
+        premio: this.premio,
+        winners2: this.winners2,
+        sort_date: this.date,
+      };
+
+      // Enviar a solicitação para a rota Laravel
+      api.post('/partners/winners-lists', requestData) 
+          .then(response => {
+          })
+          .catch(() => {})
     },
     copyToClipboard() {
       const tableContent = this.formatTableContent()
@@ -331,6 +348,7 @@ export default {
       this.modalGanhadores = true
     },
     listWinners() {
+      this.loading = true;
       const parts = this.partnerSelected.split(',')
 
       this.partnerSelectedId = parts[0]
@@ -345,8 +363,12 @@ export default {
           this.tableVisible = true
         })
         .catch(() => {})
+        .finally(() => {
+            this.loading = false;
+        });
     },
     listFakeWinners() {
+      this.loading = true;
       const parts = this.partnerSelected.split(',')
 
       this.partnerSelectedId = parts[0]
@@ -370,15 +392,10 @@ export default {
           this.tableVisible = true
         })
         .catch(() => {})
+        .finally(() => {
+            this.loading = false;
+        });
     },
-    // openModal(id, status) {
-    //   this.modalVisible = true
-    //   this.body = {
-    //     partner: this.partnerSelected,
-    //     id,
-    //     status,
-    //   }
-    // },
     updateStatus() {
       this.modalDisabled = true
       api
@@ -430,5 +447,32 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparência para criar o efeito de fade */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Z-index alto para ficar na frente de outros elementos */
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Cor e espessura da borda do spinner */
+  border-radius: 50%; /* Forma do spinner */
+  border-top: 4px solid #ffffff; /* Cor e espessura da borda superior do spinner */
+  width: 50px; /* Largura do spinner */
+  height: 50px; /* Altura do spinner */
+  animation: spin 1s linear infinite; /* Animação de rotação */
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); } /* Rotação inicial */
+  100% { transform: rotate(360deg); } /* Rotação completa */
 }
 </style>
