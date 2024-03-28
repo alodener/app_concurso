@@ -18,6 +18,10 @@
           </thead>
           <tbody>
             <tr v-for="item in winners1" v-bind:key="item.id">
+              <td>
+                <input type="checkbox" v-model="item.checked" />
+                <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
+              </td>
               <th scope="row">{{ item.id }}</th>
               <td>{{ item.name }}</td>
               <td>{{ item.premio_formatted }}</td>
@@ -49,8 +53,11 @@
       </div>
     </CModalBody>
     <CModalFooter>
-      <CButton :disabled="modalDisabled" color="success" @click="confirmAction">
-        Confirmar
+      <CButton
+        :disabled="modalDisabled"
+        color="success"
+        @click="removeSelectedItems"
+        >Confirmar
       </CButton>
       <CButton :disabled="modalDisabled" color="secondary" @click="closeModal">
         Cancelar
@@ -219,6 +226,7 @@ export default {
       modalDisabled: false,
       modalGanhadores: false,
       ganhadores: '',
+      checked: '',
     }
   },
   mounted() {
@@ -233,63 +241,71 @@ export default {
         })
         .catch(() => {})
     },
-    // AQUI VOU PRECISAR A LÓGICA PRA VERIFICAR SE EXISTE ITENS NO WINNERS 2,
-    // formatTableContent() {
-    //   const totalGeral = this.winners.reduce((total, winner) => {
-    //     let valorNumerico
+    formatTableContent() {
+      const totalGeral = this.winners2.reduce((total, winner) => {
+        let valorNumerico
 
-    //     if (typeof winner.premio === 'string') {
-    //       // eslint-disable-next-line
-    //       valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
-    //     } else {
-    //       valorNumerico = winner.premio
-    //     }
+        if (typeof winner.premio === 'string') {
+          // eslint-disable-next-line
+          valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
+        } else {
+          valorNumerico = winner.premio
+        }
 
-    //     return total + valorNumerico
-    //   }, 0)
+        return total + valorNumerico
+      }, 0)
 
-    //   const totalTickets = this.winners.reduce((total, winner) => {
-    //     return total + parseFloat(winner.num_tickets)
-    //   }, 0)
+      const totalTickets = this.winners2.reduce((total, winner) => {
+        return total + parseFloat(winner.num_tickets)
+      }, 0)
 
-    //   // eslint-disable-next-line no-multi-spaces
-    //   let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
-    //   formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
-    //   formattedContent += `\n`
-    //   // eslint-disable-next-line
-    //   formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
-    //   formattedContent += `\n`
-    //   formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
-    //   formattedContent += `\n`
-    //   const groupedByGame = {}
+      // eslint-disable-next-line no-multi-spaces
+      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
+      formattedContent += `SORTEIOS DO DIA: ${this.winners2[0].sort_date}`
+      formattedContent += `\n`
+      // eslint-disable-next-line
+      formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+      formattedContent += `\n`
+      formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
+      formattedContent += `\n`
+      const groupedByGame = {}
 
-    //   this.winners.forEach((item) => {
-    //     if (!groupedByGame[item.game_name]) {
-    //       groupedByGame[item.game_name] = []
-    //     }
-    //     groupedByGame[item.game_name].push(item)
-    //   })
+      this.winners2.forEach((item) => {
+        if (!groupedByGame[item.game_name]) {
+          groupedByGame[item.game_name] = []
+        }
+        groupedByGame[item.game_name].push(item)
+      })
 
-    //   Object.keys(groupedByGame).forEach((gameName) => {
-    //     formattedContent += `\n🟡 ${gameName}\n`
+      Object.keys(groupedByGame).forEach((gameName) => {
+        formattedContent += `\n🟡 ${gameName}\n`
 
-    //     groupedByGame[gameName].forEach((winner) => {
-    //       formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
-    //       formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
-    //       formattedContent += `\n`
-    //     })
+        groupedByGame[gameName].forEach((winner) => {
+          formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
+          formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
+          formattedContent += `\n`
+        })
 
-    //     // eslint-disable-next-line
-    //     // formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
-    //   })
+        // eslint-disable-next-line
+        formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+      })
 
-    //   return formattedContent
-    // },
+      return formattedContent
+    },
     openModal() {
       this.modalVisible = true
     },
     closeModal() {
       this.modalVisible = false
+    },
+    removeSelectedItems() {
+      /* eslint-disable */
+      // Filtra os itens marcados na lista winners1 e armazena os IDs dos itens marcados
+      const selectedIds = this.winners1.filter((item) => item.checked).map((item) => item.id)
+
+      // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
+      this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
+      console.log('winners2 após remoção:', this.winners2)
     },
     copyToClipboard() {
       const tableContent = this.formatTableContent()
