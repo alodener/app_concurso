@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in winners" v-bind:key="item.id">
+            <tr v-for="item in winners1" v-bind:key="item.id">
               <th scope="row">{{ item.id }}</th>
               <td>{{ item.name }}</td>
               <td>{{ item.premio_formatted }}</td>
@@ -143,7 +143,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in winners" v-bind:key="item.id">
+                <tr v-for="item in winners2" v-bind:key="item.id">
                   <th scope="row">{{ item.id }}</th>
                   <td>{{ item.name }}</td>
                   <td>{{ item.premio_formatted }}</td>
@@ -212,7 +212,8 @@ export default {
       number: '',
       premio: '',
       date: '',
-      winners: [],
+      winners1: [],
+      winners2: [],
       tableVisible: false,
       modalVisible: false,
       modalDisabled: false,
@@ -232,57 +233,58 @@ export default {
         })
         .catch(() => {})
     },
-    formatTableContent() {
-      const totalGeral = this.winners.reduce((total, winner) => {
-        let valorNumerico
+    // AQUI VOU PRECISAR A LÓGICA PRA VERIFICAR SE EXISTE ITENS NO WINNERS 2,
+    // formatTableContent() {
+    //   const totalGeral = this.winners.reduce((total, winner) => {
+    //     let valorNumerico
 
-        if (typeof winner.premio === 'string') {
-          // eslint-disable-next-line
-          valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
-        } else {
-          valorNumerico = winner.premio
-        }
+    //     if (typeof winner.premio === 'string') {
+    //       // eslint-disable-next-line
+    //       valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
+    //     } else {
+    //       valorNumerico = winner.premio
+    //     }
 
-        return total + valorNumerico
-      }, 0)
+    //     return total + valorNumerico
+    //   }, 0)
 
-      const totalTickets = this.winners.reduce((total, winner) => {
-        return total + parseFloat(winner.num_tickets)
-      }, 0)
+    //   const totalTickets = this.winners.reduce((total, winner) => {
+    //     return total + parseFloat(winner.num_tickets)
+    //   }, 0)
 
-      // eslint-disable-next-line no-multi-spaces
-      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
-      formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
-      formattedContent += `\n`
-      // eslint-disable-next-line
-      formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
-      formattedContent += `\n`
-      formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
-      formattedContent += `\n`
-      const groupedByGame = {}
+    //   // eslint-disable-next-line no-multi-spaces
+    //   let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
+    //   formattedContent += `SORTEIOS DO DIA: ${this.winners[0].sort_date}`
+    //   formattedContent += `\n`
+    //   // eslint-disable-next-line
+    //   formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+    //   formattedContent += `\n`
+    //   formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
+    //   formattedContent += `\n`
+    //   const groupedByGame = {}
 
-      this.winners.forEach((item) => {
-        if (!groupedByGame[item.game_name]) {
-          groupedByGame[item.game_name] = []
-        }
-        groupedByGame[item.game_name].push(item)
-      })
+    //   this.winners.forEach((item) => {
+    //     if (!groupedByGame[item.game_name]) {
+    //       groupedByGame[item.game_name] = []
+    //     }
+    //     groupedByGame[item.game_name].push(item)
+    //   })
 
-      Object.keys(groupedByGame).forEach((gameName) => {
-        formattedContent += `\n🟡 ${gameName}\n`
+    //   Object.keys(groupedByGame).forEach((gameName) => {
+    //     formattedContent += `\n🟡 ${gameName}\n`
 
-        groupedByGame[gameName].forEach((winner) => {
-          formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
-          formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
-          formattedContent += `\n`
-        })
+    //     groupedByGame[gameName].forEach((winner) => {
+    //       formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
+    //       formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
+    //       formattedContent += `\n`
+    //     })
 
-        // eslint-disable-next-line
-        // formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
-      })
+    //     // eslint-disable-next-line
+    //     // formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+    //   })
 
-      return formattedContent
-    },
+    //   return formattedContent
+    // },
     openModal() {
       this.modalVisible = true
     },
@@ -322,9 +324,9 @@ export default {
           `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
         )
         .then((response) => {
-          this.winners = response.data
+          this.winners1 = response.data
+          this.winners2 = response.data
           this.tableVisible = true
-          console.log(this.partnerSelected)
         })
         .catch(() => {})
     },
@@ -338,9 +340,18 @@ export default {
           `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
         )
         .then((response) => {
-          this.winners = response.data
+          this.winners2 = response.data
           this.tableVisible = true
-          console.log(this.winners)
+        })
+        .catch(() => {})
+
+      api
+        .get(
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
+        )
+        .then((response) => {
+          this.winners1 = response.data
+          this.tableVisible = true
         })
         .catch(() => {})
     },
