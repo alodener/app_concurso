@@ -172,12 +172,17 @@ export default {
       };
 
       // Enviar a solicitação para a rota Laravel
-      api.post('/partners/pdf', requestData)
+      api.post('/partners/pdf', requestData, { responseType: 'blob' }) // Definir o responseType como 'blob' para receber uma resposta binária
           .then(response => {
-          // Processar a resposta conforme necessário
+            // Criar um URL temporário para o blob
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            // Abrir o PDF no navegador
+            window.open(url, '_blank');
+            // Limpar o URL temporário após abrir o PDF
+            window.URL.revokeObjectURL(url);
           })
           .catch(error => {
-          // Lidar com erros
+            // Lidar com erros
       });
     },
     listWinners() {
