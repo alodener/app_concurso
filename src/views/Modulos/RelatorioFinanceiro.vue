@@ -117,7 +117,7 @@
                 v-show="tableVisible"
                 class="copy-button btn btn-primary btn-lg"
                 color="primary"
-                @click="exportToPDF"
+                @click="gerarPDF"
                 id="botaoCopiarListaGanhadores"
               >
                 Gerar PDF
@@ -132,7 +132,6 @@
 
 <script>
 import api from '@/plugins/axios'
-import html2pdf from 'html2pdf.js'
 
 export default {
   name: 'AprovarPremio',
@@ -140,8 +139,6 @@ export default {
     return {
       number: '',
       premio: '',
-      date: '',
-      winners: [],
       tableVisible: false,
       loading: false,
       modalVisible: false,
@@ -153,51 +150,35 @@ export default {
       totalRecargaManual: '',
       totalPix: '',
       ganhadores: '',
+      date: '',
+      winners: [],
     }
   },
   methods: {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
-    // generatePDF() {
-    //   // Seletor do conteúdo da página
-    //   const contentSelector = '.relatorio-content'; // Usando uma classe
-
-    //   // Opções para o PDF
-    //   const pdfOptions = {
-    //     filename: 'relatorio_financeiro.pdf',
-    //     image: { type: 'jpeg', quality: 1 },
-    //     html2canvas: { scale: 5 },
-    //     jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' }
-    //   };
-
-    //   // Obtém o conteúdo da página como elementos HTML
-    //   const content = document.querySelectorAll(contentSelector);
-
-    //   // Cria um novo documento PDF
-    //   const pdf = new jsPDF(pdfOptions.jsPDF);
-
-    //   // Itera sobre os elementos do conteúdo e adiciona-os ao PDF
-    //   content.forEach(element => {
-    //     html2canvas(element, {
-    //       scale: pdfOptions.html2canvas.scale,
-    //       useCORS: true
-    //     }).then(canvas => {
-    //       const imageData = canvas.toDataURL('image/' + pdfOptions.image.type);
-    //       pdf.addImage(imageData, 'JPEG', 0, 0);
-    //       pdf.addPage();
-    //     });
-    //   });
-
-    //   // Salva o PDF
-    //   pdf.save(pdfOptions.filename);
-    // },
-    exportToPDF() {
+    gerarPDF() {
       /* eslint-disable */
-      html2pdf(document.getElementsByClassName("relatorio-content"), {
-				margin: 1,
-  			filename: "i-was-html.pdf",
-			});
+      const requestData = {
+        totalValorLiquido: this.totalValorLiquido,
+        totalPagBonus: this.totalPagBonus,
+        totalPagPremios: this.totalPagPremios,
+        totalRecargaManual: this.totalRecargaManual,
+        totalPix: this.totalPix,
+        ganhadores: this.ganhadores,
+        date: this.date,
+        winners: this.winners
+      };
+
+      // Enviar a solicitação para a rota Laravel
+      api.post('/partners/pdf', requestData)
+          .then(response => {
+          // Processar a resposta conforme necessário
+          })
+          .catch(error => {
+          // Lidar com erros
+      });
     },
     listWinners() {
       /* eslint-disable */
