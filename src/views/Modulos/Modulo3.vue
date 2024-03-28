@@ -1,19 +1,53 @@
 <template>
-  <CModal :visible="modalVisible">
+  <CModal :visible="modalVisible" size="lg">
     <CModalHeader>
-      <CModalTitle>Deseja Realmente alterar o status?</CModalTitle>
+      <CModalTitle>Enviar ao Escritório</CModalTitle>
     </CModalHeader>
-    <CModalFooter>
-      <CButton :disabled="modalDisabled" color="success" @click="updateStatus()"
-        >Confirmar</CButton
-      >
-    </CModalFooter>
-  </CModal>
-
-  <CModal :visible="modalGanhadores">
-    <CModalHeader>
-      <CModalTitle>Adicionar Valor e Ganhadores</CModalTitle>
-    </CModalHeader>
+    <CModalBody>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" width="10%">ID</th>
+              <th scope="col" width="20%">Nome do Usuário</th>
+              <th scope="col" width="20%">Prêmio</th>
+              <th scope="col" width="20%">Bilhetes</th>
+              <th scope="col" width="20%">Modalidade</th>
+              <th scope="col" width="20%">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in winners" v-bind:key="item.id">
+              <th scope="row">{{ item.id }}</th>
+              <td>{{ item.name }}</td>
+              <td>{{ item.premio_formatted }}</td>
+              <td>{{ item.num_tickets }}</td>
+              <td>{{ item.game_name }}</td>
+              <td>
+                <CBadge
+                  v-if="item.status == 1"
+                  color="warning"
+                  shape="rounded-pill"
+                  >Pendente</CBadge
+                >
+                <CBadge
+                  v-if="item.status == 2"
+                  color="success"
+                  shape="rounded-pill"
+                  >Aprovado</CBadge
+                >
+                <CBadge
+                  v-if="item.status == 3"
+                  color="info"
+                  shape="rounded-pill"
+                  >Acordo
+                </CBadge>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </CModalBody>
     <CModalFooter>
       <CButton :disabled="modalDisabled" color="success" @click="confirmAction">
         Confirmar
@@ -152,6 +186,7 @@
                 v-show="tableVisible"
                 class="send-button btn btn-success btn-lg"
                 color="success"
+                @click="openModal"
                 id="enviarAoEscritorio"
               >
                 Enviar ao Escritório
@@ -248,6 +283,12 @@ export default {
 
       return formattedContent
     },
+    openModal() {
+      this.modalVisible = true
+    },
+    closeModal() {
+      this.modalVisible = false
+    },
     copyToClipboard() {
       const tableContent = this.formatTableContent()
 
@@ -303,14 +344,14 @@ export default {
         })
         .catch(() => {})
     },
-    openModal(id, status) {
-      this.modalVisible = true
-      this.body = {
-        partner: this.partnerSelected,
-        id,
-        status,
-      }
-    },
+    // openModal(id, status) {
+    //   this.modalVisible = true
+    //   this.body = {
+    //     partner: this.partnerSelected,
+    //     id,
+    //     status,
+    //   }
+    // },
     updateStatus() {
       this.modalDisabled = true
       api
