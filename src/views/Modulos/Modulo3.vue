@@ -246,11 +246,12 @@ export default {
         .catch(() => {})
     },
     formatTableContent() {
+      /* eslint-disable */
+
       const totalGeral = this.winners2.reduce((total, winner) => {
         let valorNumerico
 
         if (typeof winner.premio === 'string') {
-          // eslint-disable-next-line
           valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
         } else {
           valorNumerico = winner.premio
@@ -263,35 +264,42 @@ export default {
         return total + parseFloat(winner.num_tickets)
       }, 0)
 
-      // eslint-disable-next-line no-multi-spaces
-      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
-      formattedContent += `SORTEIOS DO DIA: ${this.winners2[0].sort_date}`
-      formattedContent += `\n`
-      // eslint-disable-next-line
-      formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
-      formattedContent += `\n`
-      formattedContent += `TOTAL DE BILHETES: ${totalTickets}`
-      formattedContent += `\n`
+      // Agrupar os ganhadores pelo nome do jogo
       const groupedByGame = {}
-
-      this.winners2.forEach((item) => {
-        if (!groupedByGame[item.game_name]) {
-          groupedByGame[item.game_name] = []
+      this.winners2.forEach((winner) => {
+        if (!groupedByGame[winner.game_name]) {
+          groupedByGame[winner.game_name] = []
         }
-        groupedByGame[item.game_name].push(item)
+        groupedByGame[winner.game_name].push(winner)
       })
+
+      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
+      formattedContent += `SORTEIOS DO DIA: ${this.winners2[0].sort_date}\n`
+      formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`
+      formattedContent += `TOTAL DE BILHETES: ${totalTickets}\n`
 
       Object.keys(groupedByGame).forEach((gameName) => {
         formattedContent += `\n🟡 ${gameName}\n`
+
+        let totalPrizeByGame = 0; // Inicializar totalPrizeByGame para cada grupo de ganhadores
 
         groupedByGame[gameName].forEach((winner) => {
           formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
           formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
           formattedContent += `\n`
+
+          let valorNumerico
+
+          if (typeof winner.premio === 'string') {
+            valorNumerico = parseFloat(winner.premio.replace(/\./g, '').replace(',', '.'))
+          } else {
+            valorNumerico = winner.premio
+          }
+
+          totalPrizeByGame += valorNumerico;
         })
 
-        // eslint-disable-next-line
-        formattedContent += `\nTotal de Prêmios 💰 ${totalPrize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+        formattedContent += `\nTotal de Prêmios 💰 ${totalPrizeByGame.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
       })
 
       return formattedContent
