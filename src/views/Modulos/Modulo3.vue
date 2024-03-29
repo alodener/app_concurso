@@ -309,7 +309,6 @@ export default {
 
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
       this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
-      console.log('winners2 após remoção:', this.winners2)
       const requestData = {
         banca_id: this.partnerSelectedId,
         fakes: this.ganhadores,
@@ -323,6 +322,11 @@ export default {
           .then(response => {
           })
           .catch(() => {})
+          .finally(() => {
+            this.modalVisible = false
+            alert('Lista enviada ao escritório com sucesso')
+      });
+
     },
     copyToClipboard() {
       const tableContent = this.formatTableContent()
@@ -373,15 +377,6 @@ export default {
 
       this.partnerSelectedId = parts[0]
       this.partnerSelectedName = parts[1]
-      api
-        .get(
-          `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
-        )
-        .then((response) => {
-          this.winners2 = response.data
-          this.tableVisible = true
-        })
-        .catch(() => {})
 
       api
         .get(
@@ -389,6 +384,16 @@ export default {
         )
         .then((response) => {
           this.winners1 = response.data
+          this.tableVisible = true
+        })
+        .catch(() => {})
+
+      api
+        .get(
+          `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+        )
+        .then((response) => {
+          this.winners2 = response.data
           this.tableVisible = true
         })
         .catch(() => {})
