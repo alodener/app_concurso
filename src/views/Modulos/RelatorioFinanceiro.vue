@@ -178,8 +178,10 @@ export default {
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             // Abrir o PDF no navegador
             window.open(url, '_blank');
-            // Limpar o URL temporário após abrir o PDF
-            window.URL.revokeObjectURL(url);
+            // Limpar o URL temporário após 10 minutos
+            setTimeout(() => {
+              window.URL.revokeObjectURL(url);
+            }, 10 * 60 * 1000); // 10 minutos em milissegundos
           })
           .catch(error => {
             // Lidar com erros
