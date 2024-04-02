@@ -68,6 +68,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Enviado ao Escritório',
+        icon: 'cil-browser',
+        to: '/ListaGanhadoresEscritorio',
+      },
+      {
+        component: 'CNavItem',
         name: 'Lista Ganhadores Bichão',
         icon: 'cil-browser',
         to: '/GanhadoresBichao',

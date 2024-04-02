@@ -201,6 +201,32 @@ export default {
         .catch(() => {})
     },
     formatTableContent() {
+      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
+      formattedContent += `SORTEIOS DO DIA: ${this.date}\n`
+
+      const groupedByGame = {}
+
+      this.winners.forEach((item) => {
+        if (!groupedByGame[item.banca]) {
+          groupedByGame[item.banca] = []
+        }
+        groupedByGame[item.banca].push(item)
+      })
+
+      Object.keys(groupedByGame).forEach((banca) => {
+        formattedContent += `\n🟡 ${banca}\n`
+
+        groupedByGame[banca].forEach((winner) => {
+          formattedContent += `✔️ ${winner.client_full_name}\n`
+          formattedContent += `💰 Prêmio: ${winner.valor_premio}\n`
+          formattedContent += `🎫: ${winner.game_1}\n`
+          formattedContent += `🎰: ${winner.modalidade_name}\n\n`
+        })
+      })
+
+      return formattedContent
+    },
+    formatTableContent2() {
       const totalGeral = this.winners.reduce((total, winner) => {
         let valorNumerico
 

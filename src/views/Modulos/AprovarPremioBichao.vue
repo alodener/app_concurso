@@ -1,4 +1,7 @@
 <template>
+  <div v-if="loading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
   <CModal :visible="modalVisible">
     <CModalHeader>
       <CModalTitle>Deseja Realmente alterar o status?</CModalTitle>
@@ -183,6 +186,7 @@ export default {
       partnerSelected: '',
       number: '',
       premio: '',
+      loading: false,
       winners: [],
       checked: '',
       date: '',
@@ -236,6 +240,7 @@ export default {
       }
     },
     aprovarTodos() {
+      this.loading = true
       const selectedItems = this.winners.filter((item) => item.checked)
       console.log(selectedItems)
 
@@ -260,6 +265,9 @@ export default {
         .catch((error) => {
           console.error('Erro ao aprovar ganhadores:', error)
         })
+        .finally(() => {
+            this.loading = false
+        });
       }
     },
     acordoParaTodos() {
@@ -342,7 +350,11 @@ export default {
     updateStatus() {
       this.modalDisabled = true
       api
-        .put(`/partners/update-status-bichao`, this.body)
+        .put(`/partners/update-status-bichao`, {
+          partner: this.partnerSelected,
+          ids: [this.body.id], // Enviar o ID como uma lista
+          status: this.body.status
+        })
         .then(() => {
           this.listWinners()
           this.modalVisible = false

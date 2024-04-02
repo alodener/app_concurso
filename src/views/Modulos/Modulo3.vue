@@ -201,6 +201,15 @@
               >
                 Enviar ao Escritório
               </CButton>
+              <CButton
+                v-show="tableVisible"
+                class="send-button btn btn-success btn-lg"
+                color="danger"
+                @click="openModal"
+                id="enviarAoEscritorio"
+              >
+                Remover Itens
+              </CButton>
             </div>
           </CCardBody>
         </CCard>
