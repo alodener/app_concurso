@@ -36,9 +36,22 @@
         <CCard disabled>
           <CCardHeader>
             <div class="header_align">
-              <CForm class="row mt-5">
-                <div class="col-auto"></div>
-                <div class="col-auto">
+              <CForm
+                class="row mt-5 d-flex justify-content-between align-items-center"
+              >
+                <div class="col-auto mb-3">
+                  <p>Selecione a(s) bancas</p>
+                  <v-select
+                    :disabled="readOnly"
+                    v-model="partnerSelected"
+                    :items="partners"
+                    item-title="name"
+                    item-value="id"
+                    chips
+                    multiple
+                  ></v-select>
+                </div>
+                <div class="col-auto mb-3">
                   <CFormLabel for="inputPassword2" class="visually-hidden"
                     >Password</CFormLabel
                   >
@@ -49,14 +62,15 @@
                     aria-label="First name"
                   />
                 </div>
-                <div class="col-auto">
+                <div class="col-auto d-flex align-items-center">
                   <CButton
                     type="submit"
                     @click="listWinners()"
                     color="success"
-                    class="mb-3"
-                    >Consultar</CButton
+                    class="same-height-button"
                   >
+                    Consultar
+                  </CButton>
                 </div>
               </CForm>
             </div>
@@ -137,6 +151,10 @@ export default {
   name: 'AprovarPremio',
   data() {
     return {
+      partners: [],
+      partnerSelected: [],
+      partnerSelectedId: [],
+      partnerSelectedName: null,
       number: '',
       premio: '',
       tableVisible: false,
@@ -154,7 +172,18 @@ export default {
       winners: [],
     }
   },
+  mounted() {
+    this.listPartners()
+  },
   methods: {
+    listPartners() {
+      api
+        .get(`/partners`)
+        .then((response) => {
+          this.partners = response.data
+        })
+        .catch(() => {})
+    },
     openModalGanhadores() {
       this.modalGanhadores = true
     },
@@ -191,7 +220,7 @@ export default {
       /* eslint-disable */
       this.loading = true;
       api
-        .get(`/partners/financeiro?number=${this.date}`)
+        .get(`/partners/financeiro?number=${this.date}&ids=${this.partnerSelected}`)
         .then((response) => {
             const lastItem = response.data[response.data.length - 1];
             this.winners = response.data

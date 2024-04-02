@@ -176,19 +176,6 @@ export default {
           })
       }
     },
-    // confirmDelete(id, partnerSelected) {
-    //   if (window.confirm('Deseja realmente excluir este item?')) {
-    //     api
-    //       // eslint-disable-next-line
-    //       .delete(`/partners/delete-competition?id=${id}&partner=${partnerSelected}`)
-    //       .then(() => {
-    //         this.listCompetitions()
-    //       })
-    //       .catch((error) => {
-    //         console.error('Erro ao excluir item:', error)
-    //       })
-    //   }
-    // },
     listCompetitions() {
       const partnersString = this.partnersSelected.join(',')
 
