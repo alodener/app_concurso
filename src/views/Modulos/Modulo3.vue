@@ -11,6 +11,7 @@
         <table class="table">
           <thead>
             <tr>
+              <th scope="col" width="10%"></th>
               <th scope="col" width="10%">ID</th>
               <th scope="col" width="20%">Nome do Usuário</th>
               <th scope="col" width="20%">Prêmio</th>
@@ -196,7 +197,7 @@
                 v-show="tableVisible"
                 class="send-button btn btn-success btn-lg"
                 color="success"
-                @click="openModal"
+                @click="removeSelectedItems"
                 id="enviarAoEscritorio"
               >
                 Enviar ao Escritório
@@ -206,7 +207,79 @@
                 class="send-button btn btn-success btn-lg"
                 color="danger"
                 @click="openModal"
+                id="removerItens"
+              >
+                Remover Itens
+              </CButton>
+            </div>
+          </CCardBody>
+          <CCardBody v-if="tableVisible2">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" width="10%">ID</th>
+                  <th scope="col" width="20%">Nome do Usuário</th>
+                  <th scope="col" width="20%">Prêmio</th>
+                  <th scope="col" width="20%">Bilhetes</th>
+                  <th scope="col" width="20%">Modalidade</th>
+                  <th scope="col" width="20%">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in winners2" v-bind:key="item.id">
+                  <th scope="row">{{ item.id }}</th>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.premio_formatted }}</td>
+                  <td>{{ item.num_tickets }}</td>
+                  <td>{{ item.game_name }}</td>
+                  <td>
+                    <CBadge
+                      v-if="item.status == 1"
+                      color="warning"
+                      shape="rounded-pill"
+                      >Pendente</CBadge
+                    >
+                    <CBadge
+                      v-if="item.status == 2"
+                      color="success"
+                      shape="rounded-pill"
+                      >Aprovado</CBadge
+                    >
+                    <CBadge
+                      v-if="item.status == 3"
+                      color="info"
+                      shape="rounded-pill"
+                      >Acordo</CBadge
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="button-container fixed-buttons">
+              <CButton
+                v-show="tableVisible2"
+                class="copy-button btn btn-primary btn-lg"
+                color="primary"
+                @click="copyToClipboard"
+                id="botaoCopiarListaGanhadores"
+              >
+                Copiar Lista Ganhadores
+              </CButton>
+              <CButton
+                v-show="tableVisible2"
+                class="send-button btn btn-success btn-lg"
+                color="success"
+                @click="removeSelectedItems2"
                 id="enviarAoEscritorio"
+              >
+                Enviar ao Escritório
+              </CButton>
+              <CButton
+                v-show="tableVisible2"
+                class="send-button btn btn-success btn-lg"
+                color="danger"
+                @click="openModal"
+                id="removerItens"
               >
                 Remover Itens
               </CButton>
@@ -234,6 +307,7 @@ export default {
       winners1: [],
       winners2: [],
       tableVisible: false,
+      tableVisible2: false,
       modalVisible: false,
       modalDisabled: false,
       loading: false,
@@ -320,12 +394,21 @@ export default {
       this.modalVisible = false
     },
     removeSelectedItems() {
+      this.tableVisible = false
       /* eslint-disable */
       // Filtra os itens marcados na lista winners1 e armazena os IDs dos itens marcados
       const selectedIds = this.winners1.filter((item) => item.checked).map((item) => item.id)
 
+      this.winners2 = this.winners1
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
       this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
+      console.log(this.winners2)
+
+      this.modalVisible = false
+      this.tableVisible2 = true
+
+    },
+    removeSelectedItems2() {
       const requestData = {
         banca_id: this.partnerSelectedId,
         fakes: this.ganhadores,
@@ -374,6 +457,7 @@ export default {
 
       this.partnerSelectedId = parts[0]
       this.partnerSelectedName = parts[1]
+      this.tableVisible2 = false
       api
         .get(
           `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
@@ -389,6 +473,7 @@ export default {
         });
     },
     listFakeWinners() {
+      this.tableVisible2 = false
       this.loading = true;
       const parts = this.partnerSelected.split(',')
 
