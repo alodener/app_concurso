@@ -216,21 +216,60 @@ export default {
             // Lidar com erros
       });
     },
+    // listWinners() {
+    //   /* eslint-disable */
+    //   this.loading = true;
+    //   api
+    //     .get(`/partners/financeiro?number=${this.date}&ids=${this.partnerSelected}`)
+    //     .then((response) => {
+    //         const lastItem = response.data[response.data.length - 1];
+    //         this.winners = response.data
+            
+    //         // Armazenar os valores em variáveis
+    //         this.totalPix = lastItem.totalPix;
+    //         this.totalRecargaManual = lastItem.totalRecargaManual;
+    //         this.totalPagPremios = lastItem.totalPagPremios;
+    //         this.totalPagBonus = lastItem.totalPagBonus;
+    //         this.totalValorLiquido = lastItem.totalValorLiquido;
+
+    //         // Tornar a tabela visível
+    //         this.tableVisible = true;
+    //     })
+    //     .catch(() => {})
+    //     .finally(() => {
+    //         this.loading = false;
+    //     });
+    // },
     listWinners() {
-      /* eslint-disable */
-      this.loading = true;
-      api
+    /* eslint-disable */
+    this.loading = true;
+    api
         .get(`/partners/financeiro?number=${this.date}&ids=${this.partnerSelected}`)
         .then((response) => {
-            const lastItem = response.data[response.data.length - 1];
-            this.winners = response.data
-            
-            // Armazenar os valores em variáveis
-            this.totalPix = lastItem.totalPix;
-            this.totalRecargaManual = lastItem.totalRecargaManual;
-            this.totalPagPremios = lastItem.totalPagPremios;
-            this.totalPagBonus = lastItem.totalPagBonus;
-            this.totalValorLiquido = lastItem.totalValorLiquido;
+            const data = response.data;
+            this.winners = data;
+
+            let totalPix = 0;
+            let totalRecargaManual = 0;
+            let totalPagPremios = 0;
+            let totalPagBonus = 0;
+            let totalValorLiquido = 0;
+
+            // Iterar sobre os dados e acumular os valores
+            data.forEach(item => {
+                totalPix += parseFloat(item.dep_pix2);
+                totalRecargaManual += parseFloat(item.recarga_manual2);
+                totalPagPremios += parseFloat(item.pag_premios2);
+                totalPagBonus += parseFloat(item.pag_bonus2);
+                totalValorLiquido += parseFloat(item.valor_liquido2);
+            });
+
+            // Atribuir os totais formatados às variáveis
+            this.totalPix = 'R$ ' + totalPix.toFixed(2).replace('.', ',');
+            this.totalRecargaManual = 'R$ ' + totalRecargaManual.toFixed(2).replace('.', ',');
+            this.totalPagPremios = 'R$ ' + totalPagPremios.toFixed(2).replace('.', ',');
+            this.totalPagBonus = 'R$ ' + totalPagBonus.toFixed(2).replace('.', ',');
+            this.totalValorLiquido = 'R$ ' + totalValorLiquido.toFixed(2).replace('.', ',');
 
             // Tornar a tabela visível
             this.tableVisible = true;
@@ -239,7 +278,7 @@ export default {
         .finally(() => {
             this.loading = false;
         });
-    },
+},
     openModal(id, status) {
       this.modalVisible = true
       this.body = {
