@@ -302,7 +302,7 @@ export default {
       partnerSelectedId: null,
       partnerSelectedName: null,
       number: '',
-      premio: '',
+      premio: 0,
       date: '',
       winners1: [],
       winners2: [],
@@ -312,7 +312,7 @@ export default {
       modalDisabled: false,
       loading: false,
       modalGanhadores: false,
-      ganhadores: '',
+      ganhadores: 0,
       checked: '',
     }
   },

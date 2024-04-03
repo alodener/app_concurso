@@ -121,10 +121,13 @@
                   <td>{{ item.modalidade_name }}</td>
                   <td>{{ item.banca }}</td>
                   <td>
-                    <CBadge color="warning" shape="rounded-pill"
+                    <CBadge
+                      v-if="item.status == 1"
+                      color="warning"
+                      shape="rounded-pill"
                       >Pendente
                     </CBadge>
-                    <!-- <CBadge
+                    <CBadge
                       v-if="item.status == 2"
                       color="success"
                       shape="rounded-pill"
@@ -135,7 +138,7 @@
                       color="info"
                       shape="rounded-pill"
                       >Acordo</CBadge
-                    > -->
+                    >
                   </td>
                 </tr>
               </tbody>
