@@ -158,6 +158,7 @@ export default {
     },
     formatTableContent2(winners, partnerName) {
     const totalGeral = winners.reduce((total, winner) => {
+        console.log(winner.premio)
         let valorNumerico = parseFloat(winner.premio.replace(',', '.'));
 
         return total + valorNumerico;

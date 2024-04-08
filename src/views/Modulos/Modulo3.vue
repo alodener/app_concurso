@@ -394,19 +394,19 @@ export default {
       this.modalVisible = false
     },
     removeSelectedItems() {
-      this.tableVisible = false
-      /* eslint-disable */
+      this.tableVisible = false;
+
       // Filtra os itens marcados na lista winners1 e armazena os IDs dos itens marcados
-      const selectedIds = this.winners1.filter((item) => item.checked).map((item) => item.id)
+      const selectedIds = this.winners1.filter((item) => item.checked).map((item) => item.id);
 
-      this.winners2 = this.winners1
+      // Remove os itens correspondentes da lista winners1 com base nos IDs selecionados
+      this.winners1 = this.winners1.filter((item) => !selectedIds.includes(item.id));
+
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
-      this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
-      console.log(this.winners2)
+      this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id));
 
-      this.modalVisible = false
-      this.tableVisible2 = true
-
+      this.modalVisible = false;
+      this.tableVisible2 = true;
     },
     removeSelectedItems2() {
       const requestData = {
@@ -416,7 +416,6 @@ export default {
         winners2: this.winners2,
         sort_date: this.date,
       };
-
       // Enviar a solicitação para a rota Laravel
       api.post('/partners/winners-lists', requestData) 
           .then(response => {
