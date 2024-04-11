@@ -24,6 +24,12 @@ export default [
         icon: 'cil-browser',
         to: '/modulo3',
       },
+      {
+        component: 'CNavItem',
+        name: 'Bichão | Lista Ganhadores',
+        icon: 'cil-browser',
+        to: '/GanhadoresBichao',
+      },
     ],
   },
 ]

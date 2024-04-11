@@ -32,24 +32,6 @@ export default [
       },
       {
         component: 'CNavItem',
-        name: 'Lista de Ganhadores',
-        icon: 'cil-browser',
-        to: '/modulo3',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Relatório Financeiro',
-        icon: 'cil-browser',
-        to: '/RelatorioFinanceiro',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Lista Ganhadores Bichão',
-        icon: 'cil-browser',
-        to: '/GanhadoresBichao',
-      },
-      {
-        component: 'CNavItem',
         name: 'Excluir Concusrsos',
         icon: 'cil-browser',
         to: '/ExcluirConcurso',
@@ -59,6 +41,18 @@ export default [
         name: 'Sobrepor Resultados',
         icon: 'cil-browser',
         to: '/Modulo4',
+      },
+      {
+        component: 'CNavItem',
+        name: 'Lista de Ganhadores',
+        icon: 'cil-browser',
+        to: '/modulo3',
+      },
+      {
+        component: 'CNavItem',
+        name: 'Lista Ganhadores Bichão',
+        icon: 'cil-browser',
+        to: '/GanhadoresBichao',
       },
     ],
   },

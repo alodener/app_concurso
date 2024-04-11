@@ -30,4 +30,10 @@ export default [
     icon: 'cil-browser',
     to: '/AprovarPremioBichao',
   },
+  {
+    component: 'CNavItem',
+    name: 'Todos | Fluxo de Caixa',
+    icon: 'cil-browser',
+    to: '/RelatorioFinanceiro',
+  },
 ]
