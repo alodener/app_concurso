@@ -313,7 +313,7 @@ export default {
       this.partnerSelectedName = parts[1]
       api
         .get(
-          `/partners/bichao-results?partner=${this.partnerSelectedId}&date=${this.date}`,
+          `/partners/bichao-results2?partner=${this.partnerSelectedId}&date=${this.date}`,
         )
         .then((response) => {
           this.winners = response.data
