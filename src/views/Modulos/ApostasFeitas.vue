@@ -98,6 +98,9 @@
                   <th scope="col" width="20%">Aposta</th>
                   <th scope="col" width="20%">Prêmio</th>
                   <th scope="col" width="20%">Data</th>
+                  <th scope="col" width="20%">Usuário ID</th>
+                  <th scope="col" width="20%">Concurso</th>
+                  <th scope="col" width="20%">Modalidade</th>
                 </tr>
               </thead>
               <tbody>
@@ -108,6 +111,9 @@
                   <td>R$ {{ item.valor }}</td>
                   <td>R$ {{ item.premio }}</td>
                   <td>{{ item.criacao }}</td>
+                  <td>{{ item.usuario_id }}</td>
+                  <td>{{ item.concurso }}</td>
+                  <td>{{ item.jogo }}</td>
                 </tr>
               </tbody>
             </table>
