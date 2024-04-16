@@ -60,12 +60,39 @@
                     class="mb-3 mr-2"
                     >Consultar</CButton
                   >
+                  <CButton
+                    v-if="tableVisible"
+                    style="color: #fff"
+                    @click="generatePDF()"
+                    class="mb-3 mr-2"
+                    color="primary"
+                  >
+                    Gerar PDF
+                  </CButton>
                 </div>
               </CForm>
             </div>
           </CCardHeader>
+          <CCardBody class="additional-info-card">
+            <CRow class="mb-3">
+              <CCol>
+                <CCard disabled>
+                  <CCardBody
+                    v-if="tableVisible"
+                    class="d-flex justify-content-between"
+                  >
+                    <div>Total de bilhetes: {{ totalBilhetes }}</div>
+                    <div>Valor Total: {{ valorTotal }}</div>
+                    <div>Total de usuários: {{ totalUsuarios }}</div>
+                    <div>Total Pag. Bonus: {{ totalPagBonus }}</div>
+                    <div>Total Valor Liquido: {{ totalValorLiquido }}</div>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+            </CRow>
+          </CCardBody>
           <CCardBody v-if="tableVisible">
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <strong>Total de bilhetes:</strong> {{ totalBilhetes }}
             </div>
             <div class="mb-3">
@@ -76,18 +103,11 @@
             </div>
             <div class="mb-3">
               <strong>Concursos:</strong> {{ data.concursos }}
-            </div>
+            </div> -->
 
-            <div class="mb-3" v-if="data.info.length > 0">
-              <CButton
-                style="color: #fff"
-                @click="generatePDF()"
-                class="mr-2"
-                color="primary"
-              >
-                Gerar PDF
-              </CButton>
-            </div>
+            <!-- <div class="mb-3" v-if="data.info.length > 0">
+              
+            </div> -->
 
             <table class="table" id="pdf-table">
               <thead>
