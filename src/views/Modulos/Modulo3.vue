@@ -388,6 +388,7 @@ export default {
       return formattedContent
     },
     openModal() {
+      this.modalVisible = false
       this.modalVisible = true
     },
     closeModal() {

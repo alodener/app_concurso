@@ -109,7 +109,7 @@
                   <th scope="col" width="20%">Bilhetes</th>
                   <th scope="col" width="20%">Modalidade</th>
                   <th scope="col" width="20%">Banca</th>
-                  <th scope="col" width="20%">Ações</th>
+                  <th scope="col" width="20%">Status</th>
                 </tr>
               </thead>
               <tbody>
