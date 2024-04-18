@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in winners2" v-bind:key="item.id">
+            <tr v-for="item in winners1" v-bind:key="item.id">
               <td>
                 <input type="checkbox" v-model="item.checked" />
                 <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
@@ -388,11 +388,24 @@ export default {
       return formattedContent
     },
     openModal() {
+      this.loading = true;
+
+      this.winners1 = [],
+
+      api
+        .get(
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
+        )
+        .then((response) => {
+          this.winners1 = response.data
+        })
+        .catch(() => {})
+        .finally(() => {
+            this.loading = false;
+            this.modalVisible = true
+        });
       this.winners1 = this.winners2
 
-      console.log('antes de clicar: ' +this.modalVisible)
-      this.modalVisible = true
-      console.log('depois de clicar: ' +this.modalVisible)
     },
     closeModal() {
       this.modalVisible = false
@@ -486,17 +499,15 @@ export default {
       this.partnerSelectedId = parts[0];
       this.partnerSelectedName = parts[1];
 
-      console.log(this.winners1)
-      // Verifica se há itens na lista winners2
+      const requestData = {
+        fakes: this.ganhadores,
+        premio: this.premio,
+        winners2: this.winners2,
+      };
+        
+      // Verifica se há itens na lista winners1
       if (this.winners1.length === 0) {
         // Se a lista estiver vazia, realiza as chamadas API
-        const requestData = {
-          banca_id: this.partnerSelectedId,
-          fakes: this.ganhadores,
-          premio: this.premio,
-          sort_date: this.date,
-        };
-
         api
           .get(
             `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`, requestData
@@ -517,20 +528,12 @@ export default {
           })
           .catch(() => {})
           .finally(() => {
-              this.loading = false;
+            this.loading = false;
           });
       } else {
-        console.log('entrou aqui');
-        const requestData = {
-          banca_id: this.partnerSelectedId,
-          fakes: this.ganhadores,
-          premio: this.premio,
-          winners2: this.winners2,
-          sort_date: this.date,
-        };
         api
-          .get(
-            `/partners/get-result3?premio=${this.premio}&ganhadores=${this.ganhadores}`, requestData
+          .post(
+            `/partners/get-result3`, requestData
           )
           .then((response) => {
             this.winners2 = response.data;
@@ -538,9 +541,8 @@ export default {
           })
           .catch(() => {})
           .finally(() => {
-              this.loading = false;
-          });        this.tableVisible = true;
-        this.loading = false;
+            this.loading = false;
+          });
       }
     },
     updateStatus() {
