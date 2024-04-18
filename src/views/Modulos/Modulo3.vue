@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in winners1" v-bind:key="item.id">
+            <tr v-for="item in winners3" v-bind:key="item.id">
               <td>
                 <input type="checkbox" v-model="item.checked" />
                 <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
@@ -306,6 +306,7 @@ export default {
       date: '',
       winners1: [],
       winners2: [],
+      winners3: [],
       tableVisible: false,
       tableVisible2: false,
       modalVisible: false,
@@ -388,24 +389,8 @@ export default {
       return formattedContent
     },
     openModal() {
-      this.loading = true;
-
-      this.winners1 = [],
-
-      api
-        .get(
-          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
-        )
-        .then((response) => {
-          this.winners1 = response.data
-        })
-        .catch(() => {})
-        .finally(() => {
-            this.loading = false;
-            this.modalVisible = true
-        });
-      this.winners1 = this.winners2
-
+      this.loading = false;
+      this.modalVisible = true
     },
     closeModal() {
       this.modalVisible = false
@@ -415,16 +400,17 @@ export default {
       this.tableVisible = false;
 
       // Filtra os itens marcados na lista winners1 e armazena os IDs dos itens marcados
-      const selectedIds = this.winners1.filter((item) => item.checked).map((item) => item.id);
+      const selectedIds = this.winners3.filter((item) => item.checked).map((item) => item.id)
 
+      this.winners1 = this.winners2
       // Remove os itens correspondentes da lista winners1 com base nos IDs selecionados
-      this.winners1 = this.winners1.filter((item) => !selectedIds.includes(item.id));
+      this.winners1 = this.winners1.filter((item) => !selectedIds.includes(item.id))
 
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
-      this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id));
+      this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
 
-      this.modalVisible = false;
-      this.tableVisible2 = true;
+      this.modalVisible = false
+      this.tableVisible2 = true
     },
     removeSelectedItems2() {
       //Envia itens
@@ -484,6 +470,7 @@ export default {
         )
         .then((response) => {
           this.winners2 = response.data
+          this.winners3 = response.data
           this.tableVisible = true
         })
         .catch(() => {})
