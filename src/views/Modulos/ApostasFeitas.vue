@@ -35,6 +35,14 @@
                     <option value="9">LTB - CHISPALOTO</option>
                   </CFormSelect>
                 </div>
+                <div class="col-auto custom-width">
+                  <CFormInput
+                    type="text"
+                    id="premio"
+                    placeholder="ID Bilhete"
+                    v-model="bilhete_id"
+                  />
+                </div>
                 <div class="col-auto">
                   <CFormInput
                     :disabled="readOnly"
@@ -116,7 +124,7 @@
                   <th scope="col" width="20%">Usuário</th>
                   <th scope="col" width="20%">Bilhete</th>
                   <th scope="col" width="20%">Aposta</th>
-                  <th scope="col" width="20%">Prêmio</th>
+                  <th scope="col" width="20%">Números</th>
                   <th scope="col" width="20%">Data</th>
                   <th scope="col" width="20%">Usuário ID</th>
                   <th scope="col" width="20%">Concurso</th>
@@ -129,7 +137,7 @@
                   <td>{{ item.nome }}</td>
                   <td>{{ item.bilhete }}</td>
                   <td>R$ {{ item.valor }}</td>
-                  <td>R$ {{ item.premio }}</td>
+                  <td>{{ item.numeros }}</td>
                   <td>{{ item.criacao }}</td>
                   <td>{{ item.usuario_id }}</td>
                   <td>{{ item.concurso }}</td>
@@ -153,6 +161,7 @@ export default {
   data() {
     return {
       modalidade: '',
+      bilhete_id: '',
       banca: '',
       data: [],
       tableVisible: false,
@@ -193,6 +202,7 @@ export default {
         modalidade: this.modalidade,
         inicio: this.inicio,
         fim: this.fim,
+        bilhete_id: this.bilhete_id,
       }
       api
         .post(`/apostas-feitas/show`, params)
@@ -228,5 +238,8 @@ export default {
 .pagination_align {
   max-width: 60px;
   margin-left: 8px;
+}
+.custom-width {
+  width: 150px;
 }
 </style>
