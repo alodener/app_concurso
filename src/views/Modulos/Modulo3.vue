@@ -307,6 +307,7 @@ export default {
       winners1: [],
       winners2: [],
       winners3: [],
+      listazerada: false,
       tableVisible: false,
       tableVisible2: false,
       modalVisible: false,
@@ -408,7 +409,12 @@ export default {
 
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
       this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
-
+      if (this.winners2.length === 0 && this.winners1.length === 0){
+        this.listazerada = true
+      }
+      console.log(this.winners2.lenght)
+      console.log(this.winners1.lenght)
+      console.log(this.listazerada)
       this.modalVisible = false
       this.tableVisible2 = true
     },
@@ -493,7 +499,7 @@ export default {
       };
         
       // Verifica se há itens na lista winners1
-      if (this.winners1.length === 0) {
+      if (this.winners1.length === 0 && this.listazerada ==false) {
         // Se a lista estiver vazia, realiza as chamadas API
         api
           .get(
