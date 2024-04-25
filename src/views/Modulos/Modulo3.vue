@@ -82,6 +82,7 @@
                   <CFormSelect
                     aria-label="Default select example"
                     v-model="partnerSelected"
+                    @change="handlePartnerChange"
                   >
                     <option value="">Selecione uma Banca</option>
                     <option
@@ -92,6 +93,16 @@
                       {{ item.name }}
                     </option>
                   </CFormSelect>
+                  <!-- Novo select -->
+                  <div class="col-auto" v-if="partnerSelected.length > 0">
+                    <CFormSelect
+                      aria-label="Default select example"
+                      v-model="date"
+                    >
+                      <option value="">Selecione uma modalidade</option>
+                      <!-- Adicione opções de data aqui -->
+                    </CFormSelect>
+                  </div>
                 </div>
                 <div class="col-auto">
                   <CFormLabel for="inputPassword2" class="visually-hidden"
@@ -298,6 +309,7 @@ export default {
   data() {
     return {
       partners: [],
+      modalidades: [],
       partnerSelected: [],
       partnerSelectedId: null,
       partnerSelectedName: null,
@@ -329,6 +341,49 @@ export default {
           this.partners = response.data
         })
         .catch(() => {})
+    },
+    handlePartnerChange() {
+      // Verifique se partnerSelected não está vazio e é um array
+      if (this.partnerSelected && Array.isArray(this.partnerSelected)) {
+        // Obtém o ID da banca selecionada a partir do array
+        const partnerId = this.partnerSelected[0]
+        const partnerName = this.partnerSelected[1]
+
+        this.partnerSelectedId = partnerId
+        this.partnerSelectedName = partnerName
+
+        console.log('ID da Banca selecionada:', this.partnerSelectedId)
+        console.log('Nome da Banca selecionada:', this.partnerSelectedName)
+
+        // Carrega as modalidades correspondentes ao parceiro selecionado
+        this.loadModalidades()
+      } else {
+        /* eslint-disable */
+        console.error('O valor de partnerSelected é inválido:', this.partnerSelected)
+      }
+    },
+    loadModalidades() {
+      // Verifica se um parceiro foi selecionado
+      if (this.partnerSelected.length > 0) {
+        // Obtém o ID do parceiro selecionado
+        const parts = this.partnerSelected.split(',')
+
+        this.partnerSelectedId = parts[0]
+        this.partnerSelectedName = parts[1]
+        // Faça uma chamada para carregar as modalidades correspondentes ao parceiro selecionado
+        api
+          .get(`/partner/modalidades/${this.partnerSelectedId}`)
+          .then((response) => {
+            // Atualize as modalidades com os dados retornados pela API
+            this.modalidades = response.data
+          })
+          .catch((error) => {
+            console.error('Erro ao carregar as modalidades:', error)
+          })
+      } else {
+        // Limpa as modalidades se nenhum parceiro estiver selecionado
+        this.modalidades = []
+      }
     },
     formatTableContent() {
       /* eslint-disable */
