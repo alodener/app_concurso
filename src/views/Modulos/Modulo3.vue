@@ -81,7 +81,7 @@
                 <div class="col-auto">
                   <CFormSelect
                     aria-label="Default select example"
-                    v-model="partnerSelected"
+                    v-model.lazy="partnerSelected"
                     @change="handlePartnerChange"
                   >
                     <option value="">Selecione uma Banca</option>
@@ -100,7 +100,13 @@
                       v-model="date"
                     >
                       <option value="">Selecione uma modalidade</option>
-                      <!-- Adicione opções de data aqui -->
+                      <option
+                        v-for="item in modalidades"
+                        :key="item.id"
+                        :value="[item.id, item.name]"
+                      >
+                        {{ item.name }}
+                      </option>
                     </CFormSelect>
                   </div>
                 </div>
@@ -342,26 +348,6 @@ export default {
         })
         .catch(() => {})
     },
-    handlePartnerChange() {
-      // Verifique se partnerSelected não está vazio e é um array
-      if (this.partnerSelected && Array.isArray(this.partnerSelected)) {
-        // Obtém o ID da banca selecionada a partir do array
-        const partnerId = this.partnerSelected[0]
-        const partnerName = this.partnerSelected[1]
-
-        this.partnerSelectedId = partnerId
-        this.partnerSelectedName = partnerName
-
-        console.log('ID da Banca selecionada:', this.partnerSelectedId)
-        console.log('Nome da Banca selecionada:', this.partnerSelectedName)
-
-        // Carrega as modalidades correspondentes ao parceiro selecionado
-        this.loadModalidades()
-      } else {
-        /* eslint-disable */
-        console.error('O valor de partnerSelected é inválido:', this.partnerSelected)
-      }
-    },
     loadModalidades() {
       // Verifica se um parceiro foi selecionado
       if (this.partnerSelected.length > 0) {
@@ -372,7 +358,7 @@ export default {
         this.partnerSelectedName = parts[1]
         // Faça uma chamada para carregar as modalidades correspondentes ao parceiro selecionado
         api
-          .get(`/partner/modalidades/${this.partnerSelectedId}`)
+          .get(`/partners/modalidades/${this.partnerSelectedId}`)
           .then((response) => {
             // Atualize as modalidades com os dados retornados pela API
             this.modalidades = response.data
@@ -385,9 +371,22 @@ export default {
         this.modalidades = []
       }
     },
+    handlePartnerChange() {
+      // Utiliza nextTick para garantir que o código seja executado após a atualização do modelo
+      this.$nextTick(() => {
+        // Obtém o ID e o nome da banca selecionada diretamente do array
+        const partnerId = this.partnerSelected[0]
+        const partnerName = this.partnerSelected[1]
+
+        this.partnerSelectedId = partnerId
+        this.partnerSelectedName = partnerName
+
+        console.log('ID da Banca selecionada:', this.partnerSelectedId)
+        this.loadModalidades()
+      })
+    },
     formatTableContent() {
       /* eslint-disable */
-
       const totalGeral = this.winners2.reduce((total, winner) => {
         let valorNumerico
 
