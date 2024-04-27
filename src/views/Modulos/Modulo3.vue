@@ -565,7 +565,7 @@ export default {
       };
         
       // Verifica se há itens na lista winners1
-      if (this.winners1.length === 0 && this.listazerada ==false) {
+      if (this.winners1.length === 0 && this.listazerada == false) {
         // Se a lista estiver vazia, realiza as chamadas API
         api
           .get(
@@ -590,12 +590,13 @@ export default {
             this.loading = false;
           });
       } else {
+        // Se a lista não estiver vazia, envia os dados da lista para a rota Laravel correspondente
         api
           .post(
             `/partners/get-result3?&type_game=${this.type_game}`, requestData
           )
           .then((response) => {
-            this.winners2 = response.data;
+            this.winners2 = response.data; // Atualiza winners3 com a resposta da API
             this.tableVisible = true;
           })
           .catch(() => {})
@@ -604,6 +605,7 @@ export default {
           });
       }
     },
+
     updateStatus() {
       this.modalDisabled = true
       api
