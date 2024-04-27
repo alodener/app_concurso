@@ -107,14 +107,14 @@
                       >
                         {{ item.name }}
                       </option>
-                      <CButton
-                        type="trash"
-                        @click="limparModalidade()"
-                        color="danger"
-                        class="mb-3"
-                        >Limpar</CButton
-                      >
                     </CFormSelect>
+                    <CButton
+                      type="trash"
+                      @click="limparModalidade()"
+                      color="danger"
+                      class="mb-3"
+                      >Limpar</CButton
+                    >
                   </div>
                 </div>
                 <div class="col-auto">
