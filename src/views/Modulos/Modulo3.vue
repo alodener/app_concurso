@@ -97,16 +97,23 @@
                   <div class="col-auto" v-if="partnerSelected.length > 0">
                     <CFormSelect
                       aria-label="Default select example"
-                      v-model="date"
+                      v-model="type_game"
                     >
                       <option value="">Selecione uma modalidade</option>
                       <option
                         v-for="item in modalidades"
                         :key="item.id"
-                        :value="[item.id, item.name]"
+                        :value="item.id"
                       >
                         {{ item.name }}
                       </option>
+                      <CButton
+                        type="trash"
+                        @click="limparModalidade()"
+                        color="danger"
+                        class="mb-3"
+                        >Limpar</CButton
+                      >
                     </CFormSelect>
                   </div>
                 </div>
@@ -321,6 +328,7 @@ export default {
       partnerSelectedName: null,
       number: '',
       premio: 0,
+      type_game: '',
       date: '',
       winners1: [],
       winners2: [],
@@ -515,6 +523,10 @@ export default {
     openModalGanhadores() {
       this.modalGanhadores = true
     },
+    limparModalidade() {
+      this.type_game = ''
+      console.log('Após limpar modalidade: ', this.type_game)
+    },
     listWinners() {
       this.winners1 = [],
 
@@ -526,7 +538,7 @@ export default {
       this.tableVisible2 = false
       api
         .get(
-          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`,
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&type_game=${this.type_game}`,
         )
         .then((response) => {
           this.winners2 = response.data
@@ -557,7 +569,7 @@ export default {
         // Se a lista estiver vazia, realiza as chamadas API
         api
           .get(
-            `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}`, requestData
+            `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&type_game=${this.type_game}`, requestData
           )
           .then((response) => {
             this.winners1 = response.data;
@@ -567,7 +579,7 @@ export default {
 
         api
           .get(
-            `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}`,
+            `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}&type_game=${this.type_game}`,
           )
           .then((response) => {
             this.winners2 = response.data;
@@ -580,7 +592,7 @@ export default {
       } else {
         api
           .post(
-            `/partners/get-result3`, requestData
+            `/partners/get-result3?&type_game=${this.type_game}`, requestData
           )
           .then((response) => {
             this.winners2 = response.data;
