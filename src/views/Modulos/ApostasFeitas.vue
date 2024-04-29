@@ -1,7 +1,7 @@
 <template>
   <div>
     <CCard class="mb-5">
-      <CCardBody class="m-auto"><h4>Apostas Feitas</h4></CCardBody>
+      <CCardBody class="m-auto"><h4>Log de Bilhetes</h4></CCardBody>
     </CCard>
     <CRow>
       <CCol>
