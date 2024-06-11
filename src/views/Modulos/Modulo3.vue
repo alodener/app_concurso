@@ -1,3 +1,4 @@
+<!-- eslint-disable --> 
 <template>
   <div v-if="loading" class="loading-overlay">
     <div class="spinner"></div>
@@ -94,7 +95,7 @@
                     </option>
                   </CFormSelect>
                   <!-- Novo select -->
-                  <div class="col-auto" v-if="partnerSelected.length > 0">
+                  <div class="col-auto" v-if="partnerSelected.length > 0 && partnerSelectedName != 'SuperLotogiro'">
                     <CFormSelect
                       aria-label="Default select example"
                       v-model="type_game"
@@ -107,6 +108,27 @@
                       >
                         {{ item.name }}
                       </option>
+                    </CFormSelect>
+                    <CButton
+                      type="trash"
+                      @click="limparModalidade()"
+                      color="danger"
+                      class="mb-3"
+                      >Limpar</CButton
+                    >
+                  </div>
+                  <div class="col-auto" v-if="partnerSelectedName == 'SuperLotogiro'">
+                    <CFormSelect
+                      aria-label="Default select example"
+                      v-model="groupgame"
+                    >
+                      <option value="">Todas as Loterias</option>
+                      <option value="loteria_brasileira">Loteria Brasileira</option>
+                      <option value="loteria_chile">Loteria Chile</option>
+                      <option value="loteria_mexico">Loteria Mexico</option>
+                      <option value="loteria_santa_lucia">Loteria Santa Lucia</option>
+                      <option value="loteria_polonia">Loteria Polonia</option>
+                      <option value="loteria_reino_unido">Loteria Reino Unido</option>
                     </CFormSelect>
                     <CButton
                       type="trash"
@@ -323,9 +345,11 @@ export default {
     return {
       partners: [],
       modalidades: [],
+      listaBase: [],
       partnerSelected: [],
       partnerSelectedId: null,
       partnerSelectedName: null,
+      groupgame: '',
       number: '',
       premio: 0,
       type_game: '',
@@ -364,6 +388,7 @@ export default {
 
         this.partnerSelectedId = parts[0]
         this.partnerSelectedName = parts[1]
+
         // Faça uma chamada para carregar as modalidades correspondentes ao parceiro selecionado
         api
           .get(`/partners/modalidades/${this.partnerSelectedId}`)
@@ -525,7 +550,10 @@ export default {
     },
     limparModalidade() {
       this.type_game = ''
+      this.groupgame = ''
       console.log('Após limpar modalidade: ', this.type_game)
+      console.log('Após limpar modalidade: ', this.groupgame)
+
     },
     listWinners() {
       this.winners1 = [],
@@ -538,7 +566,7 @@ export default {
       this.tableVisible2 = false
       api
         .get(
-          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&type_game=${this.type_game}`,
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&groupgame=${this.groupgame}`,
         )
         .then((response) => {
           this.winners2 = response.data
@@ -562,24 +590,16 @@ export default {
         fakes: this.ganhadores,
         premio: this.premio,
         winners2: this.winners2,
+        winners3: this.winners3,
       };
         
       // Verifica se há itens na lista winners1
       if (this.winners1.length === 0 && this.listazerada == false) {
-        // Se a lista estiver vazia, realiza as chamadas API
-        api
-          .get(
-            `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&type_game=${this.type_game}`, requestData
-          )
-          .then((response) => {
-            this.winners1 = response.data;
-            this.tableVisible = true;
-          })
-          .catch(() => {});
+     
 
         api
-          .get(
-            `/partners/get-result2?partner=${this.partnerSelectedId}&number=${this.date}&premio=${this.premio}&ganhadores=${this.ganhadores}&type_game=${this.type_game}`,
+          .post(
+            `/partners/get-result3?&groupgame=${this.groupgame}`, requestData
           )
           .then((response) => {
             this.winners2 = response.data;
@@ -593,7 +613,7 @@ export default {
         // Se a lista não estiver vazia, envia os dados da lista para a rota Laravel correspondente
         api
           .post(
-            `/partners/get-result3?&type_game=${this.type_game}`, requestData
+            `/partners/get-result3?&groupgame=${this.groupgame}`, requestData
           )
           .then((response) => {
             this.winners2 = response.data; // Atualiza winners3 com a resposta da API
