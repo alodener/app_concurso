@@ -94,24 +94,7 @@ const routes = [
           next('/login')
         },
       },
-      {
-        path: '/ApostasFeitas',
-        name: 'ApostasFeitas',
-        component: () =>
-          import(
-            /* webpackChunkName: "dashboard" */ '@/views/Modulos/ApostasFeitas.vue'
-          ),
-        beforeEnter(_, __, next) {
-          if (
-            isSignedIn() &&
-            ['socio', 'super_admin', 'admin'].includes(user.role)
-          ) {
-            next()
-            return
-          }
-          next('/login')
-        },
-      },
+
       {
         path: '/CriarConcurso',
         name: 'CriarConcurso',
@@ -246,6 +229,29 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ '@/views/Modulos/RelatorioFinanceiro.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            [
+              'super_admin',
+              'admin',
+              'gerente_jogo',
+              'gestor_resultado',
+            ].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
+        path: '/AprovacaoAutomatica',
+        name: 'AprovacaoAutomatica',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/AprovacaoAutomatica.vue'
           ),
         beforeEnter(_, __, next) {
           if (
