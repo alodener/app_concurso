@@ -113,8 +113,10 @@
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
                   <td>
-                    <input type="checkbox" v-model="item.checked" />
-                    <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
+                    <div v-if="item.status != 4">
+                      <input type="checkbox" v-model="item.checked" />
+                      <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
+                    </div>
                   </td>
                   <th scope="row">{{ item.id[0] }}</th>
                   <td>{{ item.sort_date }}</td>
@@ -140,6 +142,12 @@
                       color="info"
                       shape="rounded-pill"
                       >Acordo</CBadge
+                    >
+                    <CBadge
+                      v-if="item.status == 4"
+                      color="primary"
+                      shape="rounded-pill"
+                      >Auto</CBadge
                     >
                   </td>
                   <td class="d-flex">
