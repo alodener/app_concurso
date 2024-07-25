@@ -316,7 +316,11 @@ export default {
     selectAll() {
       const allChecked = this.winners.every((item) => item.checked)
       this.winners.forEach((item) => {
-        item.checked = !allChecked
+        if (item.status == 4) {
+          item.checked = false
+        } else {
+          item.checked = !allChecked
+        }
       })
     },
     updateStatus() {
