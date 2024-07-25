@@ -68,6 +68,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Loteria | Aprovação Automática',
+        icon: 'cil-browser',
+        to: '/AprovacaoAutomatica',
+      },
+      {
+        component: 'CNavItem',
         name: 'Loteria | Sobrepor Resultados',
         icon: 'cil-browser',
         to: '/Modulo4',
