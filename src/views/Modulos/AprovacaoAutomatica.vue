@@ -145,23 +145,37 @@ export default {
       premio: '',
       tableVisible: false,
       loading: false,
-      modalVisible: false,
-      modalDisabled: false,
-      modalGanhadores: false,
-      totalValorLiquido: '',
-      totalPagBonus: '',
-      totalPagPremios: '',
-      totalRecargaManual: '',
       totalPix: '',
-      ganhadores: '',
       date: '',
-      winners: [],
     }
   },
   mounted() {
     this.listPartners()
   },
   methods: {
+    gerarPDF() {
+      /* eslint-disable */
+      const requestData = {
+        date: this.date,
+        partners: this.partnersAutoaprovation
+      };
+
+      // Enviar a solicitação para a rota Laravel
+      api.post('/partners/auto-aprovation/pdf', requestData, { responseType: 'blob' }) // Definir o responseType como 'blob' para receber uma resposta binária
+          .then(response => {
+            // Criar um URL temporário para o blob
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            // Abrir o PDF no navegador
+            window.open(url, '_blank');
+            // Limpar o URL temporário após 10 minutos
+            setTimeout(() => {
+              window.URL.revokeObjectURL(url);
+            }, 10 * 60 * 1000); // 10 minutos em milissegundos
+          })
+          .catch(error => {
+            // Lidar com erros
+      });
+    },
     listPartners() {
       /* eslint-disable */
       this.loading = true;
