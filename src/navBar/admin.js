@@ -44,6 +44,12 @@ export default [
       },
       {
         component: 'CNavItem',
+        name: 'Loteria | Aprovação Automática',
+        icon: 'cil-browser',
+        to: '/AprovacaoAutomatica',
+      },
+      {
+        component: 'CNavItem',
         name: 'Lista Ganhadores Bichão',
         icon: 'cil-browser',
         to: '/GanhadoresBichao',

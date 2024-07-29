@@ -213,12 +213,22 @@ export default {
           valor: valorNovo,
         })
         .then((response) => {
-          this.resetTable();
-          this.listPartnersMinValue();
+          // this.resetTable();
+          // this.listPartnersMinValue();
         })
         .catch(() => {})
         .finally(() => {
-          // this.loading = false;
+          valorNovo = valorNovo.replace('.', '');
+          valorNovo = valorNovo.replace(',', '.');
+
+          var valorNovoFormatado = Number(valorNovo).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }).replace('R$', '').trim();
+
+          document.getElementById('banca_' + id).value = valorNovoFormatado;
+
+          this.loading = false;
         });
     },
     resetTable() {
