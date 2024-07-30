@@ -29,7 +29,7 @@
   </CModal>
   <div class="relatorio-content">
     <CCard class="mb-5">
-      <CCardBody class="m-auto"><h4>Geranciador de Pagamentos</h4></CCardBody>
+      <CCardBody class="m-auto"><h4>Aprovação Automática</h4></CCardBody>
     </CCard>
     <CRow>
       <CCol>
@@ -190,6 +190,7 @@ export default {
     },
     listPartnersMinValue() {
       /* eslint-disable */
+      this.resetTable();
       this.loading = true;
       api
         .get(`/partners/auto-aprovation?ids=${this.partnerSelected}&date=${this.date}`)
