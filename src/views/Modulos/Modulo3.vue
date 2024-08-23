@@ -1,4 +1,4 @@
-<!-- eslint-disable --> 
+<!-- eslint-disable -->
 <template>
   <div v-if="loading" class="loading-overlay">
     <div class="spinner"></div>
@@ -224,6 +224,13 @@
                       color="info"
                       shape="rounded-pill"
                       >Acordo</CBadge
+                    >
+
+                    <CBadge
+                      v-if="item.status == 4"
+                      color="primary"
+                      shape="rounded-pill"
+                      >Auto</CBadge
                     >
                   </td>
                 </tr>
@@ -515,7 +522,7 @@ export default {
         sort_date: this.date,
       };
       // Enviar a solicitação para a rota Laravel
-      api.post('/partners/winners-lists', requestData) 
+      api.post('/partners/winners-lists', requestData)
           .then(response => {
           })
           .catch(() => {})
@@ -592,10 +599,10 @@ export default {
         winners2: this.winners2,
         winners3: this.winners3,
       };
-        
+
       // Verifica se há itens na lista winners1
       if (this.winners1.length === 0 && this.listazerada == false) {
-     
+
 
         api
           .post(
