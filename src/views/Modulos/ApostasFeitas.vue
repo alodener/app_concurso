@@ -15,7 +15,13 @@
                     aria-label="Default select example"
                   >
                     <option value="">Selecione uma Banca</option>
-                    <option value="LOTERIA">Loteria</option>
+                    <option
+                      v-for="item in partners"
+                      :key="item.id"
+                      :value="item.id"
+                    >
+                      {{ item.name }}
+                    </option>
                   </CFormSelect>
                 </div>
                 <div class="col-auto">
@@ -91,9 +97,9 @@
                   >
                     <div>Total de bilhetes: {{ totalBilhetes }}</div>
                     <div>Valor Total: {{ valorTotal }}</div>
-                    <div>Total de usuários: {{ totalUsuarios }}</div>
-                    <div>Total Pag. Bonus: {{ totalPagBonus }}</div>
-                    <div>Total Valor Liquido: {{ totalValorLiquido }}</div>
+                    <div>Total de Usuários: {{ totalUsuarios }}</div>
+                    <!-- <div>Total Pag. Bonus: {{ totalPagBonus }}</div>
+                    <div>Total Valor Liquido: {{ totalValorLiquido }}</div> -->
                   </CCardBody>
                 </CCard>
               </CCol>
@@ -114,30 +120,34 @@
             </div> -->
 
             <!-- <div class="mb-3" v-if="data.info.length > 0">
-              
+
             </div> -->
 
             <table class="table" id="pdf-table">
               <thead>
                 <tr>
-                  <th scope="col" width="10%">ID</th>
+                  <th scope="col" width="10%">ID Bilhete</th>
                   <th scope="col" width="20%">Usuário</th>
-                  <th scope="col" width="20%">Bilhete</th>
-                  <th scope="col" width="20%">Aposta</th>
-                  <th scope="col" width="20%">Números</th>
-                  <th scope="col" width="20%">Data</th>
-                  <th scope="col" width="20%">Concurso</th>
+                  <th scope="col" width="20%">Números Apostados</th>
+                  <th scope="col" width="20%">Valor Aposta</th>
+                  <th scope="col" width="20%">Valor Prêmio</th>
+                  <th scope="col" width="20%">Número</th>
+                  <th scope="col" width="20%">Tipo de Jogo</th>
+                  <th scope="col" width="20%">Data Sorteio</th>
+                  <th scope="col" width="20%">Data Aposta</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in data.info" :key="item.id">
-                  <td>{{ item.usuario_id }}</td>
-                  <td>{{ item.nome }}</td>
-                  <td>{{ item.bilhete }}</td>
-                  <td>R$ {{ item.valor }}</td>
-                  <td>{{ item.numeros }}</td>
-                  <td>{{ item.criacao }}</td>
-                  <td>{{ item.concurso }}</td>
+                <tr v-for="item in data" :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.numbers }}</td>
+                  <td>R$ {{ item.valor_aposta }}</td>
+                  <td>R$ {{ item.valor_premio }}</td>
+                  <td>{{ item.number }}</td>
+                  <td>{{ item.tipo_jogo }}</td>
+                  <td>{{ item.data_sorteio }}</td>
+                  <td>{{ item.data_aposta }}</td>
                 </tr>
               </tbody>
             </table>
@@ -156,6 +166,7 @@ export default {
   name: 'ApostasFeitas',
   data() {
     return {
+      partners: [],
       modalidade: '',
       bilhete_id: '',
       banca: '',
@@ -169,7 +180,18 @@ export default {
       fim: null,
     }
   },
+  mounted() {
+    this.listPartners()
+  },
   methods: {
+    listPartners() {
+      api
+        .get(`/partners`)
+        .then((response) => {
+          this.partners = response.data
+        })
+        .catch(() => {})
+    },
     generatePDF() {
       const doc = new jsPDF()
       doc.text('Total de bilhetes: ' + this.totalBilhetes, 3, 15)
@@ -204,10 +226,11 @@ export default {
         .post(`/apostas-feitas/show`, params)
         .then((response) => {
           if (response.status == 200 && response.data.success) {
+            console.log(response)
             this.data = response.data.data
-            this.valorTotal = response.data.data.valorTotal
-            this.totalUsuarios = response.data.data.totalUsuarios
-            this.totalBilhetes = response.data.data.totalBilhetes
+            this.valorTotal = response.data.analytics.total_premios
+            this.totalUsuarios = response.data.analytics.total_usuarios
+            this.totalBilhetes = response.data.analytics.total_bilhetes
             this.tableVisible = true
           }
         })
