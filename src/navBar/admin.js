@@ -22,7 +22,7 @@ export default [
         component: 'CNavItem',
         name: 'Apostas Feitas',
         icon: 'cil-browser',
-        to: '/ApostasFeitas',
+        to: '/LogBancasPremios',
       },
       {
         component: 'CNavItem',
