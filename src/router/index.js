@@ -270,6 +270,29 @@ const routes = [
         },
       },
       {
+        path: '/LogBancasPremios',
+        name: 'LogBancasPremios',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/Modulos/ApostasFeitas.vue'
+          ),
+        beforeEnter(_, __, next) {
+          if (
+            isSignedIn() &&
+            [
+              'super_admin',
+              'admin',
+              'gerente_jogo',
+              'gestor_resultado',
+            ].includes(user.role)
+          ) {
+            next()
+            return
+          }
+          next('/login')
+        },
+      },
+      {
         path: '/GanhadoresBichao',
         name: 'GanhadoresBichao',
         component: () =>
