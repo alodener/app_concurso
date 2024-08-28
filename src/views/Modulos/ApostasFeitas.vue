@@ -1,4 +1,7 @@
 <template>
+  <div v-if="loading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
   <div>
     <CCard class="mb-5">
       <CCardBody class="m-auto"><h4>Log de Bilhetes</h4></CCardBody>
@@ -39,6 +42,9 @@
                     <option value="7">LTB - Duplo 6</option>
                     <option value="8">LTB - O Milionário</option>
                     <option value="9">LTB - CHISPALOTO</option>
+                    <option value="10">LTB - MEGA KINO</option>
+                    <option value="11">SANTA LÚCIA DOUBLE</option>
+                    <option value="12">SUPER QUINA</option>
                   </CFormSelect>
                 </div>
                 <div class="col-auto custom-width">
@@ -67,7 +73,7 @@
                 </div>
                 <div class="col-auto d-flex align-items-center">
                   <CButton
-                    type="submit"
+                    type="button"
                     style="color: #fff"
                     @click="consulta()"
                     color="success"
@@ -195,6 +201,7 @@ export default {
       valorTotal: 0,
       totalUsuarios: 0,
       inicio: null,
+      loading: false,
       fim: null,
       page: 1,
       perPage: 10,
@@ -220,10 +227,13 @@ export default {
       }
     },
     listPartners() {
+      this.loading = true
+
       api
         .get(`/partners`)
         .then((response) => {
           this.partners = response.data
+          this.loading = false
         })
         .catch(() => {})
     },
@@ -249,6 +259,16 @@ export default {
         alert('Por favor selecione uma data de fim')
         return
       }
+      const dataInicio = new Date(this.inicio)
+      const dataFim = new Date(this.fim)
+      const diffMs = dataFim - dataInicio
+      const diffDays = diffMs / (1000 * 60 * 60 * 24)
+      if (diffDays > 30) {
+        alert('O intervalo entre as datas não pode exceder 30 dias')
+        return
+      }
+
+      this.loading = true
 
       const params = {
         banca: this.banca,
@@ -261,12 +281,13 @@ export default {
         .post(`/apostas-feitas/show`, params)
         .then((response) => {
           if (response.status == 200 && response.data.success) {
-            console.log(response)
+            this.changePage(1)
             this.data = response.data.data
             this.valorTotal = response.data.analytics.total_premios
             this.totalUsuarios = response.data.analytics.total_usuarios
             this.totalBilhetes = response.data.analytics.total_bilhetes
             this.tableVisible = true
+            this.loading = false
           }
         })
         .catch(() => {})
@@ -299,6 +320,35 @@ export default {
 .pagination {
   margin-top: 10px;
   text-align: center;
+}
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Cor e espessura da borda do spinner */
+  border-radius: 50%; /* Forma do spinner */
+  border-top: 4px solid #ffffff; /* Cor e espessura da borda superior do spinner */
+  width: 50px; /* Largura do spinner */
+  height: 50px; /* Altura do spinner */
+  animation: spin 1s linear infinite; /* Animação de rotação */
+  margin-right: 10px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  } /* Rotação inicial */
+  100% {
+    transform: rotate(360deg);
+  } /* Rotação completa */
+}
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 .pagination button {
   margin: 0 5px;
