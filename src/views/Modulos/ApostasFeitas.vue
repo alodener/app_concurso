@@ -123,22 +123,22 @@
 
             </div> -->
 
-            <table class="table" id="pdf-table">
+            <table class="table w-100" id="pdf-table">
               <thead>
                 <tr>
                   <th scope="col" width="10%">ID Bilhete</th>
-                  <th scope="col" width="20%">Usuário</th>
+                  <th scope="col" width="15%">Usuário</th>
                   <th scope="col" width="20%">Números Apostados</th>
-                  <th scope="col" width="20%">Valor Aposta</th>
-                  <th scope="col" width="20%">Valor Prêmio</th>
-                  <th scope="col" width="20%">Número</th>
-                  <th scope="col" width="20%">Tipo de Jogo</th>
-                  <th scope="col" width="20%">Data Sorteio</th>
-                  <th scope="col" width="20%">Data Aposta</th>
+                  <th scope="col" width="15%">Valor Aposta</th>
+                  <th scope="col" width="15%">Valor Prêmio</th>
+                  <th scope="col" width="10%">Número</th>
+                  <th scope="col" width="25%">Tipo de Jogo</th>
+                  <th scope="col" width="30%">Data Sorteio</th>
+                  <th scope="col" width="30%">Data Aposta</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in data" :key="item.id">
+                <tr v-for="item in paginatedData" :key="item.id">
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
                   <td>{{ item.numbers }}</td>
@@ -151,6 +151,24 @@
                 </tr>
               </tbody>
             </table>
+
+            <div class="pagination">
+              <button
+                @click="changePage(page - 1)"
+                :disabled="page <= 1"
+                class="btn btn-primary"
+              >
+                Anterior
+              </button>
+              <span>Página {{ page }} de {{ totalPages }}</span>
+              <button
+                @click="changePage(page + 1)"
+                :disabled="page >= totalPages"
+                class="btn btn-primary"
+              >
+                Próxima
+              </button>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>
@@ -178,12 +196,29 @@ export default {
       totalUsuarios: 0,
       inicio: null,
       fim: null,
+      page: 1,
+      perPage: 10,
     }
   },
   mounted() {
     this.listPartners()
   },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.data.length / this.perPage)
+    },
+    paginatedData() {
+      const start = (this.page - 1) * this.perPage
+      const end = start + this.perPage
+      return this.data.slice(start, end)
+    },
+  },
   methods: {
+    changePage(newPage) {
+      if (newPage >= 1 && newPage <= this.totalPages) {
+        this.page = newPage
+      }
+    },
     listPartners() {
       api
         .get(`/partners`)
@@ -240,7 +275,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .header_align {
   display: flex;
   justify-content: space-between;
@@ -260,5 +295,12 @@ export default {
 }
 .custom-width {
   width: 150px;
+}
+.pagination {
+  margin-top: 10px;
+  text-align: center;
+}
+.pagination button {
+  margin: 0 5px;
 }
 </style>
