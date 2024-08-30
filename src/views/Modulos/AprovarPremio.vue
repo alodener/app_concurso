@@ -113,7 +113,11 @@
               <tbody>
                 <tr v-for="item in winners" v-bind:key="item.id">
                   <td>
-                    <div v-if="item.status != 4">
+                    <div
+                      v-if="
+                        item.status != 4 && item.status != 2 && item.status != 3
+                      "
+                    >
                       <input type="checkbox" v-model="item.checked" />
                       <!-- <input type="checkbox" id="{checkbox}" v-model="checked" /> -->
                     </div>
