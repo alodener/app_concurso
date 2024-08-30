@@ -17,7 +17,7 @@
                     v-model="banca"
                     aria-label="Default select example"
                   >
-                    <option value="">Selecione uma Banca</option>
+                    <option disabled selected>Selecione uma Banca</option>
                     <option
                       v-for="item in partners"
                       :key="item.id"
@@ -32,7 +32,10 @@
                     v-model="modalidade"
                     aria-label="Default select example"
                   >
-                    <option value="">Selecione uma modalidade</option>
+                    <option disabled selected>Selecione uma modalidade</option>
+                    <option value="1,2,3,4,5,6,7,8,9,10,11,12">
+                      Todas Modalidades
+                    </option>
                     <option value="1">LTB - Lotinha</option>
                     <option value="2">LTB - Super 5</option>
                     <option value="3">LTB - Super 6</option>
@@ -59,15 +62,7 @@
                   <CFormInput
                     :disabled="readOnly"
                     type="date"
-                    v-model="inicio"
-                    aria-label="First name"
-                  />
-                </div>
-                <div class="col-auto">
-                  <CFormInput
-                    :disabled="readOnly"
-                    v-model="fim"
-                    type="date"
+                    v-model="data_sorteio"
                     aria-label="First name"
                   />
                 </div>
@@ -87,7 +82,7 @@
                     class="mb-3 mr-2"
                     color="primary"
                   >
-                    Gerar PDF
+                    Gerar TXT
                   </CButton>
                 </div>
               </CForm>
@@ -104,31 +99,12 @@
                     <div>Total de bilhetes: {{ totalBilhetes }}</div>
                     <div>Valor Total: {{ valorTotal }}</div>
                     <div>Total de Usuários: {{ totalUsuarios }}</div>
-                    <!-- <div>Total Pag. Bonus: {{ totalPagBonus }}</div>
-                    <div>Total Valor Liquido: {{ totalValorLiquido }}</div> -->
                   </CCardBody>
                 </CCard>
               </CCol>
             </CRow>
           </CCardBody>
           <CCardBody v-if="tableVisible">
-            <!-- <div class="mb-3">
-              <strong>Total de bilhetes:</strong> {{ totalBilhetes }}
-            </div>
-            <div class="mb-3">
-              <strong>Valor Total:</strong> R$ {{ valorTotal }}
-            </div>
-            <div class="mb-3">
-              <strong>Total de usuários:</strong> {{ totalUsuarios }}
-            </div>
-            <div class="mb-3">
-              <strong>Concursos:</strong> {{ data.concursos }}
-            </div> -->
-
-            <!-- <div class="mb-3" v-if="data.info.length > 0">
-
-            </div> -->
-
             <table class="table w-100" id="pdf-table">
               <thead>
                 <tr>
@@ -184,7 +160,6 @@
 
 <script>
 import api from '@/plugins/axios'
-import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 export default {
   name: 'ApostasFeitas',
@@ -200,7 +175,7 @@ export default {
       totalBilhetes: 0,
       valorTotal: 0,
       totalUsuarios: 0,
-      inicio: null,
+      data_sorteio: null,
       loading: false,
       fim: null,
       page: 1,
@@ -238,12 +213,37 @@ export default {
         .catch(() => {})
     },
     generatePDF() {
-      const doc = new jsPDF()
-      doc.text('Total de bilhetes: ' + this.totalBilhetes, 3, 15)
-      doc.text('Total de usuários: ' + this.totalUsuarios, 3, 25)
-      doc.text('Valor total: R$ ' + this.valorTotal, 3, 35)
-      doc.autoTable({ html: '#pdf-table', startY: 45 })
-      doc.save('dados.pdf')
+      let txtContent = `Total de bilhetes: ${this.totalBilhetes}\n`
+      txtContent += `Total de usuários: ${this.totalUsuarios}\n`
+      txtContent += `Valor total: R$ ${this.valorTotal}\n\n`
+
+      this.data.forEach(function (v) {
+        txtContent += `------------------------\n`
+        txtContent += `Banca: ${v.nome_banca}\n`
+        txtContent += `ID Bilhete: ${v.id}\n`
+        txtContent += `Tipo Jogo: ${v.tipo_jogo}\n`
+        txtContent += `Numeros Apostados: ${v.numbers}\n`
+        txtContent += `Valor Aposta: ${v.valor_aposta}\n`
+        txtContent += `Valor Prêmio: ${v.valor_premio}\n`
+        txtContent += `Nome Usuário: ${v.name}\n`
+        txtContent += `Email Usuário: ${v.email}\n`
+        txtContent += `Avulso: ${v.random_game == 0 ? 'Não' : 'Sim'}\n`
+        txtContent += `Data Sorteio: ${v.data_sorteio}\n`
+        txtContent += `Data Criação: ${v.data_aposta}\n`
+        txtContent += `------------------------\n`
+      })
+
+      const blob = new Blob([txtContent], { type: 'text/plaincharset=utf-8' })
+      const url = URL.createObjectURL(blob)
+
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'dados.txt'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      URL.revokeObjectURL(url)
     },
     consulta() {
       if (this.banca == '') {
@@ -252,19 +252,8 @@ export default {
       } else if (this.modalidade == '') {
         alert('Por favor selecione uma modalide')
         return
-      } else if (!this.inicio) {
+      } else if (!this.data_sorteio) {
         alert('Por favor selecione uma data de início')
-        return
-      } else if (!this.fim) {
-        alert('Por favor selecione uma data de fim')
-        return
-      }
-      const dataInicio = new Date(this.inicio)
-      const dataFim = new Date(this.fim)
-      const diffMs = dataFim - dataInicio
-      const diffDays = diffMs / (1000 * 60 * 60 * 24)
-      if (diffDays > 30) {
-        alert('O intervalo entre as datas não pode exceder 30 dias')
         return
       }
 
@@ -273,8 +262,7 @@ export default {
       const params = {
         banca: this.banca,
         modalidade: this.modalidade,
-        inicio: this.inicio,
-        fim: this.fim,
+        data_sorteio: this.data_sorteio,
         bilhete_id: this.bilhete_id,
       }
       api
