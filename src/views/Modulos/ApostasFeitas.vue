@@ -27,7 +27,7 @@
                     </option>
                   </CFormSelect>
                 </div>
-                <div class="col-auto">
+                <!-- <div class="col-auto">
                   <CFormSelect
                     v-model="modalidade"
                     aria-label="Default select example"
@@ -49,7 +49,7 @@
                     <option value="11">SANTA LÚCIA DOUBLE</option>
                     <option value="12">SUPER QUINA</option>
                   </CFormSelect>
-                </div>
+                </div> -->
                 <div class="col-auto custom-width">
                   <CFormInput
                     type="text"
@@ -221,6 +221,9 @@ export default {
         txtContent += `------------------------\n`
         txtContent += `Banca: ${v.nome_banca}\n`
         txtContent += `ID Bilhete: ${v.id}\n`
+        txtContent += `ID Concurso: ${v.number}\n`
+        txtContent += `ID Cliente: ${v.client_id}\n`
+        txtContent += `Nome Cliente: ${v.client_name}\n`
         txtContent += `Tipo Jogo: ${v.tipo_jogo}\n`
         txtContent += `Numeros Apostados: ${v.numbers}\n`
         txtContent += `Valor Aposta: ${v.valor_aposta}\n`
@@ -248,9 +251,6 @@ export default {
     consulta() {
       if (this.banca == '') {
         alert('Por favor selecione uma banca')
-        return
-      } else if (this.modalidade == '') {
-        alert('Por favor selecione uma modalide')
         return
       } else if (!this.data_sorteio) {
         alert('Por favor selecione uma data de início')
