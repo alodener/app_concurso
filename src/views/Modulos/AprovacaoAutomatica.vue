@@ -64,7 +64,6 @@
                 </div>
                 <div class="col-auto d-flex align-items-center">
                   <CButton
-                    type="submit"
                     @click="listPartnersMinValue()"
                     color="success"
                     class="same-height-button"

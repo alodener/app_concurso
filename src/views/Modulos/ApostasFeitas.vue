@@ -105,34 +105,36 @@
             </CRow>
           </CCardBody>
           <CCardBody v-if="tableVisible">
-            <table class="table w-100" id="pdf-table">
-              <thead>
-                <tr>
-                  <th scope="col" width="10%">ID Bilhete</th>
-                  <th scope="col" width="15%">Usuário</th>
-                  <th scope="col" width="20%">Números Apostados</th>
-                  <th scope="col" width="15%">Valor Aposta</th>
-                  <th scope="col" width="15%">Valor Prêmio</th>
-                  <th scope="col" width="10%">Número</th>
-                  <th scope="col" width="25%">Tipo de Jogo</th>
-                  <th scope="col" width="30%">Data Sorteio</th>
-                  <th scope="col" width="30%">Data Aposta</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in paginatedData" :key="item.id">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.numbers }}</td>
-                  <td>R$ {{ item.valor_aposta }}</td>
-                  <td>R$ {{ item.valor_premio }}</td>
-                  <td>{{ item.number }}</td>
-                  <td>{{ item.tipo_jogo }}</td>
-                  <td>{{ item.data_sorteio }}</td>
-                  <td>{{ item.data_aposta }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div style="width: 100%; overflow: auto">
+              <table class="table table-responsive" id="pdf-table">
+                <thead>
+                  <tr>
+                    <th scope="col" width="10%">ID Bilhete</th>
+                    <th scope="col" width="15%">Usuário</th>
+                    <th scope="col" width="20%">Números Apostados</th>
+                    <th scope="col" width="15%">Valor Aposta</th>
+                    <th scope="col" width="15%">Valor Prêmio</th>
+                    <th scope="col" width="10%">Número</th>
+                    <th scope="col" width="25%">Tipo de Jogo</th>
+                    <th scope="col" width="30%">Data Sorteio</th>
+                    <th scope="col" width="30%">Data Aposta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in paginatedData" :key="item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.numbers }}</td>
+                    <td>R$ {{ item.valor_aposta }}</td>
+                    <td>R$ {{ item.valor_premio }}</td>
+                    <td>{{ item.number }}</td>
+                    <td>{{ item.tipo_jogo }}</td>
+                    <td>{{ item.data_sorteio }}</td>
+                    <td>{{ item.data_aposta }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div class="pagination">
               <button
