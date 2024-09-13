@@ -20,6 +20,12 @@ export default [
     items: [
       {
         component: 'CNavItem',
+        name: 'Log de bilhetes',
+        icon: 'cil-browser',
+        to: '/LogBancasPremios',
+      },
+      {
+        component: 'CNavItem',
         name: 'Criar Concursos',
         icon: 'cil-browser',
         to: '/CriarConcurso',
