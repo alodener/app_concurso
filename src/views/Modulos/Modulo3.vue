@@ -195,6 +195,7 @@
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Prêmio</th>
                   <th scope="col" width="20%">Bilhetes</th>
+                  <th scope="col" width="20%">Banca</th>
                   <th scope="col" width="20%">Modalidade</th>
                   <th scope="col" width="20%">Status</th>
                 </tr>
@@ -205,6 +206,7 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.premio_formatted }}</td>
                   <td>{{ item.num_tickets }}</td>
+                  <td>{{ item.banca }}</td>
                   <td>{{ item.game_name }}</td>
                   <td>
                     <CBadge
@@ -393,19 +395,32 @@ export default {
         // Obtém o ID do parceiro selecionado
         const parts = this.partnerSelected.split(',')
 
-        this.partnerSelectedId = parts[0]
-        this.partnerSelectedName = parts[1]
+        if (parts.length > 2) {
+          this.partnerSelectedId = this.partnerSelected
+          this.partnerSelectedName = 'Todas Modalidades'
 
-        // Faça uma chamada para carregar as modalidades correspondentes ao parceiro selecionado
-        api
-          .get(`/partners/modalidades/${this.partnerSelectedId}`)
-          .then((response) => {
-            // Atualize as modalidades com os dados retornados pela API
-            this.modalidades = response.data
-          })
-          .catch((error) => {
-            console.error('Erro ao carregar as modalidades:', error)
-          })
+          this.modalidades = [
+            {
+              name: 'Todas Modalidades',
+              id: this.partnerSelected,
+              connection: 'todas_as_bancas',
+            },
+          ]
+        } else {
+          this.partnerSelectedId = parts[0]
+          this.partnerSelectedName = parts[1]
+
+          // Faça uma chamada para carregar as modalidades correspondentes ao parceiro selecionado
+          api
+            .get(`/partners/modalidades/${this.partnerSelectedId}`)
+            .then((response) => {
+              // Atualize as modalidades com os dados retornados pela API
+              this.modalidades = response.data
+            })
+            .catch((error) => {
+              console.error('Erro ao carregar as modalidades:', error)
+            })
+        }
       } else {
         // Limpa as modalidades se nenhum parceiro estiver selecionado
         this.modalidades = []
@@ -414,7 +429,6 @@ export default {
     handlePartnerChange() {
       // Utiliza nextTick para garantir que o código seja executado após a atualização do modelo
       this.$nextTick(() => {
-        // Obtém o ID e o nome da banca selecionada diretamente do array
         const partnerId = this.partnerSelected[0]
         const partnerName = this.partnerSelected[1]
 
@@ -568,8 +582,14 @@ export default {
       this.loading = true;
       const parts = this.partnerSelected.split(',')
 
-      this.partnerSelectedId = parts[0]
-      this.partnerSelectedName = parts[1]
+      if( this.partnerSelected.length > 2 ) {
+        this.partnerSelectedId = this.partnerSelected
+        this.partnerSelectedName = 'Todas Modalidades'
+      } else{
+        this.partnerSelectedId = parts[0]
+        this.partnerSelectedName = parts[1]
+      }
+
       this.tableVisible2 = false
       api
         .get(
@@ -598,12 +618,12 @@ export default {
         premio: this.premio,
         winners2: this.winners2,
         winners3: this.winners3,
+        partners: this.partnerSelected,
+        modalidades: this.modalidades
       };
 
       // Verifica se há itens na lista winners1
       if (this.winners1.length === 0 && this.listazerada == false) {
-
-
         api
           .post(
             `/partners/get-result3?&groupgame=${this.groupgame}`, requestData
