@@ -23,6 +23,80 @@
       </CButton>
     </CModalFooter>
   </CModal>
+
+  <CModal :visible="modalListaGamesInformations" style="width: 50vw !important">
+    <CModalHeader>
+      <CModalTitle>Detalhes dos Ganhadores/Prêmios</CModalTitle>
+    </CModalHeader>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" width="10%">ID</th>
+            <th scope="col" width="20%">Usuário</th>
+            <th scope="col" width="20%">Premio</th>
+            <th scope="col" width="20%">Jogo</th>
+            <th scope="col" width="20%">Avulso</th>
+            <th scope="col" width="20%">Status</th>
+            <th scope="col" width="20%">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in listaGamesInformations" v-bind:key="item.id">
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.premio_formatted }}</td>
+            <td>{{ item.game_name }}</td>
+            <td>{{ item.random_game }}</td>
+            <td>
+              <CBadge
+                v-if="item.status == 1"
+                color="warning"
+                shape="rounded-pill"
+                >Pendente</CBadge
+              >
+              <CBadge
+                v-if="item.status == 2"
+                color="success"
+                shape="rounded-pill"
+                >Aprovado</CBadge
+              >
+              <CBadge v-if="item.status == 3" color="info" shape="rounded-pill"
+                >Acordo</CBadge
+              >
+              <CBadge
+                v-if="item.status == 4"
+                color="primary"
+                shape="rounded-pill"
+                >Auto</CBadge
+              >
+            </td>
+            <td class="d-flex">
+              <CButtonGroup role="group" v-if="item.status == 1">
+                <CButton
+                  @click="openModal(item.id, 3)"
+                  class="mr-2"
+                  color="info"
+                  >Acordo</CButton
+                >
+                <CButton
+                  @click="openModal(item.id, 2)"
+                  class="mr-2"
+                  color="success"
+                  >Aprovar</CButton
+                >
+              </CButtonGroup>
+              <div v-if="item.status != 1">
+                <CButton disabled color="secondary" variant="outline"
+                  >-/-</CButton
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </CModal>
   <div>
     <CCard class="mb-5">
       <CCardBody class="m-auto"><h4>Aprovar Premio</h4></CCardBody>
@@ -61,7 +135,7 @@
                 </div>
                 <div class="col-auto d-flex align-items-center">
                   <CButton
-                    type="submit"
+                    type="button"
                     @click="listWinners()"
                     color="success"
                     class="mb-3 mr-2"
@@ -170,9 +244,27 @@
                       >
                     </CButtonGroup>
                     <div v-if="item.status != 1">
-                      <CButton disabled color="secondary" variant="outline"
-                        >Sem Ação Disponivel</CButton
+                      <div
+                        v-if="
+                          item.status != 1 &&
+                          item.status != 4 &&
+                          item.total_bilhetes == 1
+                        "
                       >
+                        <CButton disabled color="secondary" variant="outline"
+                          >Sem Ação Disponivel</CButton
+                        >
+                      </div>
+
+                      <div v-if="item.status == 4 && item.total_bilhetes > 1">
+                        <CButton
+                          type="button"
+                          @click="informationUsers(item.id)"
+                          color="success"
+                          class="mb-3 mr-2"
+                          >i</CButton
+                        >
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -193,6 +285,7 @@ export default {
     return {
       partners: [],
       partnerSelected: '',
+      listaGamesInformations: [],
       number: '',
       premio: '',
       winners: [],
@@ -202,6 +295,7 @@ export default {
       modalVisible: false,
       modalDisabled: false,
       modalGanhadores: false,
+      modalListaGamesInformations: false,
       readOnly: false,
       ganhadores: '',
       totalGanhadores: 0,
@@ -212,6 +306,20 @@ export default {
     this.listPartners()
   },
   methods: {
+    informationUsers(ids) {
+      this.listaGamesInformations = []
+      this.modalListaGamesInformations = false
+      var idsGames = JSON.stringify(ids)
+      api
+        .get(
+          `/partners/game-informations?id=${idsGames}&partner=${this.partnerSelected}`,
+        )
+        .then((response) => {
+          this.listaGamesInformations = response.data
+          this.modalListaGamesInformations = true
+        })
+        .catch(() => {})
+    },
     listPartners() {
       api
         .get(`/partners`)
