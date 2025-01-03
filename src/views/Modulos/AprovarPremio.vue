@@ -439,7 +439,7 @@ export default {
       })
     },
     async updateStatus() {
-      this.modalDisabled = true
+      this.modalVisible = false
       await api
         .put(`/partners/update-status`, this.body)
         .then(() => {
