@@ -1,15 +1,4 @@
 <template>
-  <CModal :visible="modalVisible">
-    <CModalHeader>
-      <CModalTitle>Deseja Realmente alterar o status?</CModalTitle>
-    </CModalHeader>
-    <CModalFooter>
-      <CButton :disabled="modalDisabled" color="success" @click="updateStatus()"
-        >Confirmar</CButton
-      >
-    </CModalFooter>
-  </CModal>
-
   <CModal :visible="modalGanhadores">
     <CModalHeader>
       <CModalTitle>Adicionar Valor e Ganhadores</CModalTitle>
@@ -98,6 +87,12 @@
     </div>
   </CModal>
   <div>
+    <Modal
+      :modalVisible="modalVisible"
+      title="Deseja Realmente alterar o status?"
+      :onUpdateStatus="updateStatus"
+      :onClose="closeModala"
+    />
     <CCard class="mb-5">
       <CCardBody class="m-auto"><h4>Aprovar Premio</h4></CCardBody>
     </CCard>
@@ -279,7 +274,12 @@
 
 <script>
 import api from '@/plugins/axios'
+import modal from '../../components/Modal.vue'
+
 export default {
+  components: {
+    Modal: modal, // Registra o componente para uso no template
+  },
   name: 'AprovarPremio',
   data() {
     return {
@@ -419,6 +419,9 @@ export default {
         status,
       }
     },
+    closeModala() {
+      this.modalVisible = false
+    },
     // selectAll() {
     //   this.checked = !this.checked
     //   this.winners.forEach((item) => {
@@ -435,9 +438,9 @@ export default {
         }
       })
     },
-    updateStatus() {
+    async updateStatus() {
       this.modalDisabled = true
-      api
+      await api
         .put(`/partners/update-status`, this.body)
         .then(() => {
           this.listWinners()
@@ -445,8 +448,11 @@ export default {
           this.modalDisabled = false
         })
         .catch(() => {
+          this.listWinners()
           this.modalVisible = false
+          this.modalDisabled = false
         })
+      this.listWinners()
     },
   },
 }
