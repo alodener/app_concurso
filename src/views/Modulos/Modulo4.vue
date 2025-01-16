@@ -169,7 +169,7 @@ export default {
       if (this.number == null) {
         return false
       }
-      const regex = /^(0[1-9]|[1-9]|[1-9]\d)(?:,\s*(0[1-9]|[1-9]|[1-9]\d))*$/
+      const regex = /^(0[1-9]|[1-9]|[1-9]\d)(?:\s+(0[1-9]|[1-9]|[1-9]\d))*$/
       if (this.result == null || regex.test(this.result) == false) {
         return false
       }
