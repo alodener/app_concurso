@@ -13,6 +13,9 @@
         <CAlert v-if="inputFilledError" class="text-center" color="danger"
           >Preencha todos os campos!</CAlert
         >
+        <CAlert v-if="errorResult != ''" class="text-center" color="danger">
+          {{ errorResult }}</CAlert
+        >
         <CAlert v-if="successCreate" class="text-center" color="success"
           >Criação Concluida com Sucesso!</CAlert
         >
@@ -69,6 +72,7 @@
               <CFormInput
                 :disabled="readOnly"
                 v-model="result"
+                @blur="validarResultadosLoteria(result, false)"
                 aria-label="First name"
               />
             </CInputGroup>
@@ -117,6 +121,7 @@ export default {
       number: null,
       category: null,
       result: null,
+      errorResult: '',
       modalVisible: false,
       loadingButton: false,
       timeToFinishVisible: false,
@@ -126,6 +131,11 @@ export default {
       failCreate: false,
       readOnly: false,
     }
+  },
+  watch: {
+    result(newVal) {
+      this.validarResultadosLoteria(newVal, true)
+    },
   },
   mounted() {
     this.listPartners()
@@ -210,6 +220,38 @@ export default {
         return false
       }
       return true
+    },
+    validarResultadosLoteria(input, oninput = false) {
+      if (!input) {
+        return
+      }
+      input = input.replace(/\s+/g, ',')
+      const numeros = input.split(',').map((numero) => numero.trim()) // Divide por vírgulas e remove espaços
+      console.log(numeros)
+      const regex = /^[0-9]{2}$/ // Apenas dois dígitos numéricos
+      const vistos = new Set()
+
+      for (let i = 0; i < numeros.length; i++) {
+        if (i === numeros.length - 1 && oninput) {
+          break
+        }
+        if (!regex.test(numeros[i])) {
+          this.errorResult = `O caractere '${numeros[i]}' está incorreto Use apenas números de dois dígitos no formato 01, 02, etc`
+          return
+        }
+        if (vistos.has(numeros[i])) {
+          this.errorResult = `O número '${numeros[i]}' foi repetido`
+          return
+        }
+        vistos.add(numeros[i])
+      }
+
+      // if (numeros.length !== 9) {
+      //   this.errorResult =
+      //     'Você deve digitar exatamente 9 números separados por vírgulas'
+      //   return
+      // }
+      this.errorResult = '' // Sem erros
     },
     clearInputs() {
       this.number = null
