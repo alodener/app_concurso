@@ -130,6 +130,24 @@ export default {
       successCreate: false,
       failCreate: false,
       readOnly: false,
+      maxNumers: {
+        loto_facil: 15,
+        quina: 5,
+        mega_sena: 6,
+        loto_mania: 20,
+        dia_de_sorte: 7,
+        time_mania: 7,
+        dupla_sena: 6,
+        mais_milionaria: 6,
+        lotinha_corujao: 5,
+        loto_one: 5,
+        santa_lucia_double: 4,
+        kino_loto: 14,
+        rekino_loto: 14,
+        chanchito_Loto: 14,
+        chao_jefe_loto: 14,
+        mega_kino: 15,
+      },
     }
   },
   watch: {
@@ -245,12 +263,19 @@ export default {
         }
         vistos.add(numeros[i])
       }
+      let max
+      let podeMax = true
+      if (this.category in this.maxNumers) {
+        max = this.maxNumers[this.category]
+      } else {
+        max = 15
+        podeMax = false //
+      }
 
-      // if (numeros.length !== 9) {
-      //   this.errorResult =
-      //     'Você deve digitar exatamente 9 números separados por vírgulas'
-      //   return
-      // }
+      if (numeros.length !== max && !oninput && podeMax) {
+        this.errorResult = `Você deve digitar exatamente ${max} números separados por vírgulas`
+        return
+      }
       this.errorResult = '' // Sem erros
     },
     clearInputs() {
