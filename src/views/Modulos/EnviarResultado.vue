@@ -272,9 +272,15 @@ export default {
         podeMax = false //
       }
 
-      if (numeros.length !== max && !oninput && podeMax) {
-        this.errorResult = `Você deve digitar exatamente ${max} números separados por vírgulas`
-        return
+      if (podeMax) {
+        if (numeros.length !== max && !oninput) {
+          this.errorResult = `Você deve digitar exatamente ${max} números separados por vírgulas`
+          return
+        }
+        if (numeros.length > max) {
+          this.errorResult = `Você deve digitar exatamente ${max} números separados por vírgulas`
+          return
+        }
       }
       this.errorResult = '' // Sem erros
     },
