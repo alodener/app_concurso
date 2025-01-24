@@ -56,6 +56,38 @@
               </CFormSelect>
             </CInputGroup> -->
             <CInputGroup class="mt-4">
+              <CInputGroupText>Categorias</CInputGroupText>
+              <CFormSelect
+                :disabled="readOnly"
+                v-model="category"
+                aria-label="Default select example"
+              >
+                <option value="">Selecione uma Categoria</option>
+                <option value="loto_facil">Loto Fácil</option>
+                <option value="quina">Quina</option>
+                <option value="mega_sena">Mega Sena</option>
+                <option value="dia_de_sorte">Dia De Sorte</option>
+                <option value="dupla_sena">Dupla Sena</option>
+                <option value="loto_mania">Loto Mania</option>
+                <option value="time_mania">Time Mania</option>
+                <option value="dupla_sena_dobrada">Dupla Sena Dobrada</option>
+                <option value="lotinha_corujao">Lotinha Corujão</option>
+                <option value="mais_milionaria">Mais Milionaria</option>
+                <option value="loto_one">Loto ONE</option>
+                <option value="loto_quatorze">Loto 14</option>
+                <option value="kino_loto">Kino Loto</option>
+                <option value="rekino_loto">Rekino Loto</option>
+                <option value="chanchito_Loto">Chanchito Loto</option>
+                <option value="easy_power_loto">Easy Power Loto</option>
+                <option value="chao_jefe_loto">Chao Jefe Loto</option>
+                <option value="chispaloto_segundo">Chispaloto Segundo</option>
+                <option value="mega_lotto">Mega Lotto</option>
+                <option value="mega_kino">Mega Kino</option>
+                <option value="santa_lucia_double">Santa Lucia Double</option>
+                <option value="super_quina">Super Quina</option>
+              </CFormSelect>
+            </CInputGroup>
+            <CInputGroup class="mt-4">
               <CInputGroupText>Resultados</CInputGroupText>
               <CFormInput
                 :disabled="readOnly"
@@ -118,6 +150,24 @@ export default {
       successCreate: false,
       failCreate: false,
       readOnly: false,
+      maxNumers: {
+        loto_facil: 15,
+        quina: 5,
+        mega_sena: 6,
+        loto_mania: 20,
+        dia_de_sorte: 7,
+        time_mania: 7,
+        dupla_sena: 6,
+        mais_milionaria: 6,
+        lotinha_corujao: 5,
+        loto_one: 5,
+        santa_lucia_double: 4,
+        kino_loto: 14,
+        rekino_loto: 14,
+        chanchito_Loto: 14,
+        chao_jefe_loto: 14,
+        mega_kino: 15,
+      },
     }
   },
   watch: {
@@ -161,12 +211,24 @@ export default {
         }
         vistos.add(numeros[i])
       }
-
-      // if (numeros.length !== 9) {
-      //   this.errorResult =
-      //     'Você deve digitar exatamente 9 números separados por vírgulas'
-      //   return
-      // }
+      let max
+      let podeMax = true
+      if (this.category in this.maxNumers) {
+        max = this.maxNumers[this.category]
+      } else {
+        max = 15
+        podeMax = false //
+      }
+      if (podeMax) {
+        if (numeros.length !== max && !oninput) {
+          this.errorResult = `Você deve digitar exatamente ${max} números separados por vírgulas`
+          return
+        }
+        if (numeros.length > max) {
+          this.errorResult = `Você deve digitar exatamente ${max} números separados por vírgulas`
+          return
+        }
+      }
       this.errorResult = '' // Sem erros
     },
     updateDrawNumbers() {
