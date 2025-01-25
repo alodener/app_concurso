@@ -148,6 +148,24 @@ export default {
         chao_jefe_loto: 14,
         mega_kino: 15,
       },
+      maxDezenas: {
+        loto_facil: 25,
+        quina: 80,
+        mega_sena: 60,
+        loto_mania: 100,
+        dia_de_sorte: 31,
+        time_mania: 80,
+        dupla_sena: 50,
+        mais_milionaria: 50,
+        lotinha_corujao: 28,
+        loto_one: 25,
+        santa_lucia_double: 22,
+        kino_loto: 25,
+        rekino_loto: 25,
+        chanchito_Loto: 25,
+        chao_jefe_loto: 25,
+        mega_kino: 25,
+      },
     }
   },
   watch: {
@@ -245,7 +263,6 @@ export default {
       }
       input = input.replace(/\s+/g, ',')
       const numeros = input.split(',').map((numero) => numero.trim()) // Divide por vírgulas e remove espaços
-      console.log(numeros)
       const regex = /^[0-9]{2}$/ // Apenas dois dígitos numéricos
       const vistos = new Set()
 
@@ -259,6 +276,18 @@ export default {
         }
         if (vistos.has(numeros[i])) {
           this.errorResult = `O número '${numeros[i]}' foi repetido`
+          return
+        }
+        let num = parseInt(numeros[i], 10)
+        let maxDezenas
+        if (this.category in this.maxDezenas) {
+          maxDezenas = this.maxDezenas[this.category]
+        } else {
+          maxDezenas = 1000
+        }
+
+        if (num > maxDezenas) {
+          this.errorResult = `A dezena '${numeros[i]}' excede o limite máximo permitido de ${maxDezenas} para este jogo.`
           return
         }
         vistos.add(numeros[i])
