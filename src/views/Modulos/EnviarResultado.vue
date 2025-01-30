@@ -146,7 +146,7 @@ export default {
         rekino_loto: 14,
         chanchito_Loto: 14,
         chao_jefe_loto: 14,
-        mega_kino: 15,
+        mega_kino: 14,
       },
       maxDezenas: {
         loto_facil: 25,
