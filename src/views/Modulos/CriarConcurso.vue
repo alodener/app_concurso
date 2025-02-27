@@ -63,7 +63,7 @@
                 <option value="santa_lucia_double">Santa Lucia Double</option>
                 <option value="super_quina">Super Quina</option>
                 <option value="cash_life">Cash Life</option>
-                <option value="ny_lotto">Cash Life</option>
+                <option value="ny_lotto">Ny Lotto</option>
                 <option value="mega_power">Mega Power</option>
                 <option value="la_tinka">La Tinka</option>
               </CFormSelect>
