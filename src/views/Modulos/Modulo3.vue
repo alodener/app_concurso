@@ -95,7 +95,7 @@
                     </option>
                   </CFormSelect>
                   <!-- Novo select -->
-                  <div class="col-auto" v-if="partnerSelected.length > 0 && partnerSelectedName != 'SuperLotogiro'">
+                  <div class="col-auto" v-if="partnerSelected.length > 0">
                     <CFormSelect
                       aria-label="Default select example"
                       v-model="type_game"
@@ -117,7 +117,7 @@
                       >Limpar</CButton
                     >
                   </div>
-                  <div class="col-auto" v-if="partnerSelectedName == 'SuperLotogiro'">
+                  <!-- <div class="col-auto" v-if="partnerSelectedName == 'SuperLotogiro'">
                     <CFormSelect
                       aria-label="Default select example"
                       v-model="groupgame"
@@ -137,7 +137,7 @@
                       class="mb-3"
                       >Limpar</CButton
                     >
-                  </div>
+                  </div> -->
                 </div>
                 <div class="col-auto">
                   <CFormLabel for="inputPassword2" class="visually-hidden"
@@ -401,9 +401,34 @@ export default {
 
           this.modalidades = [
             {
-              name: 'Todas Modalidades',
-              id: this.partnerSelected,
-              connection: 'todas_as_bancas',
+              name: 'Loteria Brasil',
+              id: 'BRASIL',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Chile',
+              id: 'CHILE',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Santa Lúcia',
+              id: 'SANTA LUCIA',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria México',
+              id: 'MÉXICO',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Polônia',
+              id: 'POLONIA',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Reino Unido',
+              id: 'REINO UNIDO',
+              connection: 'all',
             },
           ]
         } else {
@@ -431,6 +456,8 @@ export default {
       this.$nextTick(() => {
         const partnerId = this.partnerSelected[0]
         const partnerName = this.partnerSelected[1]
+        this.type_game = ''
+        this.modalidades = []
 
         this.partnerSelectedId = partnerId
         this.partnerSelectedName = partnerName
@@ -593,7 +620,7 @@ export default {
       this.tableVisible2 = false
       api
         .get(
-          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&groupgame=${this.groupgame}`,
+          `/partners/get-result?partner=${this.partnerSelectedId}&number=${this.date}&groupgame=${this.groupgame}&modalidade=${this.type_game}`,
         )
         .then((response) => {
           this.winners2 = response.data
