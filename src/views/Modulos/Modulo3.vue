@@ -437,7 +437,7 @@ export default {
               id: 'REINO UNIDO',
               connection: 'all',
             },
-             {
+            {
               name: 'Loteria EUA',
               id: 'EUA',
               connection: 'all',
