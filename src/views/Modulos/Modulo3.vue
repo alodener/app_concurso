@@ -129,6 +129,13 @@
                       <option value="loteria_santa_lucia">Loteria Santa Lucia</option>
                       <option value="loteria_polonia">Loteria Polonia</option>
                       <option value="loteria_reino_unido">Loteria Reino Unido</option>
+                      <option value="loteria_eua">Loteria EUA</option>
+                      <option value="loteria_peru">Loteria Peru</option>
+                      <option value="loteria_colombia">Loteria Colombia</option>
+                      <option value="loteria_canada">Loteria Canada</option>
+                      <option value="loteria_equador">Loteria Equador</option>
+                      <option value="loteria_uruguai">Loteria Uruguai</option>
+                      <option value="loteria_sao_vicente_e_granidas">Loteria Sao Vicente e Granidas</option>
                     </CFormSelect>
                     <CButton
                       type="trash"
@@ -428,6 +435,41 @@ export default {
             {
               name: 'Loteria Reino Unido',
               id: 'REINO UNIDO',
+              connection: 'all',
+            },
+             {
+              name: 'Loteria EUA',
+              id: 'EUA',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Peru',
+              id: 'PERU',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Colombia',
+              id: 'COLOMBIA',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Canada',
+              id: 'CANADA',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Equador',
+              id: 'EQUADOR',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Uruguai',
+              id: 'URUGUAI',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Sao Vicente e Granidas',
+              id: 'SAO VICENTE E GRANIDAS',
               connection: 'all',
             },
           ]
