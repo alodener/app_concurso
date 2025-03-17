@@ -152,7 +152,6 @@
                 </div>
                 <div class="col-auto">
                   <CButton
-                    type="submit"
                     @click="listWinners()"
                     color="success"
                     class="mb-3"
@@ -276,6 +275,7 @@
                   <th scope="col" width="20%">Nome do Usuário</th>
                   <th scope="col" width="20%">Prêmio</th>
                   <th scope="col" width="20%">Bilhetes</th>
+                  <th scope="col" width="20%">Banca</th>
                   <th scope="col" width="20%">Modalidade</th>
                   <th scope="col" width="20%">Status</th>
                 </tr>
@@ -286,6 +286,7 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.premio_formatted }}</td>
                   <td>{{ item.num_tickets }}</td>
+                  <td>{{ item.banca }}</td>
                   <td>{{ item.game_name }}</td>
                   <td>
                     <CBadge
@@ -493,7 +494,12 @@ export default {
         groupedByGame[winner.game_name].push(winner)
       })
 
-      let formattedContent = `🤑 ${this.partnerSelectedName} 🤑\n`
+      var sel = this.partnerSelected.split(',');
+      var banca = sel[((sel.length) - 1)]
+
+      console.log(this.type_game);
+
+      let formattedContent = `🤑 ${banca} ${banca.trim() == 'Todas Bancas' || banca.trim() == 'Todas Modalidades' ? this.type_game : ''}🤑\n`
       formattedContent += `SORTEIOS DO DIA: ${this.winners2[0].sort_date}\n`
       formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`
       formattedContent += `TOTAL DE BILHETES: ${totalTickets}\n`
@@ -506,6 +512,7 @@ export default {
         groupedByGame[gameName].forEach((winner) => {
           formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
           formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
+          formattedContent += `🏦 Banca: ${winner.banca}\n`
           formattedContent += `\n`
 
           let valorNumerico
@@ -547,9 +554,7 @@ export default {
       if (this.winners2.length === 0 && this.winners1.length === 0){
         this.listazerada = true
       }
-      console.log(this.winners2.lenght)
-      console.log(this.winners1.lenght)
-      console.log(this.listazerada)
+
       this.modalVisible = false
       this.tableVisible2 = true
     },
