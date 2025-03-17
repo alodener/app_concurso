@@ -136,6 +136,7 @@
                       <option value="loteria_equador">Loteria Equador</option>
                       <option value="loteria_uruguai">Loteria Uruguai</option>
                       <option value="loteria_sao_vicente_e_granidas">Loteria Sao Vicente e Granidas</option>
+                      <option value="loteria_mexico_noite">Loteria Mexico Noite</option>
                     </CFormSelect>
                     <CButton
                       type="trash"
@@ -470,6 +471,11 @@ export default {
             {
               name: 'Loteria Sao Vicente e Granidas',
               id: 'SAO VICENTE E GRANIDAS',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Mexico Noite',
+              id: 'MEXICO NOITE',
               connection: 'all',
             },
           ]
