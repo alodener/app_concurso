@@ -486,7 +486,7 @@ export default {
       }, 0)
 
       // Agrupar os ganhadores pelo nome do jogo
-      const groupedByGame = {}
+      var groupedByGame = {}
       this.winners2.forEach((winner) => {
         if (!groupedByGame[winner.game_name]) {
           groupedByGame[winner.game_name] = []
@@ -494,10 +494,12 @@ export default {
         groupedByGame[winner.game_name].push(winner)
       })
 
+      groupedByGame = Object.fromEntries(
+        Object.entries(groupedByGame).sort(([a], [b]) => a.localeCompare(b))
+      );
+
       var sel = this.partnerSelected.split(',');
       var banca = sel[((sel.length) - 1)]
-
-      console.log(this.type_game);
 
       let formattedContent = `🤑 ${banca} ${banca.trim() == 'Todas Bancas' || banca.trim() == 'Todas Modalidades' ? this.type_game : ''}🤑\n`
       formattedContent += `SORTEIOS DO DIA: ${this.winners2[0].sort_date}\n`
@@ -510,8 +512,7 @@ export default {
         let totalPrizeByGame = 0; // Inicializar totalPrizeByGame para cada grupo de ganhadores
 
         groupedByGame[gameName].forEach((winner) => {
-          formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} cupons\n`
-          formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
+          formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} ${winner.num_tickets == 1 ? 'cupom' : 'cupons'}\n`
           formattedContent += `🏦 Banca: ${winner.banca}\n`
           formattedContent += `\n`
 
