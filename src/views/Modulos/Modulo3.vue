@@ -561,7 +561,7 @@ export default {
 
         groupedByGame[gameName].forEach((winner) => {
           formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} ${winner.num_tickets == 1 ? 'cupom' : 'cupons'}\n`
-          formattedContent += `🏦 Banca: ${winner.banca}\n`
+          // formattedContent += `🏦 Banca: ${winner.banca}\n`
           formattedContent += `\n`
 
           let valorNumerico
@@ -575,7 +575,7 @@ export default {
           totalPrizeByGame += valorNumerico;
         })
 
-        formattedContent += `\nTotal de Prêmios 💰 ${totalPrizeByGame.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
+        // formattedContent += `\nTotal de Prêmios 💰 ${totalPrizeByGame.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} 💰\n`
       })
 
       return formattedContent
