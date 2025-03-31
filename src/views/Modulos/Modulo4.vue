@@ -93,7 +93,6 @@
                 <option value="baloto">Baloto</option>
                 <option value="super_six">Super Six</option>
                 <option value="loto_ouro">Loto Ouro</option>
-                
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
