@@ -69,6 +69,8 @@
                 <option value="ny_lotto">Ny Lotto</option>
                 <option value="mega_power">Mega Power</option>
                 <option value="la_tinka">La Tinka</option>
+                <option value="super_six">Super Six</option>
+                <option value="loto_ouro">Loto Ouro</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
