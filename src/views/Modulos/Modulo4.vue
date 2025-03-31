@@ -80,11 +80,20 @@
                 <option value="chanchito_Loto">Chanchito Loto</option>
                 <option value="easy_power_loto">Easy Power Loto</option>
                 <option value="chao_jefe_loto">Chao Jefe Loto</option>
-                <option value="chispaloto_segundo">Chispaloto Segundo</option>
+                <option value="chispaloto_noite">Chispaloto Noite</option>
                 <option value="mega_lotto">Mega Lotto</option>
                 <option value="mega_kino">Mega Kino</option>
                 <option value="santa_lucia_double">Santa Lucia Double</option>
                 <option value="super_quina">Super Quina</option>
+                <option value="cash_life">Cash Life</option>
+                <option value="ny_lotto">Ny Lotto</option>
+                <option value="mega_power">Mega Power</option>
+                <option value="la_tinka">La Tinka</option>
+                <option value="super_pozo">Super Pozo</option>
+                <option value="baloto">Baloto</option>
+                <option value="super_six">Super Six</option>
+                <option value="loto_ouro">Loto Ouro</option>
+                
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
