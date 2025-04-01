@@ -518,9 +518,13 @@ export default {
       console.log(groupedGameNames.loto_facil)
 
       Object.keys(groupedByGame).forEach((gameName) => {
-        formattedContent += `\n🟡 ${groupedGameNames[gameName].game_name}\n`
+        var title_game = groupedGameNames[gameName].game_name;
+        if (title_game.indexOf('-') > -1) {
+          title_game = title_game.split('-').slice(1).join('-')?.trim()?.toUpperCase();
+        }
 
-        // formattedContent += `\n🟡 ${gameName.game_name}\n`
+        formattedContent += `\n🟡 ${title_game}\n`
+
         let totalPrizeByGame = 0; // Inicializar totalPrizeByGame para cada grupo de ganhadores
 
         groupedByGame[gameName].forEach((winner) => {
