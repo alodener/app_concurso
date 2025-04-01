@@ -487,11 +487,20 @@ export default {
 
       // Agrupar os ganhadores pelo nome do jogo
       var groupedByGame = {}
+      var groupedGameNames = []
       this.winners2.forEach((winner) => {
-        if (!groupedByGame[winner.game_name]) {
-          groupedByGame[winner.game_name] = []
+        if (!groupedByGame[winner.categoria]) {
+          groupedByGame[winner.categoria] = []
         }
-        groupedByGame[winner.game_name].push(winner)
+
+        groupedByGame[winner.categoria].push(winner)
+
+        if(groupedGameNames.indexOf(winner.categoria) == -1) {
+          groupedGameNames[winner.categoria] = {}
+        }
+
+        groupedGameNames[winner.categoria]['game_name'] = winner.game_name
+        groupedGameNames[winner.categoria]['category'] = winner.categoria
       })
 
       groupedByGame = Object.fromEntries(
@@ -506,9 +515,12 @@ export default {
       formattedContent += `PREMIAÇÕES GERAIS: ${totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`
       formattedContent += `TOTAL DE BILHETES: ${totalTickets}\n`
 
-      Object.keys(groupedByGame).forEach((gameName) => {
-        formattedContent += `\n🟡 ${gameName}\n`
+      console.log(groupedGameNames.loto_facil)
 
+      Object.keys(groupedByGame).forEach((gameName) => {
+        formattedContent += `\n🟡 ${groupedGameNames[gameName].game_name}\n`
+
+        // formattedContent += `\n🟡 ${gameName.game_name}\n`
         let totalPrizeByGame = 0; // Inicializar totalPrizeByGame para cada grupo de ganhadores
 
         groupedByGame[gameName].forEach((winner) => {
