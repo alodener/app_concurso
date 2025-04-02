@@ -44,9 +44,15 @@ export default [
       },
       {
         component: 'CNavItem',
-        name: 'Loteria | Aprovação Automática',
+        name: 'Excluir Concurso',
         icon: 'cil-browser',
-        to: '/AprovacaoAutomatica',
+        to: '/ExcluirConcurso',
+      },
+      {
+        component: 'CNavItem',
+        name: 'Sobrepor Resultados',
+        icon: 'cil-browser',
+        to: '/Modulo4',
       },
       {
         component: 'CNavItem',
