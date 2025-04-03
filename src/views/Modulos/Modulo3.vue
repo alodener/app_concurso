@@ -184,7 +184,6 @@
                 </div>
                 <div class="col-auto">
                   <CButton
-                    type="submit"
                     @click="listFakeWinners"
                     color="warning"
                     class="mb-3"
