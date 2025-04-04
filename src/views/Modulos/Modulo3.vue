@@ -137,6 +137,7 @@
                       <option value="loteria_uruguai">Loteria Uruguai</option>
                       <option value="loteria_sao_vicente_e_granidas">Loteria Sao Vicente e Granidas</option>
                       <option value="loteria_mexico_noite">Loteria Mexico Noite</option>
+                      <option value="loteria_florida">Loteria Florida</option>
                     </CFormSelect>
                     <CButton
                       type="trash"
@@ -476,6 +477,11 @@ export default {
             {
               name: 'Loteria Mexico Noite',
               id: 'MEXICO NOITE',
+              connection: 'all',
+            },
+            {
+              name: 'Loteria Florida',
+              id: 'FLORIDA',
               connection: 'all',
             },
           ]
