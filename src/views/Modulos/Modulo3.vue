@@ -33,23 +33,9 @@
               <td>{{ item.num_tickets }}</td>
               <td>{{ item.game_name }}</td>
               <td>
-                <CBadge
-                  v-if="item.status == 1"
-                  color="warning"
-                  shape="rounded-pill"
-                  >Pendente</CBadge
-                >
-                <CBadge
-                  v-if="item.status == 2"
-                  color="success"
-                  shape="rounded-pill"
-                  >Aprovado</CBadge
-                >
-                <CBadge
-                  v-if="item.status == 3"
-                  color="info"
-                  shape="rounded-pill"
-                  >Acordo
+                <CBadge v-if="item.status == 1" color="warning" shape="rounded-pill">Pendente</CBadge>
+                <CBadge v-if="item.status == 2" color="success" shape="rounded-pill">Aprovado</CBadge>
+                <CBadge v-if="item.status == 3" color="info" shape="rounded-pill">Acordo
                 </CBadge>
               </td>
             </tr>
@@ -58,11 +44,7 @@
       </div>
     </CModalBody>
     <CModalFooter>
-      <CButton
-        :disabled="modalDisabled"
-        color="success"
-        @click="removeSelectedItems"
-        >Confirmar
+      <CButton :disabled="modalDisabled" color="success" @click="removeSelectedItems">Confirmar
       </CButton>
       <CButton :disabled="modalDisabled" color="secondary" @click="closeModal">
         Cancelar
@@ -71,7 +53,9 @@
   </CModal>
   <div>
     <CCard class="mb-5">
-      <CCardBody class="m-auto"><h4>Lista de Ganhadores</h4></CCardBody>
+      <CCardBody class="m-auto">
+        <h4>Lista de Ganhadores</h4>
+      </CCardBody>
     </CCard>
     <CRow>
       <CCol>
@@ -80,42 +64,22 @@
             <div class="header_align">
               <CForm class="row mt-5">
                 <div class="col-auto">
-                  <CFormSelect
-                    aria-label="Default select example"
-                    v-model.lazy="partnerSelected"
-                    @change="handlePartnerChange"
-                  >
+                  <CFormSelect aria-label="Default select example" v-model.lazy="partnerSelected"
+                    @change="handlePartnerChange">
                     <option value="">Selecione uma Banca</option>
-                    <option
-                      v-for="item in partners"
-                      :key="item.id"
-                      :value="[item.id, item.name]"
-                    >
+                    <option v-for="item in partners" :key="item.id" :value="[item.id, item.name]">
                       {{ item.name }}
                     </option>
                   </CFormSelect>
                   <!-- Novo select -->
                   <div class="col-auto" v-if="partnerSelected.length > 0">
-                    <CFormSelect
-                      aria-label="Default select example"
-                      v-model="type_game"
-                    >
+                    <CFormSelect aria-label="Default select example" v-model="type_game">
                       <option value="">Selecione uma modalidade</option>
-                      <option
-                        v-for="item in modalidades"
-                        :key="item.id"
-                        :value="item.id"
-                      >
+                      <option v-for="item in modalidades" :key="item.id" :value="item.id">
                         {{ item.name }}
                       </option>
                     </CFormSelect>
-                    <CButton
-                      type="trash"
-                      @click="limparModalidade()"
-                      color="danger"
-                      class="mb-3"
-                      >Limpar</CButton
-                    >
+                    <CButton type="trash" @click="limparModalidade()" color="danger" class="mb-3">Limpar</CButton>
                   </div>
                   <!-- <div class="col-auto" v-if="partnerSelectedName == 'SuperLotogiro'">
                     <CFormSelect
@@ -140,47 +104,20 @@
                   </div> -->
                 </div>
                 <div class="col-auto">
-                  <CFormLabel for="inputPassword2" class="visually-hidden"
-                    >Password</CFormLabel
-                  >
-                  <CFormInput
-                    :disabled="readOnly"
-                    v-model="date"
-                    type="date"
-                    aria-label="First name"
-                  />
+                  <CFormLabel for="inputPassword2" class="visually-hidden">Password</CFormLabel>
+                  <CFormInput :disabled="readOnly" v-model="date" type="date" aria-label="First name" />
                 </div>
                 <div class="col-auto">
-                  <CButton
-                    @click="listWinners()"
-                    color="success"
-                    class="mb-3"
-                    >Consultar</CButton
-                  >
+                  <CButton @click="listWinners()" color="success" class="mb-3">Consultar</CButton>
                 </div>
                 <div class="col-auto">
-                  <CFormInput
-                    type="text"
-                    id="premio"
-                    placeholder="Valor à adicionar"
-                    v-model="premio"
-                  />
+                  <CFormInput type="text" id="premio" placeholder="Valor à adicionar" v-model="premio" />
                 </div>
                 <div class="col-auto">
-                  <CFormInput
-                    type="text"
-                    id="ganhadores"
-                    placeholder="Ganhadores à adicionar"
-                    v-model="ganhadores"
-                  />
+                  <CFormInput type="text" id="ganhadores" placeholder="Ganhadores à adicionar" v-model="ganhadores" />
                 </div>
                 <div class="col-auto">
-                  <CButton
-                    @click="listFakeWinners"
-                    color="warning"
-                    class="mb-3"
-                    >Adicionar Ganhadores</CButton
-                  >
+                  <CButton @click="listFakeWinners" color="warning" class="mb-3">Adicionar Ganhadores</CButton>
                 </div>
               </CForm>
             </div>
@@ -207,61 +144,26 @@
                   <td>{{ item.banca }}</td>
                   <td>{{ item.game_name }}</td>
                   <td>
-                    <CBadge
-                      v-if="item.status == 1"
-                      color="warning"
-                      shape="rounded-pill"
-                      >Pendente</CBadge
-                    >
-                    <CBadge
-                      v-if="item.status == 2"
-                      color="success"
-                      shape="rounded-pill"
-                      >Aprovado</CBadge
-                    >
-                    <CBadge
-                      v-if="item.status == 3"
-                      color="info"
-                      shape="rounded-pill"
-                      >Acordo</CBadge
-                    >
+                    <CBadge v-if="item.status == 1" color="warning" shape="rounded-pill">Pendente</CBadge>
+                    <CBadge v-if="item.status == 2" color="success" shape="rounded-pill">Aprovado</CBadge>
+                    <CBadge v-if="item.status == 3" color="info" shape="rounded-pill">Acordo</CBadge>
 
-                    <CBadge
-                      v-if="item.status == 4"
-                      color="primary"
-                      shape="rounded-pill"
-                      >Auto</CBadge
-                    >
+                    <CBadge v-if="item.status == 4" color="primary" shape="rounded-pill">Auto</CBadge>
                   </td>
                 </tr>
               </tbody>
             </table>
             <div class="button-container fixed-buttons">
-              <CButton
-                v-show="tableVisible"
-                class="copy-button btn btn-primary btn-lg"
-                color="primary"
-                @click="copyToClipboard"
-                id="botaoCopiarListaGanhadores"
-              >
+              <CButton v-show="tableVisible" class="copy-button btn btn-primary btn-lg" color="primary"
+                @click="copyToClipboard" id="botaoCopiarListaGanhadores">
                 Copiar Lista Ganhadores
               </CButton>
-              <CButton
-                v-show="tableVisible"
-                class="send-button btn btn-success btn-lg"
-                color="success"
-                @click="removeSelectedItems"
-                id="enviarAoEscritorio"
-              >
+              <CButton v-show="tableVisible" class="send-button btn btn-success btn-lg" color="success"
+                @click="removeSelectedItems" id="enviarAoEscritorio">
                 Enviar ao Escritório 1
               </CButton>
-              <CButton
-                v-show="tableVisible"
-                class="send-button btn btn-success btn-lg"
-                color="danger"
-                @click="openModal"
-                id="removerItens"
-              >
+              <CButton v-show="tableVisible" class="send-button btn btn-success btn-lg" color="danger"
+                @click="openModal" id="removerItens">
                 Remover Itens
               </CButton>
             </div>
@@ -288,54 +190,24 @@
                   <td>{{ item.banca }}</td>
                   <td>{{ item.game_name }}</td>
                   <td>
-                    <CBadge
-                      v-if="item.status == 1"
-                      color="warning"
-                      shape="rounded-pill"
-                      >Pendente</CBadge
-                    >
-                    <CBadge
-                      v-if="item.status == 2"
-                      color="success"
-                      shape="rounded-pill"
-                      >Aprovado</CBadge
-                    >
-                    <CBadge
-                      v-if="item.status == 3"
-                      color="info"
-                      shape="rounded-pill"
-                      >Acordo</CBadge
-                    >
+                    <CBadge v-if="item.status == 1" color="warning" shape="rounded-pill">Pendente</CBadge>
+                    <CBadge v-if="item.status == 2" color="success" shape="rounded-pill">Aprovado</CBadge>
+                    <CBadge v-if="item.status == 3" color="info" shape="rounded-pill">Acordo</CBadge>
                   </td>
                 </tr>
               </tbody>
             </table>
             <div class="button-container fixed-buttons">
-              <CButton
-                v-show="tableVisible2"
-                class="copy-button btn btn-primary btn-lg"
-                color="primary"
-                @click="copyToClipboard"
-                id="botaoCopiarListaGanhadores"
-              >
+              <CButton v-show="tableVisible2" class="copy-button btn btn-primary btn-lg" color="primary"
+                @click="copyToClipboard" id="botaoCopiarListaGanhadores">
                 Copiar Lista Ganhadores
               </CButton>
-              <CButton
-                v-show="tableVisible2"
-                class="send-button btn btn-success btn-lg"
-                color="success"
-                @click="removeSelectedItems2"
-                id="enviarAoEscritorio"
-              >
+              <CButton v-show="tableVisible2" class="send-button btn btn-success btn-lg" color="success"
+                @click="removeSelectedItems2" id="enviarAoEscritorio">
                 Enviar ao Escritório 2
               </CButton>
-              <CButton
-                v-show="tableVisible2"
-                class="send-button btn btn-success btn-lg"
-                color="danger"
-                @click="openModal"
-                id="removerItens"
-              >
+              <CButton v-show="tableVisible2" class="send-button btn btn-success btn-lg" color="danger"
+                @click="openModal" id="removerItens">
                 Remover Itens
               </CButton>
             </div>
@@ -382,70 +254,51 @@ export default {
   },
   methods: {
     listPartners() {
-      api
-        .get(`/partners`)
-        .then((response) => {
-          this.partners = response.data
-        })
-        .catch(() => {})
+      api.get(`/partners`).then((response) => {
+        this.partners = response.data
+      })
     },
     loadModalidades() {
       // Verifica se um parceiro foi selecionado
       if (this.partnerSelected.length > 0) {
         // Obtém o ID do parceiro selecionado
-        const parts = this.partnerSelected.split(',')
+        // const parts = this.partnerSelected.split(',')
 
-        if (parts.length > 2) {
-          this.partnerSelectedId = this.partnerSelected
-          this.partnerSelectedName = 'Todas Modalidades'
+        this.partnerSelectedId = this.partnerSelected
+        this.partnerSelectedName = 'Todas Modalidades'
 
-          this.modalidades = [
-            {
-              name: 'Loteria Brasil',
-              id: 'BRASIL',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Chile',
-              id: 'CHILE',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Santa Lúcia',
-              id: 'SANTA LUCIA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria México',
-              id: 'MÉXICO',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Polônia',
-              id: 'POLONIA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Reino Unido',
-              id: 'REINO UNIDO',
-              connection: 'all',
-            },
-          ]
-        } else {
-          this.partnerSelectedId = parts[0]
-          this.partnerSelectedName = parts[1]
-
-          // Faça uma chamada para carregar as modalidades correspondentes ao parceiro selecionado
-          api
-            .get(`/partners/modalidades/${this.partnerSelectedId}`)
-            .then((response) => {
-              // Atualize as modalidades com os dados retornados pela API
-              this.modalidades = response.data
-            })
-            .catch((error) => {
-              console.error('Erro ao carregar as modalidades:', error)
-            })
-        }
+        this.modalidades = [
+          {
+            name: 'Loteria Brasil',
+            id: 'BRASIL',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Chile',
+            id: 'CHILE',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Santa Lúcia',
+            id: 'SANTA LUCIA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria México',
+            id: 'MÉXICO',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Polônia',
+            id: 'POLONIA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Reino Unido',
+            id: 'REINO UNIDO',
+            connection: 'all',
+          },
+        ]
       } else {
         // Limpa as modalidades se nenhum parceiro estiver selecionado
         this.modalidades = []
@@ -462,7 +315,6 @@ export default {
         this.partnerSelectedId = partnerId
         this.partnerSelectedName = partnerName
 
-        console.log('ID da Banca selecionada:', this.partnerSelectedId)
         this.loadModalidades()
       })
     },
@@ -494,7 +346,7 @@ export default {
 
         groupedByGame[winner.categoria].push(winner)
 
-        if(groupedGameNames.indexOf(winner.categoria) == -1) {
+        if (groupedGameNames.indexOf(winner.categoria) == -1) {
           groupedGameNames[winner.categoria] = {}
         }
 
@@ -568,7 +420,7 @@ export default {
 
       // Remove os itens correspondentes da lista winners2 com base nos IDs selecionados
       this.winners2 = this.winners2.filter((item) => !selectedIds.includes(item.id))
-      if (this.winners2.length === 0 && this.winners1.length === 0){
+      if (this.winners2.length === 0 && this.winners1.length === 0) {
         this.listazerada = true
       }
 
@@ -586,13 +438,13 @@ export default {
       };
       // Enviar a solicitação para a rota Laravel
       api.post('/partners/winners-lists', requestData)
-          .then(response => {
-          })
-          .catch(() => {})
-          .finally(() => {
-            this.modalVisible = false
-            alert('Lista enviada ao escritório com sucesso')
-      });
+        .then(response => {
+        })
+        .catch(() => { })
+        .finally(() => {
+          this.modalVisible = false
+          alert('Lista enviada ao escritório com sucesso')
+        });
 
     },
     copyToClipboard() {
@@ -628,13 +480,13 @@ export default {
     listWinners() {
       this.winners1 = [],
 
-      this.loading = true;
+        this.loading = true;
       const parts = this.partnerSelected.split(',')
 
-      if( this.partnerSelected.length > 2 ) {
+      if (this.partnerSelected.length > 2) {
         this.partnerSelectedId = this.partnerSelected
         this.partnerSelectedName = 'Todas Modalidades'
-      } else{
+      } else {
         this.partnerSelectedId = parts[0]
         this.partnerSelectedName = parts[1]
       }
@@ -649,9 +501,9 @@ export default {
           this.winners3 = response.data
           this.tableVisible = true
         })
-        .catch(() => {})
+        .catch(() => { })
         .finally(() => {
-            this.loading = false;
+          this.loading = false;
         });
     },
     listFakeWinners() {
@@ -681,7 +533,7 @@ export default {
             this.winners2 = response.data;
             this.tableVisible = true;
           })
-          .catch(() => {})
+          .catch(() => { })
           .finally(() => {
             this.loading = false;
           });
@@ -695,7 +547,7 @@ export default {
             this.winners2 = response.data; // Atualiza winners3 com a resposta da API
             this.tableVisible = true;
           })
-          .catch(() => {})
+          .catch(() => { })
           .finally(() => {
             this.loading = false;
           });
@@ -724,61 +576,86 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 .text_button {
   font-size: 14px;
 }
+
 .align_bottom {
   margin-right: 10px;
 }
+
 .alinhar_paginacao {
   justify-content: space-between;
 }
+
 .pagination_align {
   max-width: 60px;
   margin-left: 8px;
 }
+
 .copy-button {
   bottom: 20px;
   right: 20px;
 }
+
 .send-button {
   bottom: 20px;
   right: 40px;
 }
+
 .button-container {
   display: flex;
   justify-content: space-between;
 }
+
 .fixed-buttons {
   position: fixed;
   bottom: 20px;
   right: 20px;
 }
+
 .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Transparência para criar o efeito de fade */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Transparência para criar o efeito de fade */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Z-index alto para ficar na frente de outros elementos */
+  z-index: 9999;
+  /* Z-index alto para ficar na frente de outros elementos */
 }
 
 .spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3); /* Cor e espessura da borda do spinner */
-  border-radius: 50%; /* Forma do spinner */
-  border-top: 4px solid #ffffff; /* Cor e espessura da borda superior do spinner */
-  width: 50px; /* Largura do spinner */
-  height: 50px; /* Altura do spinner */
-  animation: spin 1s linear infinite; /* Animação de rotação */
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  /* Cor e espessura da borda do spinner */
+  border-radius: 50%;
+  /* Forma do spinner */
+  border-top: 4px solid #ffffff;
+  /* Cor e espessura da borda superior do spinner */
+  width: 50px;
+  /* Largura do spinner */
+  height: 50px;
+  /* Altura do spinner */
+  animation: spin 1s linear infinite;
+  /* Animação de rotação */
   margin-right: 10px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); } /* Rotação inicial */
-  100% { transform: rotate(360deg); } /* Rotação completa */
+  0% {
+    transform: rotate(0deg);
+  }
+
+  /* Rotação inicial */
+  100% {
+    transform: rotate(360deg);
+  }
+
+  /* Rotação completa */
 }
 </style>
