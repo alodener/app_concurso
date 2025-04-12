@@ -69,6 +69,10 @@
                 <option value="ny_lotto">Ny Lotto</option>
                 <option value="mega_power">Mega Power</option>
                 <option value="la_tinka">La Tinka</option>
+                <option value="super_pozo">Super Pozo</option>
+                <option value="baloto">Baloto</option>
+                <option value="super_six">Super Six</option>
+                <option value="loto_ouro">Loto Ouro</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
@@ -151,6 +155,15 @@ export default {
         chanchito_Loto: 14,
         chao_jefe_loto: 14,
         mega_kino: 14,
+        cash_life: 5,
+        chispaloto_noite: 5,
+        super_six: 6,
+        mega_power: 5,
+        ny_lotto: 6,
+        la_tinka: 6,
+        loto_ouro: 5,
+        super_pozo: 11,
+        baloto: 5,
       },
       maxDezenas: {
         loto_facil: 25,
@@ -169,6 +182,15 @@ export default {
         chanchito_Loto: 25,
         chao_jefe_loto: 25,
         mega_kino: 25,
+        cash_life: 60,
+        chispaloto_noite: 28,
+        super_six: 28,
+        mega_power: 69,
+        ny_lotto: 59,
+        la_tinka: 48,
+        loto_ouro: 48,
+        super_pozo: 25,
+        baloto: 43,
       },
     }
   },
