@@ -268,82 +268,82 @@ export default {
         this.partnerSelectedName = 'Todas Modalidades'
 
         this.modalidades = [
-            {
-              name: 'Loteria Brasil',
-              id: 'BRASIL',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Chile',
-              id: 'CHILE',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Santa Lúcia',
-              id: 'SANTA LUCIA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria México',
-              id: 'MÉXICO',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Polônia',
-              id: 'POLONIA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Reino Unido',
-              id: 'REINO UNIDO',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria EUA',
-              id: 'EUA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Peru',
-              id: 'PERU',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Colombia',
-              id: 'COLOMBIA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Canada',
-              id: 'CANADA',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Equador',
-              id: 'EQUADOR',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Uruguai',
-              id: 'URUGUAI',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Sao Vicente e Granidas',
-              id: 'SAO VICENTE E GRANIDAS',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Mexico Noite',
-              id: 'MEXICO NOITE',
-              connection: 'all',
-            },
-            {
-              name: 'Loteria Florida',
-              id: 'FLORIDA',
-              connection: 'all',
-            },
-          ]
+          {
+            name: 'Loteria Brasil',
+            id: 'BRASIL',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Chile',
+            id: 'CHILE',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Santa Lúcia',
+            id: 'SANTA LUCIA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria México',
+            id: 'MÉXICO',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Polônia',
+            id: 'POLONIA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Reino Unido',
+            id: 'REINO UNIDO',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria EUA',
+            id: 'EUA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Peru',
+            id: 'PERU',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Colombia',
+            id: 'COLOMBIA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Canada',
+            id: 'CANADA',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Equador',
+            id: 'EQUADOR',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Uruguai',
+            id: 'URUGUAI',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Sao Vicente e Granidas',
+            id: 'SAO VICENTE E GRANIDAS',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Mexico Noite',
+            id: 'MEXICO NOITE',
+            connection: 'all',
+          },
+          {
+            name: 'Loteria Florida',
+            id: 'FLORIDA',
+            connection: 'all',
+          },
+        ]
       } else {
         // Limpa as modalidades se nenhum parceiro estiver selecionado
         this.modalidades = []
