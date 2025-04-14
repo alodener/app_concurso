@@ -421,12 +421,12 @@ export default {
 
         formattedContent += `\n🟡 ${title_game}\n`
 
-        let totalPrizeByGame = 0; // Inicializar totalPrizeByGame para cada grupo de ganhadores
+        let totalPrizeByGame = 0;
 
         groupedByGame[gameName].forEach((winner) => {
           formattedContent += `✔️ ${winner.name}, ${winner.num_tickets} ${winner.num_tickets == 1 ? 'cupom' : 'cupons'}\n`
           formattedContent += `💰 Prêmio: ${winner.premio_formatted}\n`
-          // formattedContent += `🏦 Banca: ${winner.banca}\n`
+          formattedContent += `🏦 Banca: ${winner.banca}\n`
           formattedContent += `\n`
 
           let valorNumerico
