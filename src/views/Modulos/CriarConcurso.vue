@@ -68,6 +68,7 @@
                 <option value="la_tinka">La Tinka</option>
                 <option value="super_six">Super Six</option>
                 <option value="loto_ouro">Loto Ouro</option>
+                <option value="triplo_6">Triplo 6</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
