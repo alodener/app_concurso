@@ -93,6 +93,7 @@
                 <option value="baloto">Baloto</option>
                 <option value="super_six">Super Six</option>
                 <option value="loto_ouro">Loto Ouro</option>
+                <option value="triplo_6">Triplo 6</option>
               </CFormSelect>
             </CInputGroup>
             <CInputGroup class="mt-4">
@@ -184,6 +185,7 @@ export default {
         loto_ouro: 5,
         super_pozo: 11,
         baloto: 5,
+        triplo_6: 6,
       },
       maxDezenas: {
         loto_facil: 25,
@@ -211,6 +213,7 @@ export default {
         loto_ouro: 48,
         super_pozo: 25,
         baloto: 43,
+        triplo_6: 56,
       },
     }
   },
